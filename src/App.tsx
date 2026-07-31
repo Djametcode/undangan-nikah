@@ -3,33 +3,30 @@ import './App.css'
 const themes = [
   {
     name: 'Pernikahan',
-    tag: 'Classic · Romantic',
-    desc: 'Desain rapi dan tenang untuk hari paling penting.',
+    desc: 'Desain klasik untuk momen spesial Anda.',
   },
   {
     name: 'Akad Nikah',
-    tag: 'Simple · Sacred',
-    desc: 'Fokus pada ketenangan dan momen sakral.',
+    desc: 'Fokus pada ketenangan dan kesederhanaan.',
   },
   {
     name: 'Ulang Tahun',
-    tag: 'Fun · Minimal',
-    desc: 'Merayakan momen tanpa terasa berlebihan.',
+    desc: 'Merayakan momen dengan gaya minimalis.',
   },
 ]
 
 const features = [
   {
     title: 'Undangan Online',
-    desc: 'Bagikan undangan lewat tautan, tanpa ribet cetak.',
+    desc: 'Bagikan lewat link ke WhatsApp atau sosial media. Tidak perlu cetak.',
   },
   {
-    title: 'Kustom Sederhana',
-    desc: 'Ganti nama, tanggal, dan warna tanpa desainer.',
+    title: 'Edit Sendiri',
+    desc: 'Ubah nama, tanggal, lokasi, dan warna tanpa minta tolong desainer.',
   },
   {
-    title: 'Tampil Elegan',
-    desc: 'Desain yang sopan untuk keluarga dan tamu penting.',
+    title: 'Tampilan Rapi',
+    desc: 'Desain yang sopan dan profesional untuk semua kalangan.',
   },
 ]
 
@@ -46,7 +43,7 @@ function App() {
         <div className="container navbar-inner">
           <div className="logo">
             <span className="logo-dot" />
-            <span className="logo-text">UndanganKu</span>
+            <span>UndanganKu</span>
           </div>
           <nav className="nav-links">
             <a href="#tema">Tema</a>
@@ -64,45 +61,40 @@ function App() {
         <section className="hero">
           <div className="container hero-inner">
             <div>
-              <div className="hero-eyebrow">
-                <span className="hero-pill-dot" />
-                <span>Undangan digital modern</span>
-              </div>
               <h1 className="hero-title">
-                Undangan pernikahan
-                <br />
-                <span className="accent">tenang dan berkelas</span>
+                Undangan pernikahan yang <span className="accent">rapi dan sopan</span>
               </h1>
               <p className="hero-subtitle">
-                Buat undangan yang sopan dibuka keluarga, mudah dibagikan ke tamu, dan tidak terasa
-                seperti template yang sama dengan orang lain.
+                Buat undangan digital yang layak dibuka keluarga. Mudah dibagikan, gampang diatur, tanpa ribet desain.
               </p>
               <div className="hero-actions">
                 <a href="#tema" className="btn btn-primary">
                   Lihat Tema
                 </a>
                 <a href="#fitur" className="btn btn-outline">
-                  Pelajari Fitur
+                  Cara Kerja
                 </a>
               </div>
             </div>
 
             <div className="hero-preview">
               <div className="preview-card">
-                <div className="preview-header">
-                  <div className="preview-label">The Wedding</div>
-                  <div className="preview-pill">Live Preview</div>
-                </div>
                 <div className="preview-body">
-                  <div className="preview-kicker">Undangan</div>
+                  <div className="preview-kicker">Undangan Pernikahan</div>
                   <div className="preview-names">Annisa & Ahmad</div>
-                  <div className="preview-event">Sabtu, 20 Desember 2025 · Jakarta</div>
+                  <div className="preview-event">Sabtu, 20 Desember 2025<br/>Gedung Graha, Jakarta</div>
 
                   <div className="preview-divider" />
 
-                  <div className="preview-footer">
-                    <span>Akad & Resepsi</span>
-                    <span className="preview-tag">Detail</span>
+                  <div className="preview-info">
+                    <div className="preview-info-item">
+                      <span className="label">Akad Nikah</span>
+                      <span className="value">09.00 WIB</span>
+                    </div>
+                    <div className="preview-info-item">
+                      <span className="label">Resepsi</span>
+                      <span className="value">11.00 WIB</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -114,13 +106,9 @@ function App() {
           <div className="container">
             <div className="section-header">
               <div className="section-header-main">
-                <span className="section-label">
-                  <span className="section-label-dot" />
-                  Tema Favorit
-                </span>
-                <h2 className="section-title">Dipakai banyak pasangan</h2>
+                <h2 className="section-title">Pilih Tema Undangan</h2>
                 <p className="section-subtitle">
-                  Tema yang sering dipakai, bisa disesuaikan dengan warna dan gaya acara Anda.
+                  Tema yang sudah terbukti dipakai banyak pasangan. Bisa disesuaikan warna dan isi.
                 </p>
               </div>
             </div>
@@ -128,32 +116,16 @@ function App() {
             <div className="themes-grid">
               {themes.map((t) => (
                 <article className="theme-card" key={t.name}>
-                  <header className="theme-preview">
-                    <div className="theme-pill">
-                      <span>{t.tag}</span>
-                    </div>
+                  <div className="theme-preview">
+                    <div className="theme-mock" />
+                  </div>
+                  <div className="theme-content">
                     <h3 className="theme-title">{t.name}</h3>
                     <p className="theme-desc">{t.desc}</p>
-                    <div className="theme-mock" />
-                  </header>
-                  <footer className="theme-footer">
-                    <span>Cocok untuk acara intim & keluarga.</span>
-                    <a className="link-arrow" href="#harga">
-                      Lihat contoh
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M5 12h14" />
-                        <path d="M13 6l6 6-6 6" />
-                      </svg>
+                    <a className="theme-link" href="#harga">
+                      Lihat contoh →
                     </a>
-                  </footer>
+                  </div>
                 </article>
               ))}
             </div>
@@ -164,14 +136,9 @@ function App() {
           <div className="container">
             <div className="section-header">
               <div className="section-header-main">
-                <span className="section-label">
-                  <span className="section-label-dot" />
-                  Fitur inti
-                </span>
-                <h2 className="section-title">Cukup untuk kebutuhan Anda</h2>
+                <h2 className="section-title">Yang Anda Dapat</h2>
                 <p className="section-subtitle">
-                  Fitur difokuskan pada hal yang benar-benar dipakai: undangan, tamu, dan kemudahan
-                  berbagi.
+                  Fitur yang benar-benar dipakai: undangan online, kelola tamu, bagikan link.
                 </p>
               </div>
             </div>
@@ -205,13 +172,9 @@ function App() {
           <div className="container">
             <div className="section-header">
               <div className="section-header-main">
-                <span className="section-label">
-                  <span className="section-label-dot" />
-                  Harga
-                </span>
-                <h2 className="section-title">Paket sederhana, langsung jelas</h2>
+                <h2 className="section-title">Harga</h2>
                 <p className="section-subtitle">
-                  Mulai dari gratis sampai fitur lengkap, tanpa skema yang membingungkan.
+                  Mulai dari gratis. Bayar sekali, pakai selamanya.
                 </p>
               </div>
             </div>
@@ -226,7 +189,7 @@ function App() {
                   >
                     {highlight && <div className="price-badge">Paling laris</div>}
                     <h3 className="price-name">{p.name}</h3>
-                    <p className="price-sub">Sekali bayar, tanpa langganan</p>
+                    <p className="price-sub">Bayar sekali saja</p>
 
                     <div className="price-amount">
                       {p.price === '0' ? (
@@ -268,10 +231,10 @@ function App() {
           <div>
             <div className="logo">
               <span className="logo-dot" />
-              <span className="logo-text">UndanganKu</span>
+              <span>UndanganKu</span>
             </div>
             <p className="footer-brand-text">
-              Platform undangan digital untuk pasangan yang ingin undangan rapi tanpa ribet.
+              Buat undangan digital yang rapi, praktis, dan mudah dibagikan.
             </p>
             <div className="footer-meta">
               <span>hello@undangan.id</span>
@@ -299,7 +262,7 @@ function App() {
         </div>
         <div className="footer-bottom">
           <span>© 2025 UndanganKu</span>
-          <span>Dibuat sederhana, seperti seharusnya undangan.</span>
+          <span>Dibuat dengan kesederhanaan.</span>
         </div>
       </footer>
     </div>
