@@ -1,29 +1,37 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { QRCodeCanvas } from "qrcode.react";
 import photo1 from "./assets/photos/photo101.jpg";
 import photo2 from "./assets/photos/photo202.jpg";
 import photo3 from "./assets/photos/photo303.jpg";
 import photo4 from "./assets/photos/photo404.jpg";
+import photo5 from "./assets/photos/photo505.jpg";
+import photo6 from "./assets/photos/photo606.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
-   UndanganKu — Soft UI Evolution (premium wedding)
-   GSAP ScrollTrigger + parallax + line reveals.
-   Design: pink + gold, Great Vibes + Cormorant Infant.
+   ART JAWA COKLAT — replica galeriundanganofficial, React murni.
+   Dark brown + gold, Pinyon Script + Playfair Display + Cormorant.
    ============================================================ */
 
 const WEDDING = {
-  groom: "Ahmad Fauzi",
-  groomDesc: "Putra ke-1 dari Bapak H. Slamet & Ibu Hj. Siti",
-  bride: "Annisa Rahma",
-  brideDesc: "Putri ke-1 dari Bapak H. Budi & Ibu Hj. Dewi",
-  date: "20 Desember 2025",
-  day: "Sabtu",
-  akad: { time: "09.00 WIB", place: "Masjid Al-Ikhlas, Jakarta" },
-  resepsi: { time: "11.00 WIB", place: "Gedung Graha, Jakarta" },
-  mapsUrl: "https://maps.google.com/?q=Jakarta",
+  groom: "Benny",
+  groomFull: "Benny Pratama",
+  groomDesc: "Putra pertama dari Bapak Bambang & Ibu Sri",
+  bride: "Indah",
+  brideFull: "Indah Lestari",
+  brideDesc: "Putri pertama dari Bapak Joko & Ibu Rina",
+  date: "10 Oktober 2025",
+  day: "Jumat",
+  akad: { time: "08.00 WIB - Selesai", place: "Kediaman mempelai wanita, Jl. Gatot Subroto GG Putri Ayu VI No. 14, KM 5 Bawah" },
+  resepsi: { time: "13.00 WIB - 16.00 WIB", place: "Gedung Hotel BBR, Jl. Pantai Impian No. 1 - Tanjungpinang" },
+  mapsAkad: "https://maps.google.com/?q=Jl.+Gatot+Subroto+Tanjungpinang",
+  mapsResepsi: "https://maps.google.com/?q=Hotel+BBR+Tanjungpinang",
+  bank: { name: "Bank Mandiri", number: "123123123", holder: "Elyana Azkiya Nur" },
+  kado: { name: "Elyana Azkiya Nur", address: "Jalan Raya Bojongsari No.5, Gunung Putri, Citeureup, Bogor, Jawa Barat" },
+  music: "https://web.galeriundanganofficial.com/wp-content/uploads/2025/11/Kabagyan-Sadewok-Official-Music-Video-mp3cut.net-1.mp3",
 };
 
 const targetDate = Date.now() + 90 * 24 * 60 * 60 * 1000;
@@ -32,7 +40,22 @@ const gallery = [
   { src: photo2, alt: "Momen 1" },
   { src: photo3, alt: "Momen 2" },
   { src: photo4, alt: "Momen 3" },
+  { src: photo5, alt: "Momen 4" },
+  { src: photo6, alt: "Momen 5" },
 ];
+
+/* ---------- Guest name from URL (?to=...) ---------- */
+function useGuestName(): string {
+  const [name, setName] = useState("Yogi dan Ratna");
+  useEffect(() => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const to = p.get("to");
+      if (to) setName(to);
+    } catch {}
+  }, []);
+  return name;
+}
 
 /* ---------- Hooks ---------- */
 function useCountdown() {
@@ -58,7 +81,7 @@ function useMusicPlayer() {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
-    audioRef.current = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b6e2f0c6c.mp3?filename=romantic-piano-12399.mp3");
+    audioRef.current = new Audio(WEDDING.music);
     audioRef.current.loop = true;
     return () => { audioRef.current?.pause(); };
   }, []);
@@ -71,7 +94,6 @@ function useMusicPlayer() {
   return { playing, toggle };
 }
 
-/* ---------- Scroll setup ---------- */
 function useScrollSetup(enabled: boolean) {
   const scope = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -85,19 +107,14 @@ function useScrollSetup(enabled: boolean) {
   return scope;
 }
 
-/* ---------- GSAP animations ---------- */
 function useWeddingAnimations(dep: unknown = true) {
   const scopeRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (!scopeRef.current) return;
     const ctx = gsap.context(() => {
-      // Line reveal
       gsap.utils.toArray<Element>("[data-line-reveal]").forEach((el) => {
         const lineInners = el.querySelectorAll(".line-inner");
-        gsap.set(lineInners, {
-          y: 100, x: 40, opacity: 0, rotationX: 25, skewY: 4, transformOrigin: "left bottom",
-        });
+        gsap.set(lineInners, { y: 100, x: 40, opacity: 0, rotationX: 25, skewY: 4, transformOrigin: "left bottom" });
         gsap.to(lineInners, {
           y: 0, x: 0, opacity: 1, rotationX: 0, skewY: 0,
           duration: 1, stagger: { amount: 0.7, from: "start" },
@@ -106,21 +123,19 @@ function useWeddingAnimations(dep: unknown = true) {
         });
       });
 
-      // Fade reveal
       gsap.utils.toArray<Element>("[data-reveal]").forEach((el) => {
         gsap.fromTo(
           el,
-          { opacity: 0, y: 16 },
+          { opacity: 0, y: 18 },
           {
-            opacity: 1, y: 0, duration: 0.5, ease: "power2.out",
+            opacity: 1, y: 0, duration: 0.55, ease: "power2.out",
             scrollTrigger: { trigger: el, start: "top 88%", once: true },
           }
         );
       });
 
-      // Parallax on [data-parallax] images
       gsap.utils.toArray<Element>("[data-parallax]").forEach((el) => {
-        const speed = parseFloat(el.getAttribute("data-parallax") || "0.2");
+        const speed = parseFloat(el.getAttribute("data-parallax") || "0.15");
         gsap.fromTo(
           el,
           { yPercent: -speed * 20 },
@@ -132,18 +147,6 @@ function useWeddingAnimations(dep: unknown = true) {
         );
       });
 
-      // Pin on couple section
-      gsap.to("[data-pin]", {
-        scrollTrigger: {
-          trigger: "[data-pin]",
-          start: "top top",
-          end: "+=80%",
-          pin: true,
-          scrub: 0.5,
-        },
-      });
-
-      // Progress bar
       gsap.to("[data-progress]", {
         scaleX: 1,
         ease: "none",
@@ -152,7 +155,6 @@ function useWeddingAnimations(dep: unknown = true) {
     }, scopeRef);
     return () => ctx.revert();
   }, [dep]);
-
   return scopeRef;
 }
 
@@ -160,32 +162,51 @@ function useWeddingAnimations(dep: unknown = true) {
 function Blobs() {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden>
-      <div className="blob w-72 h-72 bg-secondary/40" style={{ top: "10%", left: "-5%" }} />
-      <div className="blob w-96 h-96 bg-primary/20" style={{ top: "40%", right: "-10%", animationDelay: "3s" }} />
-      <div className="blob w-64 h-64 bg-gold/20" style={{ bottom: "10%", left: "20%", animationDelay: "6s" }} />
+      <div className="blob w-80 h-80 bg-gold/30" style={{ top: "8%", left: "-8%" }} />
+      <div className="blob w-96 h-96 bg-gold/20" style={{ top: "45%", right: "-12%", animationDelay: "4s" }} />
+      <div className="blob w-72 h-72 bg-gold/25" style={{ bottom: "8%", left: "18%", animationDelay: "8s" }} />
     </div>
   );
 }
 
+/* Ornamen sudut khas jawa — batik corner */
+function CornerOrnament({ className = "", flip = false }: { className?: string; flip?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 120 120"
+      fill="none"
+      className={`text-gold ${className} ${flip ? "rotate-180" : ""}`}
+      aria-hidden
+    >
+      <path d="M0 120V0h8v112h112v8H0z" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 120V8h8v104h104v8H8z" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
+      <path d="M18 60c14-4 22-12 26-26 4 14 12 22 26 26-14 4-22 12-26 26-4-14-12-22-26-26z" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
+      <path d="M34 34l6 6M80 34l-6 6M34 80l6-6M80 80l-6-6" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
+    </svg>
+  );
+}
+
+/* Ornamen pembatas — sulur + wajik */
 function Ornament({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 16" fill="none" className={`text-primary/50 ${className}`} aria-hidden>
-      <path d="M0 8h40M80 8h40" stroke="currentColor" strokeWidth="0.75" />
-      <path d="M60 0c6 4 6 12 0 16-6-4-6-12 0-16z" fill="currentColor" opacity="0.6" />
-      <path d="M48 8h24M52 4h16M52 12h16" stroke="currentColor" strokeWidth="0.5" opacity="0.5" />
+    <svg viewBox="0 0 200 24" fill="none" className={`text-gold ${className}`} aria-hidden>
+      <path d="M0 12h78M122 12h78" stroke="currentColor" strokeWidth="0.75" opacity="0.7" />
+      <path d="M100 2c8 5 8 15 0 20-8-5-8-15 0-20z" fill="currentColor" opacity="0.85" />
+      <path d="M92 12h16M96 7h8M96 17h8" stroke="currentColor" strokeWidth="0.5" opacity="0.6" />
+      <path d="M86 12c2-6 8-9 14-9M86 12c2 6 8 9 14 9M114 12c-2-6-8-9-14-9M114 12c-2 6-8 9-14 9" stroke="currentColor" strokeWidth="0.5" opacity="0.5" />
     </svg>
   );
 }
 
 function Petals() {
   const petals = [
-    { left: "6%", delay: "0s", dur: "11s", size: 10, color: "#f9a8d4" },
-    { left: "18%", delay: "2.5s", dur: "13s", size: 7, color: "#fbcfe8" },
-    { left: "32%", delay: "5s", dur: "10s", size: 9, color: "#f472b6" },
-    { left: "55%", delay: "1.5s", dur: "12s", size: 8, color: "#f9a8d4" },
-    { left: "70%", delay: "4s", dur: "14s", size: 6, color: "#fbcfe8" },
-    { left: "85%", delay: "3s", dur: "11s", size: 10, color: "#f472b6" },
-    { left: "93%", delay: "6s", dur: "13s", size: 7, color: "#f9a8d4" },
+    { left: "5%", delay: "0s", dur: "12s", size: 8, color: "#c9a227" },
+    { left: "16%", delay: "3s", dur: "14s", size: 6, color: "#8a6d1d" },
+    { left: "30%", delay: "5.5s", dur: "11s", size: 7, color: "#e6c15c" },
+    { left: "48%", delay: "1.8s", dur: "13s", size: 6, color: "#a08d6e" },
+    { left: "62%", delay: "4.2s", dur: "15s", size: 8, color: "#c9a227" },
+    { left: "78%", delay: "2.2s", dur: "12s", size: 5, color: "#8a6d1d" },
+    { left: "90%", delay: "6.5s", dur: "14s", size: 7, color: "#e6c15c" },
   ];
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
@@ -219,14 +240,14 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
   return (
     <div className="fixed inset-0 z-50 bg-bg flex flex-col items-center justify-center">
       <div className="relative mb-8">
-        <div className="w-20 h-20 rounded-full border border-primary/20 border-t-primary ring-spin" />
+        <div className="w-20 h-20 rounded-full border border-gold/20 border-t-gold ring-spin" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="script-display text-2xl text-primary">A&nbsp;&&nbsp;A</span>
+          <span className="script-display text-2xl text-gold">B&nbsp;&&nbsp;I</span>
         </div>
       </div>
-      <div className="script-display text-4xl text-primary mb-8">UndanganKu</div>
-      <div className="w-56 h-1.5 bg-border rounded-full overflow-hidden">
-        <div className="h-full bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+      <div className="script-display text-4xl text-gold mb-8">The Wedding Of</div>
+      <div className="w-56 h-1.5 bg-gold/15 rounded-full overflow-hidden">
+        <div className="h-full bg-gold rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
       </div>
       <small className="mt-4 text-muted text-xs">{progress}%</small>
     </div>
@@ -234,27 +255,33 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
 }
 
 /* ---------- Cover ---------- */
-function Cover({ onOpen }: { onOpen: () => void }) {
+function Cover({ onOpen, guest }: { onOpen: () => void; guest: string }) {
   return (
     <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
-        <img src={photo1} alt="" data-parallax="0.15" className="w-full h-[120%] object-cover opacity-30 -mt-[10%]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-bg/70 via-bg/20 to-bg" />
+        <img
+          src={photo1}
+          alt=""
+          className="w-full h-[120%] object-cover opacity-60 -mt-[10%] brightness-[0.45] sepia-[0.35]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/40 to-bg" />
       </div>
       <Petals />
 
       <div className="relative z-10 px-4">
-        <Ornament className="w-28 mx-auto mb-5 fade-up fd-1" />
-        <p className="kicker fade-up fd-1 mb-4">The Wedding of</p>
-        <h1 data-line-reveal className="script-display text-6xl md:text-7xl text-primary fade-up fd-2">
-          <span className="line"><span className="line-inner">Ahmad &amp; Annisa</span></span>
+        <p className="kicker fade-up fd-1 mb-6 tracking-[0.5em]">The Wedding Of</p>
+        <h1 data-line-reveal className="script-display text-6xl md:text-7xl text-gold-light fade-up fd-2">
+          <span className="line"><span className="line-inner">Benny &amp; Indah</span></span>
         </h1>
-        <div className="hairline w-28 mx-auto my-6 fade-up fd-3" />
-        <p className="serif-body text-lg text-fg/80 fade-up fd-4">{WEDDING.day}, {WEDDING.date}</p>
+        <Ornament className="w-40 mx-auto my-6 fade-up fd-3" />
+
+        <p className="text-cream/60 text-xs uppercase tracking-[0.25em] mt-8 fade-up fd-4">Kepada Bapak/Ibu/Saudara/i</p>
+        <p className="serif-body text-2xl md:text-3xl text-cream my-2 fade-up fd-4">{guest}</p>
+        <p className="text-cream/60 text-xs uppercase tracking-[0.25em] fade-up fd-4">Di Tempat</p>
 
         <button
           onClick={onOpen}
-          className="sheen fade-up fd-5 mt-9 bg-primary hover:bg-primary-dark text-white px-10 py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+          className="sheen fade-up fd-5 mt-10 border border-gold text-gold-light hover:bg-gold hover:text-bg px-10 py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer"
         >
           Buka Undangan
         </button>
@@ -262,97 +289,85 @@ function Cover({ onOpen }: { onOpen: () => void }) {
 
       <div className="absolute bottom-8 z-10">
         <div className="flex flex-col items-center gap-1.5 opacity-60">
-          <div className="w-5 h-8 border border-fg/50 rounded-full flex justify-center pt-1.5">
-            <div className="w-1 h-1.5 bg-primary rounded-full animate-bounce" />
+          <div className="w-5 h-8 border border-gold/50 rounded-full flex justify-center pt-1.5">
+            <div className="w-1 h-1.5 bg-gold rounded-full animate-bounce" />
           </div>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-fg/60">Scroll</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-cream/50">Scroll</span>
         </div>
       </div>
     </section>
   );
 }
 
-/* ---------- Salam ---------- */
-function Salam() {
-  return (
-    <section className="py-24 px-4 text-center relative">
-      <div data-reveal className="max-w-xl mx-auto">
-        <Ornament className="w-24 mx-auto mb-8" />
-        <p className="serif-body text-2xl text-primary mb-5">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
-        <p data-line-reveal className="serif-body text-2xl text-fg mb-5">
-          <span className="line"><span className="line-inner">Assalamualaikum Warahmatullahi Wabarakatuh</span></span>
-        </p>
-        <div className="hairline w-16 mx-auto my-6" />
-        <p className="serif-body text-lg text-muted leading-relaxed">
-          Tanpa mengurangi rasa hormat, kami mengundang Anda untuk berkenan hadir
-          di acara pernikahan putra-putri kami:
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Couple (pinned) ---------- */
+/* ---------- Couple ---------- */
 function Couple() {
   return (
-    <section className="relative" data-pin>
-      <div className="min-h-[100dvh] flex flex-col items-center justify-center px-4 relative overflow-hidden">
-        <div className="text-center mb-12" data-reveal>
-          <span className="kicker block mb-3">Kedua Mempelai</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary">
-            <span className="line"><span className="line-inner">Ahmad &amp; Annisa</span></span>
+    <section className="py-24 px-4 relative">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-16" data-reveal>
+          <span className="kicker block mb-4">Kedua Mempelai</span>
+          <h2 data-line-reveal className="script-display text-5xl md:text-6xl text-gold-light">
+            <span className="line"><span className="line-inner">Benny &amp; Indah</span></span>
           </h2>
+          <Ornament className="w-40 mx-auto mt-6" />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start max-w-4xl w-full">
+        <div className="grid md:grid-cols-2 gap-12 items-start">
           <div data-reveal className="text-center group">
-            <div className="relative max-w-xs mx-auto mb-6 soft-card p-3 soft-shadow-lg rotate-[-1deg] overflow-hidden">
-              <div className="overflow-hidden rounded-xl">
-                <img src={photo3} alt={WEDDING.groom} data-parallax="0.1" className="w-full h-[115%] object-cover -mt-[7%] transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-3 pb-1 flex items-center justify-between text-[10px] text-muted uppercase tracking-[0.2em]">
-                <span>Mempelai Pria</span>
+            <div className="gold-frame max-w-xs mx-auto mb-6 rounded-sm overflow-hidden">
+              <div className="overflow-hidden rounded-[3px]">
+                <img src={photo3} alt={WEDDING.groom} className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
             </div>
-            <h3 className="serif-body text-2xl text-fg">{WEDDING.groom}</h3>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gold mb-2">Mempelai Pria</p>
+            <h3 className="serif-body text-3xl text-cream">{WEDDING.groomFull}</h3>
             <p className="mt-2 serif-body text-muted leading-relaxed max-w-xs mx-auto">{WEDDING.groomDesc}</p>
           </div>
 
-          <div data-reveal className="text-center group md:mt-16">
-            <div className="relative max-w-xs mx-auto mb-6 soft-card p-3 soft-shadow-lg rotate-[1deg] overflow-hidden">
-              <div className="overflow-hidden rounded-xl">
-                <img src={photo4} alt={WEDDING.bride} data-parallax="0.15" className="w-full h-[115%] object-cover -mt-[7%] transition-transform duration-700 group-hover:scale-105" />
-              </div>
-              <div className="pt-3 pb-1 flex items-center justify-between text-[10px] text-muted uppercase tracking-[0.2em]">
-                <span>Mempelai Wanita</span>
+          <div data-reveal className="text-center group md:mt-20">
+            <div className="gold-frame max-w-xs mx-auto mb-6 rounded-sm overflow-hidden">
+              <div className="overflow-hidden rounded-[3px]">
+                <img src={photo4} alt={WEDDING.bride} className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
             </div>
-            <h3 className="serif-body text-2xl text-fg">{WEDDING.bride}</h3>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-gold mb-2">Mempelai Wanita</p>
+            <h3 className="serif-body text-3xl text-cream">{WEDDING.brideFull}</h3>
             <p className="mt-2 serif-body text-muted leading-relaxed max-w-xs mx-auto">{WEDDING.brideDesc}</p>
           </div>
+        </div>
+
+        <div className="text-center mt-20" data-reveal>
+          <p className="script-display text-4xl text-gold mb-6">&amp;</p>
+          <p className="serif-body text-lg text-cream/80 italic leading-relaxed max-w-2xl mx-auto">
+            "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu
+            dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan
+            di antaramu rasa kasih dan sayang."
+          </p>
+          <p className="text-muted text-xs uppercase tracking-[0.3em] mt-4">Ar Rum Ayat 21</p>
         </div>
       </div>
     </section>
   );
 }
 
-/* ---------- Countdown ---------- */
-function Countdown() {
+/* ---------- Save The Date / Countdown ---------- */
+function SaveTheDate() {
   const t = useCountdown();
   return (
-    <section className="py-20 px-4">
-      <div data-reveal className="max-w-3xl mx-auto text-center">
-        <Ornament className="w-24 mx-auto mb-4" />
-        <span className="kicker block mb-3">Menuju Hari Bahagia</span>
-        <div className="flex justify-center gap-3 md:gap-6 mt-10">
+    <section className="py-20 px-4 bg-bg2/60">
+      <div className="max-w-3xl mx-auto text-center" data-reveal>
+        <span className="kicker block mb-4">Save The Date</span>
+        <p className="serif-body text-2xl md:text-3xl text-cream mb-2">{WEDDING.day}, {WEDDING.date}</p>
+        <Ornament className="w-36 mx-auto my-6" />
+        <div className="flex justify-center gap-3 md:gap-6">
           {[
             { label: "Hari", value: t.d },
             { label: "Jam", value: t.h },
             { label: "Menit", value: t.m },
             { label: "Detik", value: t.s },
           ].map((c) => (
-            <div key={c.label} className="flex flex-col items-center soft-card px-4 md:px-7 py-5 soft-shadow min-w-[76px] md:min-w-[110px]">
-              <div className="serif-body text-4xl md:text-5xl text-primary tabular-nums">{c.value}</div>
+            <div key={c.label} className="flex flex-col items-center soft-card px-4 md:px-7 py-5 soft-shadow min-w-[76px] md:min-w-[104px]">
+              <div className="serif-body text-4xl md:text-5xl text-gold-light tabular-nums">{c.value}</div>
               <div className="text-[10px] uppercase tracking-[0.25em] text-muted mt-2">{c.label}</div>
             </div>
           ))}
@@ -362,110 +377,301 @@ function Countdown() {
   );
 }
 
-/* ---------- Info ---------- */
+/* ---------- Event Info ---------- */
+function EventCard({ title, time, place, mapsUrl }: { title: string; time: string; place: string; mapsUrl: string }) {
+  return (
+    <div data-reveal className="soft-card p-10 text-center soft-shadow hover:soft-shadow-lg transition-shadow duration-300 relative overflow-hidden">
+      <CornerOrnament className="absolute top-3 left-3 w-10" />
+      <CornerOrnament className="absolute bottom-3 right-3 w-10 flip" />
+      <h3 className="serif-body text-3xl text-gold-light mb-3">{title}</h3>
+      <div className="hairline w-16 mx-auto mb-6" />
+      <div className="serif-body text-2xl text-cream mb-2">{time}</div>
+      <div className="serif-body text-muted leading-relaxed max-w-sm mx-auto">{place}</div>
+      <a
+        href={mapsUrl} target="_blank" rel="noreferrer"
+        className="mt-7 inline-flex items-center gap-2 border border-gold text-gold-light hover:bg-gold hover:text-bg px-6 py-2.5 text-xs uppercase tracking-[0.2em] rounded-full transition-all duration-300 cursor-pointer"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Google Map
+      </a>
+    </div>
+  );
+}
+
 function Info() {
   return (
-    <section className="py-24 px-4 bg-surface/60">
+    <section className="py-24 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-14" data-reveal>
-          <Ornament className="w-24 mx-auto mb-4" />
-          <span className="kicker block mb-3">Info Acara</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary">
-            <span className="line"><span className="line-inner">Akad &amp; Resepsi</span></span>
+          <span className="kicker block mb-4">Info Acara</span>
+          <h2 data-line-reveal className="script-display text-5xl text-gold-light">
+            <span className="line"><span className="line-inner">Rangkaian Acara</span></span>
           </h2>
+          <Ornament className="w-36 mx-auto mt-6" />
         </div>
-
         <div className="grid md:grid-cols-2 gap-6">
-          {[
-            { title: "Akad Nikah", time: WEDDING.akad.time, place: WEDDING.akad.place, icon: "M12 6v6l4 2m6-2a10 10 0 11-18 0 10 10 0 0118 0z" },
-            { title: "Resepsi", time: WEDDING.resepsi.time, place: WEDDING.resepsi.place, icon: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" },
-          ].map((e) => (
-            <div key={e.title} data-reveal className="soft-card p-10 text-center soft-shadow hover:soft-shadow-lg transition-shadow duration-300">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d={e.icon} />
-                </svg>
-              </div>
-              <h3 className="serif-body text-2xl text-primary mb-3">{e.title}</h3>
-              <div className="hairline w-12 mx-auto mb-4" />
-              <div className="serif-body text-2xl text-fg mb-1">{e.time}</div>
-              <div className="serif-body text-muted">{e.place}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-10" data-reveal>
-          <a
-            href={WEDDING.mapsUrl} target="_blank" rel="noreferrer"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium text-sm transition-colors cursor-pointer"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Lihat Lokasi di Google Maps
-          </a>
+          <EventCard title="Akad Nikah" time={WEDDING.akad.time} place={WEDDING.akad.place} mapsUrl={WEDDING.mapsAkad} />
+          <EventCard title="Resepsi" time={WEDDING.resepsi.time} place={WEDDING.resepsi.place} mapsUrl={WEDDING.mapsResepsi} />
         </div>
       </div>
     </section>
   );
 }
 
-/* ---------- Gallery ---------- */
+/* ---------- Gallery (carousel) ---------- */
 function Gallery() {
-  const [active, setActive] = useState<number | null>(null);
-  const next = (dir: number) => {
-    setActive((a) => (a === null ? a : (a + dir + gallery.length) % gallery.length));
-  };
+  const [idx, setIdx] = useState(0);
+  const next = useCallback(() => setIdx((i) => (i + 1) % gallery.length), []);
+  const prev = () => setIdx((i) => (i - 1 + gallery.length) % gallery.length);
+
   useEffect(() => {
-    if (active === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActive(null);
-      if (e.key === "ArrowRight") next(1);
-      if (e.key === "ArrowLeft") next(-1);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
+    const i = setInterval(next, 4000);
+    return () => clearInterval(i);
+  }, [next]);
+
+  return (
+    <section className="py-24 px-4 bg-bg2/60">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-12" data-reveal>
+          <span className="kicker block mb-4">Galeri</span>
+          <h2 data-line-reveal className="script-display text-5xl text-gold-light">
+            <span className="line"><span className="line-inner">Momen Kami</span></span>
+          </h2>
+          <Ornament className="w-36 mx-auto mt-6" />
+        </div>
+
+        <div data-reveal className="relative gold-frame rounded-sm overflow-hidden soft-shadow-lg">
+          <div className="overflow-hidden rounded-[3px] aspect-[4/3]">
+            <img
+              src={gallery[idx].src}
+              alt={gallery[idx].alt}
+              className="w-full h-full object-cover transition-opacity duration-700"
+              key={idx}
+              style={{ animation: "fadeUp 0.6s ease" }}
+            />
+          </div>
+          <button
+            onClick={prev}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-gold hover:text-bg border border-gold/40 text-gold-light flex items-center justify-center cursor-pointer transition-colors z-10"
+            aria-label="Sebelumnya"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-gold hover:text-bg border border-gold/40 text-gold-light flex items-center justify-center cursor-pointer transition-colors z-10"
+            aria-label="Berikutnya"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </button>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {gallery.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIdx(i)}
+                className={`w-2 h-2 rounded-full transition-all cursor-pointer ${i === idx ? "bg-gold w-6" : "bg-cream/40 hover:bg-cream/70"}`}
+                aria-label={`Foto ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Gift ---------- */
+function Gift() {
+  const [copied, setCopied] = useState<string | null>(null);
+  const [open, setOpen] = useState<"bank" | "qris" | "kado" | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [form, setForm] = useState({ name: "", bank: "", nominal: "", ucapan: "", file: "" });
+
+  const copy = (key: string, text: string) => {
+    navigator.clipboard?.writeText(text).catch(() => {});
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status !== "idle") return;
+    setStatus("sending");
+    setTimeout(() => setStatus("sent"), 1200);
+  };
 
   return (
     <section className="py-24 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-14" data-reveal>
-          <Ornament className="w-24 mx-auto mb-4" />
-          <span className="kicker block mb-3">Galeri</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary">
-            <span className="line"><span className="line-inner">Momen Kami</span></span>
+      <div className="max-w-xl mx-auto text-center">
+        <div data-reveal>
+          <span className="kicker block mb-4">Tanda Kasih</span>
+          <h2 data-line-reveal className="script-display text-5xl text-gold-light mb-5">
+            <span className="line"><span className="line-inner">Kirim Hadiah</span></span>
           </h2>
+          <Ornament className="w-36 mx-auto mb-6" />
+          <p className="serif-body text-muted text-lg leading-relaxed mb-8">
+            Tanpa mengurangi rasa hormat, bagi rekan-rekan dan sahabat yang hendak memberikan
+            tanda kasih untuk kami, dapat melalui nomor rekening di bawah ini.
+          </p>
         </div>
 
         <div className="grid grid-cols-3 gap-3" data-reveal>
-          {gallery.map((g, idx) => (
-            <button key={idx} onClick={() => setActive(idx)} className="aspect-square overflow-hidden group cursor-pointer rounded-xl soft-shadow" aria-label={`Foto ${idx + 1}`}>
-              <img src={g.src} alt={g.alt} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-            </button>
-          ))}
+          <button
+            onClick={() => setOpen(open === "bank" ? null : "bank")}
+            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "bank" ? "bg-gold text-bg border-gold soft-shadow" : "border border-gold/40 text-gold-light hover:border-gold"}`}
+          >
+            Transfer Bank
+          </button>
+          <button
+            onClick={() => setOpen(open === "qris" ? null : "qris")}
+            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "qris" ? "bg-gold text-bg border-gold soft-shadow" : "border border-gold/40 text-gold-light hover:border-gold"}`}
+          >
+            QRIS
+          </button>
+          <button
+            onClick={() => setOpen(open === "kado" ? null : "kado")}
+            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "kado" ? "bg-gold text-bg border-gold soft-shadow" : "border border-gold/40 text-gold-light hover:border-gold"}`}
+          >
+            Kirim Kado
+          </button>
         </div>
 
-        {active !== null && (
-          <div className="fixed inset-0 z-50 bg-fg/90 flex items-center justify-center p-4" onClick={() => setActive(null)}>
-            <button
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors z-10"
-              onClick={(e) => { e.stopPropagation(); next(-1); }} aria-label="Sebelumnya"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-            </button>
-            <img src={gallery[active].src} alt={gallery[active].alt} className="max-h-[85vh] max-w-full rounded-2xl soft-shadow-lg" />
-            <button
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer transition-colors z-10"
-              onClick={(e) => { e.stopPropagation(); next(1); }} aria-label="Berikutnya"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-            </button>
-            <button className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl cursor-pointer transition-colors" onClick={() => setActive(null)} aria-label="Tutup">×</button>
+        {open === "qris" && (
+          <div data-reveal className="mt-6 soft-card p-8 soft-shadow">
+            <div className="w-44 h-44 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center overflow-hidden p-2">
+              <QRCodeCanvas
+                value={`https://web.galeriundanganofficial.com/art-jawa-coklat-2/`}
+                size={160}
+                fgColor="#17100a"
+                bgColor="#ffffff"
+                level="M"
+              />
+            </div>
+            <p className="text-muted text-xs">Scan QR di atas untuk memberi tanda kasih</p>
           </div>
         )}
+
+        {open === "bank" && (
+          <div data-reveal className="mt-6 soft-card p-8 soft-shadow text-left">
+            <div className="flex justify-between items-center border-b border-border pb-4">
+              <div>
+                <p className="text-muted text-sm">{WEDDING.bank.name}</p>
+                <p className="serif-body text-2xl text-cream mt-1">{WEDDING.bank.number}</p>
+              </div>
+              <button
+                onClick={() => copy("bank", WEDDING.bank.number)}
+                className="border border-gold text-gold-light hover:bg-gold hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
+              >
+                {copied === "bank" ? "Tersalin ✓" : "Copy Rekening"}
+              </button>
+            </div>
+            <p className="text-muted text-sm mt-4">a.n. {WEDDING.bank.holder}</p>
+          </div>
+        )}
+
+        {open === "kado" && (
+          <div data-reveal className="mt-6 soft-card p-8 soft-shadow text-left">
+            <div className="flex justify-between items-start gap-4 border-b border-border pb-4">
+              <div>
+                <p className="text-muted text-sm mb-1">Kirim Kado:</p>
+                <p className="serif-body text-lg text-cream">{WEDDING.kado.name}</p>
+                <p className="text-muted text-sm mt-1">{WEDDING.kado.address}</p>
+              </div>
+              <button
+                onClick={() => copy("kado", `${WEDDING.kado.name}, ${WEDDING.kado.address}`)}
+                className="shrink-0 border border-gold text-gold-light hover:bg-gold hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
+              >
+                {copied === "kado" ? "Tersalin ✓" : "Copy Alamat"}
+              </button>
+            </div>
+            <p className="text-muted text-sm mt-4">Mohon konfirmasi untuk pengiriman gift. Terima kasih.</p>
+          </div>
+        )}
+
+        <div className="mt-10 text-left" data-reveal>
+          <div className="text-center mb-6">
+            <span className="kicker block">Konfirmasi Gift</span>
+            <Ornament className="w-28 mx-auto mt-4" />
+          </div>
+
+          {status === "sent" ? (
+            <div className="soft-card p-10 text-center soft-shadow-lg">
+              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-gold/15 flex items-center justify-center">
+                <svg className="w-7 h-7 text-gold-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="script-display text-4xl text-gold-light mb-2">Terima kasih!</p>
+              <p className="serif-body text-muted">Konfirmasi Anda sudah tercatat.</p>
+              <button
+                onClick={() => { setStatus("idle"); setForm({ name: "", bank: "", nominal: "", ucapan: "", file: "" }); }}
+                className="mt-6 text-gold-light hover:text-gold text-sm font-medium transition-colors cursor-pointer"
+              >
+                Kirim lagi
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={submit} className="space-y-5">
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama *</label>
+                <input
+                  required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all"
+                  placeholder="Nama Anda"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama Bank</label>
+                  <input
+                    value={form.bank} onChange={(e) => setForm({ ...form, bank: e.target.value })}
+                    className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all"
+                    placeholder="BCA / Mandiri / dll"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nominal</label>
+                  <input
+                    value={form.nominal} onChange={(e) => setForm({ ...form, nominal: e.target.value })}
+                    className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all"
+                    placeholder="Rp. 100.000"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-muted mb-2">Ucapan</label>
+                <textarea
+                  value={form.ucapan} onChange={(e) => setForm({ ...form, ucapan: e.target.value })}
+                  rows={3}
+                  className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none"
+                  placeholder="Tulis ucapan..."
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-muted mb-2">Bukti TF</label>
+                <input
+                  type="file" accept="image/*"
+                  onChange={(e) => setForm({ ...form, file: e.target.files?.[0]?.name || "" })}
+                  className="w-full text-sm text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:bg-gold/15 file:text-gold-light file:text-xs file:uppercase file:tracking-widest file:cursor-pointer hover:file:bg-gold/25 cursor-pointer"
+                />
+              </div>
+              <button
+                type="submit" disabled={status === "sending"}
+                className="sheen w-full bg-gold hover:bg-gold-light text-bg py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer"
+              >
+                {status === "sending" ? (
+                  <span className="inline-flex items-center gap-2">
+                    <span className="w-4 h-4 rounded-full border-2 border-bg/40 border-t-bg ring-spin" />
+                    Mengirim...
+                  </span>
+                ) : "Konfirmasi"}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -473,7 +679,7 @@ function Gallery() {
 
 /* ---------- RSVP ---------- */
 function Rsvp() {
-  const [form, setForm] = useState({ name: "", presence: "hadir", comment: "" });
+  const [form, setForm] = useState({ name: "", presence: "Hadir", jumlah: "1 Orang" });
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -483,28 +689,32 @@ function Rsvp() {
   };
 
   return (
-    <section className="py-24 px-4 bg-surface/60">
+    <section className="py-24 px-4 bg-bg2/60">
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-12" data-reveal>
-          <Ornament className="w-24 mx-auto mb-4" />
-          <span className="kicker block mb-3">RSVP</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary">
+          <span className="kicker block mb-4">RSVP</span>
+          <h2 data-line-reveal className="script-display text-5xl text-gold-light">
             <span className="line"><span className="line-inner">Konfirmasi Kehadiran</span></span>
           </h2>
+          <Ornament className="w-36 mx-auto mt-6" />
+          <p className="serif-body text-muted mt-6 max-w-md mx-auto leading-relaxed">
+            Bantu kami mempersiapkan jamuan yang hangat untuk anda semua dengan mengirimkan
+            konfirmasi kehadiran melalui form berikut ini.
+          </p>
         </div>
 
         {status === "sent" ? (
           <div data-reveal className="soft-card p-12 text-center soft-shadow-lg">
-            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-              <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-gold/15 flex items-center justify-center">
+              <svg className="w-7 h-7 text-gold-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p className="script-display text-4xl text-primary mb-2">Terima kasih!</p>
+            <p className="script-display text-4xl text-gold-light mb-2">Terima kasih!</p>
             <p className="serif-body text-muted">Konfirmasi Anda sudah tercatat.</p>
             <button
-              onClick={() => { setStatus("idle"); setForm({ name: "", presence: "hadir", comment: "" }); }}
-              className="mt-6 text-primary hover:text-primary-dark text-sm font-medium transition-colors cursor-pointer"
+              onClick={() => { setStatus("idle"); setForm({ name: "", presence: "Hadir", jumlah: "1 Orang" }); }}
+              className="mt-6 text-gold-light hover:text-gold text-sm font-medium transition-colors cursor-pointer"
             >
               Kirim lagi
             </button>
@@ -512,48 +722,53 @@ function Rsvp() {
         ) : (
           <form onSubmit={submit} data-reveal className="space-y-5">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama</label>
+              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama *</label>
               <input
                 required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all"
                 placeholder="Nama Anda"
               />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Kehadiran</label>
+              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Konfirmasi Kehadiran *</label>
               <div className="grid grid-cols-2 gap-3">
-                {[
-                  { v: "hadir", label: "Hadir" },
-                  { v: "berhalangan", label: "Berhalangan" },
-                ].map((p) => (
-                  <button type="button" key={p.v} onClick={() => setForm({ ...form, presence: p.v })}
+                {["Hadir", "Tidak Hadir"].map((p) => (
+                  <button
+                    type="button" key={p} onClick={() => setForm({ ...form, presence: p })}
                     className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${
-                      form.presence === p.v ? "bg-primary text-white border-primary soft-shadow" : "border-border text-muted hover:border-primary"
-                    }`}>
-                    {p.label}
+                      form.presence === p ? "bg-gold text-bg border-gold soft-shadow" : "border-gold/30 text-muted hover:border-gold"
+                    }`}
+                  >
+                    {p}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Ucapan &amp; Doa</label>
-              <textarea
-                value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })}
-                rows={4}
-                className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                placeholder="Tulis ucapan..."
-              />
+              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Jumlah *</label>
+              <div className="grid grid-cols-2 gap-3">
+                {["1 Orang", "2 Orang"].map((p) => (
+                  <button
+                    type="button" key={p} onClick={() => setForm({ ...form, jumlah: p })}
+                    className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${
+                      form.jumlah === p ? "bg-gold text-bg border-gold soft-shadow" : "border-gold/30 text-muted hover:border-gold"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
             </div>
             <button
               type="submit" disabled={status === "sending"}
-              className="sheen w-full bg-primary hover:bg-primary-dark text-white py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer"
+              className="sheen w-full bg-gold hover:bg-gold-light text-bg py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer"
             >
               {status === "sending" ? (
                 <span className="inline-flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-full border-2 border-white/40 border-t-white ring-spin" />
+                  <span className="w-4 h-4 rounded-full border-2 border-bg/40 border-t-bg ring-spin" />
                   Mengirim...
                 </span>
-              ) : "Kirim Konfirmasi"}
+              ) : "Submit"}
             </button>
           </form>
         )}
@@ -562,67 +777,105 @@ function Rsvp() {
   );
 }
 
-/* ---------- Gift ---------- */
-function Gift() {
-  const [open, setOpen] = useState<"qris" | "bank" | null>(null);
-  const [copied, setCopied] = useState(false);
-  const copy = () => {
-    navigator.clipboard?.writeText("1234567890").catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+/* ---------- Guest Book ---------- */
+function GuestBook() {
+  const [name, setName] = useState("");
+  const [msg, setMsg] = useState("");
+  const [list, setList] = useState<{ name: string; msg: string }[]>([
+    { name: "Yogi dan Ratna", msg: "Selamat menempuh hidup baru, semoga menjadi keluarga yang sakinah mawaddah warahmah. Aamiin." },
+    { name: "Sari & Dimas", msg: "Barakallahu lakuma wa baraka 'alaikuma. Bahagia selalu!" },
+    { name: "Budi Santoso", msg: "Semoga langgeng sampai maut memisahkan. Doa terbaik untuk kalian berdua." },
+  ]);
+  const [sent, setSent] = useState(false);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !msg.trim()) return;
+    setList((l) => [{ name, msg }, ...l]);
+    setName("");
+    setMsg("");
+    setSent(true);
+    setTimeout(() => setSent(false), 2500);
   };
 
   return (
     <section className="py-24 px-4">
-      <div className="max-w-xl mx-auto text-center">
-        <div data-reveal>
-          <Ornament className="w-24 mx-auto mb-4" />
-          <span className="kicker block mb-3">Tanda Kasih</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary mb-4">
-            <span className="line"><span className="line-inner">Amplop Digital</span></span>
+      <div className="max-w-xl mx-auto">
+        <div className="text-center mb-12" data-reveal>
+          <span className="kicker block mb-4">Ucapan &amp; Doa</span>
+          <h2 data-line-reveal className="script-display text-5xl text-gold-light">
+            <span className="line"><span className="line-inner">Berikan Doa Terbaik</span></span>
           </h2>
-          <p className="serif-body text-muted text-lg leading-relaxed mb-8">
-            Doa restu Anda adalah hadiah terbaik. Jika ingin memberi tanda kasih, dapat disalurkan melalui:
+          <Ornament className="w-36 mx-auto mt-6" />
+          <p className="serif-body text-muted mt-6 max-w-md mx-auto leading-relaxed">
+            Berikan harapan dan doa tulus anda disini karena kami sangat bersemangat untuk
+            memulai perjalanan baru bersama.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4" data-reveal>
-          <button onClick={() => setOpen(open === "qris" ? null : "qris")}
-            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "qris" ? "bg-primary text-white border-primary soft-shadow" : "border border-border text-fg hover:border-primary"}`}>
-            QRIS
-          </button>
-          <button onClick={() => setOpen(open === "bank" ? null : "bank")}
-            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "bank" ? "bg-primary text-white border-primary soft-shadow" : "border border-border text-fg hover:border-primary"}`}>
-            Transfer Bank
-          </button>
-        </div>
-
-        {open === "qris" && (
-          <div data-reveal className="mt-6 soft-card p-8 soft-shadow">
-            <div className="w-44 h-44 mx-auto border border-border rounded-xl flex items-center justify-center mb-4 bg-surface">
-              <span className="text-muted text-xs text-center leading-relaxed">[QRIS<br />Placeholder]</span>
-            </div>
-            <p className="text-muted text-xs">Scan QR di atas untuk memberi tanda kasih</p>
+        <form onSubmit={submit} data-reveal className="soft-card p-6 soft-shadow space-y-4">
+          <div>
+            <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama</label>
+            <input
+              required value={name} onChange={(e) => setName(e.target.value)}
+              className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all"
+              placeholder="Nama Anda"
+            />
           </div>
-        )}
+          <div>
+            <label className="block text-xs uppercase tracking-widest text-muted mb-2">Ucapan</label>
+            <textarea
+              required value={msg} onChange={(e) => setMsg(e.target.value)}
+              rows={3}
+              className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none"
+              placeholder="Silakan kasih ucapan di bawah ini"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-gold hover:bg-gold-light text-bg py-3.5 text-sm font-medium rounded-full transition-all duration-300 soft-shadow cursor-pointer active:scale-[0.98]"
+          >
+            {sent ? "Terkirim ✓" : "Kirim"}
+          </button>
+        </form>
 
-        {open === "bank" && (
-          <div data-reveal className="mt-6 soft-card p-8 soft-shadow space-y-4 text-left">
-            <div className="flex justify-between items-center border-b border-border pb-3">
-              <span className="text-muted text-sm">Bank BCA</span>
-              <div className="flex items-center gap-2">
-                <span className="serif-body text-lg text-fg">1234567890</span>
-                <button onClick={copy} className="text-primary hover:text-primary-dark text-xs font-medium cursor-pointer transition-colors" aria-label="Salin nomor rekening">
-                  {copied ? "Tersalin ✓" : "Salin"}
-                </button>
+        <div className="mt-8 space-y-3" data-reveal>
+          {list.map((g, i) => (
+            <div key={i} className="soft-card p-5 soft-shadow flex gap-4 items-start">
+              <div className="w-11 h-11 shrink-0 rounded-full bg-gold/15 border border-gold/40 flex items-center justify-center text-gold-light font-medium">
+                {g.name.charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <p className="text-cream text-sm font-medium">{g.name}</p>
+                <p className="serif-body text-muted mt-1 leading-relaxed">{g.msg}</p>
+                <button className="text-gold/60 hover:text-gold text-xs mt-2 cursor-pointer transition-colors">Reply</button>
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted text-sm">a.n. Ahmad Fauzi</span>
-              <span className="text-muted text-sm">0857 9710 6049</span>
-            </div>
-          </div>
-        )}
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Terima Kasih ---------- */
+function Closing() {
+  return (
+    <section className="py-24 px-4 bg-bg2/60 text-center relative overflow-hidden">
+      <div className="max-w-xl mx-auto relative z-10" data-reveal>
+        <CornerOrnament className="absolute -top-10 -left-10 w-24" />
+        <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
+        <span className="kicker block mb-4">Terima Kasih</span>
+        <h2 data-line-reveal className="script-display text-6xl text-gold-light mb-6">
+          <span className="line"><span className="line-inner">Merci Beaucoup</span></span>
+        </h2>
+        <Ornament className="w-40 mx-auto mb-8" />
+        <p className="serif-body text-lg text-cream/80 leading-relaxed max-w-md mx-auto">
+          Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i
+          berkenan hadir dan memberikan doa restu.
+        </p>
+        <p className="serif-body text-3xl text-gold-light mt-12 mb-2">Benny &amp; Indah</p>
+        <p className="text-muted text-xs uppercase tracking-[0.3em]">10 Oktober 2025</p>
       </div>
     </section>
   );
@@ -631,17 +884,8 @@ function Gift() {
 /* ---------- Footer ---------- */
 function Footer() {
   return (
-    <footer className="py-16 px-4 text-center bg-primary text-white">
-      <div className="max-w-md mx-auto">
-        <Ornament className="w-24 mx-auto mb-4 text-white/60" />
-        <p className="script-display text-4xl mb-3">Ahmad &amp; Annisa</p>
-        <p className="text-white/70 text-xs mb-8">20 Desember 2025</p>
-        <p className="text-white/70 serif-body text-lg max-w-sm mx-auto leading-relaxed">
-          Merupakan suatu kehormatan apabila Bapak/Ibu/Saudara/i berkenan hadir.
-        </p>
-        <div className="hairline max-w-xs mx-auto my-6 bg-white/30" />
-        <p className="text-white/50 text-xs">© 2025 UndanganKu</p>
-      </div>
+    <footer className="py-10 px-4 text-center border-t border-gold/15">
+      <p className="text-muted text-xs">© 2025 ART JAWA COKLAT · Dibuat dengan ❤</p>
     </footer>
   );
 }
@@ -651,13 +895,14 @@ export default function App() {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   const [opening, setOpening] = useState(false);
+  const guest = useGuestName();
   const { playing, toggle } = useMusicPlayer();
   const scrollScope = useScrollSetup(opened);
   const animScope = useWeddingAnimations(opened);
   const scope = animScope || scrollScope;
   const handleOpen = useCallback(() => {
     setOpening(true);
-    setTimeout(() => setOpened(true), 700);
+    setTimeout(() => setOpened(true), 800);
   }, []);
 
   if (loading) return <LoadingScreen onDone={() => setLoading(false)} />;
@@ -672,23 +917,24 @@ export default function App() {
 
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-0.5 bg-transparent z-50">
-        <div data-progress className="h-full bg-primary origin-left scale-x-0" />
+        <div data-progress className="h-full bg-gold origin-left scale-x-0" />
       </div>
 
       {!opened ? (
         <div className={`relative z-10 ${opening ? "open-fade" : ""}`}>
-          <Cover onOpen={handleOpen} />
+          <Cover onOpen={handleOpen} guest={guest} />
         </div>
       ) : (
         <div className="relative z-10">
           <main>
-            <Salam />
             <Couple />
-            <Countdown />
+            <SaveTheDate />
             <Info />
             <Gallery />
-            <Rsvp />
             <Gift />
+            <Rsvp />
+            <GuestBook />
+            <Closing />
             <Footer />
           </main>
         </div>
@@ -696,7 +942,7 @@ export default function App() {
 
       <button
         onClick={toggle}
-        className="fixed bottom-5 right-5 z-40 w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center soft-shadow-lg hover:bg-primary-dark transition-colors cursor-pointer"
+        className="fixed bottom-5 right-5 z-40 w-12 h-12 rounded-full border border-gold bg-bg/80 backdrop-blur text-gold-light flex items-center justify-center soft-shadow-lg hover:bg-gold hover:text-bg transition-colors cursor-pointer"
         aria-label={playing ? "Matikan musik" : "Putar musik"}
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
