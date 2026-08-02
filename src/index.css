@@ -1,8 +1,7 @@
 @import "tailwindcss";
-@import "locomotive-scroll/dist/locomotive-scroll.css";
 
 @theme {
-  /* ui-ux-pro-max: Soft UI + premium wedding */
+  /* Soft UI Evolution — premium wedding (ui-ux-pro-max) */
   --font-script: "Great Vibes", cursive;
   --font-serif: "Cormorant Infant", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
@@ -10,12 +9,12 @@
   --color-primary: #db2777;
   --color-primary-dark: #be185d;
   --color-secondary: #f472b6;
-  --color-gold: #a16207;
+  --color-gold: #92600a;
   --color-gold-light: #ca8a04;
   --color-bg: #fdf2f8;
   --color-surface: #ffffff;
-  --color-fg: #831843;
-  --color-muted: #9d6b85;
+  --color-fg: #7a1740;
+  --color-muted: #8c5a75;
   --color-border: #fbcfe8;
   --color-soft: #fdf6fa;
 }
@@ -38,7 +37,7 @@ html { scroll-behavior: smooth; }
   font-family: var(--font-serif);
 }
 
-/* Soft shadows */
+/* Soft shadows — improved elevation scale */
 .soft-shadow {
   box-shadow: 0 1px 2px rgba(219, 39, 119, 0.05), 0 8px 24px rgba(219, 39, 119, 0.08);
 }
@@ -76,7 +75,7 @@ html { scroll-behavior: smooth; }
   animation: blobFloat 12s ease-in-out infinite;
 }
 
-/* Locomotive scroll container */
+/* Locomotive scroll container (kept for compatibility) */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -106,6 +105,49 @@ html.lenis, html.lenis body { height: auto; }
 }
 .line-inner {
   display: block;
+}
+
+/* Ornament spin for loading */
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+.ring-spin {
+  animation: ringSpin 1.2s linear infinite;
+}
+
+/* Button sheen */
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  animation: sheenMove 3.5s ease-in-out infinite;
+}
+@keyframes sheenMove {
+  0%, 55% { left: -80%; }
+  100% { left: 130%; }
+}
+
+/* Floating petals on cover */
+@keyframes petalFall {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.7; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  top: 0;
+  border-radius: 100% 0 100% 0;
+  animation: petalFall linear infinite;
+  pointer-events: none;
 }
 
 /* Reduced motion */
