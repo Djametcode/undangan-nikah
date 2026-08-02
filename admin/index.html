@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Undangan Studio — Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; background: #17100a; }
+  .gold { color: #c9a227; }
+  .bg-gold { background: #c9a227; }
+  .border-gold { border-color: #c9a227; }
+  input, textarea, select { color-scheme: dark; }
+  .tab-active { background: #c9a227; color: #17100a; }
+  .thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid #c9a22755; }
+  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 100; }
+</style>
+</head>
+<body class="min-h-screen text-gray-200">
+<div id="login" class="hidden min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-sm bg-[#241910] border border-gold/40 rounded-2xl p-8 soft-shadow">
+    <h1 class="text-2xl font-semibold text-center gold mb-6">Undangan Studio</h1>
+    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Password</label>
+    <input id="pw" type="password" class="w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 mb-4 focus:border-gold outline-none" placeholder="••••••••" />
+    <button onclick="login()" class="w-full bg-gold text-[#17100a] font-medium py-3 rounded-xl hover:opacity-90 transition cursor-pointer">Masuk</button>
+    <p id="loginErr" class="text-red-400 text-sm mt-3 text-center hidden">Password salah</p>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header class="sticky top-0 z-40 bg-[#1e140c]/95 backdrop-blur border-b border-gold/20">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div>
+        <h1 class="text-lg font-semibold gold">Undangan Studio</h1>
+        <p class="text-xs text-gray-500">Admin — edit &amp; deploy undangan</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/" target="_blank" class="text-xs border border-gold/50 text-gold px-3 py-2 rounded-lg hover:bg-gold hover:text-[#17100a] transition cursor-pointer">Preview Undangan ↗</a>
+        <button onclick="saveAll()" class="text-xs bg-gold text-[#17100a] font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer">💾 Simpan &amp; Deploy</button>
+        <button onclick="logout()" class="text-xs border border-gray-600 text-gray-400 px-3 py-2 rounded-lg hover:border-red-400 hover:text-red-400 transition cursor-pointer">Keluar</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="max-w-6xl mx-auto px-4 py-3 flex gap-2 flex-wrap">
+    <button data-tab="tab-couple" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">👫 Mempelai</button>
+    <button data-tab="tab-event" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">📅 Acara</button>
+    <button data-tab="tab-photos" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">🖼️ Foto</button>
+    <button data-tab="tab-media" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">🎬 Video &amp; Musik</button>
+    <button data-tab="tab-text" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">📝 Teks</button>
+    <button data-tab="tab-gift" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">💝 Tanda Kasih</button>
+    <button data-tab="tab-rsvp" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">✅ RSVP &amp; Ucapan</button>
+    <button data-tab="tab-settings" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">⚙️ Settings</button>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pb-24">
+
+    <!-- Mempelai -->
+    <section id="tab-couple" class="tab-panel hidden">
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">👨 Mempelai Pria</h2>
+          <F name="couple.groom" label="Nama panggilan" />
+          <F name="couple.groomFull" label="Nama lengkap" />
+          <F name="couple.groomDesc" label="Deskripsi / orang tua" textarea />
+        </div>
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">👰 Mempelai Wanita</h2>
+          <F name="couple.bride" label="Nama panggilan" />
+          <F name="couple.brideFull" label="Nama lengkap" />
+          <F name="couple.brideDesc" label="Deskripsi / orang tua" textarea />
+        </div>
+        <div class="md:col-span-2 bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">Branding</h2>
+          <div class="grid md:grid-cols-2 gap-4">
+            <F name="brand.kicker" label="Kicker cover (cth: The Wedding Of)" />
+            <F name="brand.logoText" label="Inisial loading (cth: A&I)" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Acara -->
+    <section id="tab-event" class="tab-panel hidden">
+      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 mb-5">
+        <h2 class="gold font-semibold mb-4">📅 Tanggal</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          <F name="event.day" label="Hari (cth: Sabtu)" />
+          <F name="event.date" label="Tanggal (cth: 10 Oktober 2025)" />
+          <F name="event.countdownDate" label="Countdown target (ISO, cth: 2025-10-10T09:00:00+07:00)" />
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">🕌 Akad Nikah</h2>
+          <F name="event.akad.title" label="Judul" />
+          <F name="event.akad.time" label="Waktu" />
+          <F name="event.akad.place" label="Tempat" textarea />
+          <F name="event.akad.mapsUrl" label="Link Google Maps" />
+        </div>
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">🎉 Resepsi</h2>
+          <F name="event.resepsi.title" label="Judul" />
+          <F name="event.resepsi.time" label="Waktu" />
+          <F name="event.resepsi.place" label="Tempat" textarea />
+          <F name="event.resepsi.mapsUrl" label="Link Google Maps" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Foto -->
+    <section id="tab-photos" class="tab-panel hidden">
+      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 mb-5">
+        <h2 class="gold font-semibold mb-4">🖼️ Foto Utama</h2>
+        <div class="grid md:grid-cols-3 gap-5">
+          <UploadField name="photos.cover" label="Cover background" />
+          <UploadField name="photos.groom" label="Foto mempelai pria" />
+          <UploadField name="photos.bride" label="Foto mempelai wanita" />
+        </div>
+      </div>
+      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="gold font-semibold">🖼️ Galeri (carousel)</h2>
+          <button onclick="addGallery()" class="text-xs bg-gold text-[#17100a] px-3 py-1.5 rounded-lg cursor-pointer">+ Tambah</button>
+        </div>
+        <div id="galleryList" class="grid md:grid-cols-3 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- Media -->
+    <section id="tab-media" class="tab-panel hidden">
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-2">🎬 Video Cover</h2>
+          <p class="text-xs text-gray-500 mb-4">MP4/WebM, maks 200MB. Kalau aktif, video jadi background cover (ganti foto cover).</p>
+          <label class="flex items-center gap-2 mb-4 cursor-pointer">
+            <input type="checkbox" id="media.videoEnabled" class="w-4 h-4 accent-[#c9a227]" /> Aktifkan video
+          </label>
+          <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden" />
+          <button onclick="document.getElementById('upload-video').click()" class="w-full border border-gold/40 text-gold py-3 rounded-xl text-sm hover:bg-gold/10 transition cursor-pointer">⬆ Upload Video</button>
+          <div id="videoInfo" class="mt-3 text-xs text-gray-400"></div>
+        </div>
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-2">🎵 Musik</h2>
+          <p class="text-xs text-gray-500 mb-4">MP3, maks 30MB. Tombol musik muncul kalau aktif.</p>
+          <label class="flex items-center gap-2 mb-4 cursor-pointer">
+            <input type="checkbox" id="media.musicEnabled" class="w-4 h-4 accent-[#c9a227]" /> Aktifkan musik
+          </label>
+          <input type="file" id="upload-music" accept="audio/mp3,audio/ogg,audio/wav" class="hidden" />
+          <button onclick="document.getElementById('upload-music').click()" class="w-full border border-gold/40 text-gold py-3 rounded-xl text-sm hover:bg-gold/10 transition cursor-pointer">⬆ Upload Musik</button>
+          <div id="musicInfo" class="mt-3 text-xs text-gray-400"></div>
+        </div>
+      </div>
+      <div class="mt-5 bg-[#241910] border border-gold/25 rounded-2xl p-6">
+        <h2 class="gold font-semibold mb-4">🗂️ File Uploaded</h2>
+        <div id="fileList" class="flex flex-wrap gap-2"></div>
+      </div>
+    </section>
+
+    <!-- Teks -->
+    <section id="tab-text" class="tab-panel hidden">
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">🕌 Salam &amp; Quote</h2>
+          <F name="salam.arabic" label="Bismillah" />
+          <F name="salam.text" label="Assalamualaikum" />
+          <F name="salam.body" label="Isi salam" textarea />
+          <F name="quote.text" label="Quote (Ar Rum)" textarea />
+          <F name="quote.source" label="Sumber quote" />
+        </div>
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">📝 Section Lain</h2>
+          <F name="gallery.heading" label="Judul galeri" />
+          <F name="closing.heading" label="Judul penutup" />
+          <F name="closing.text" label="Teks penutup" textarea />
+          <F name="footer.credit" label="Credit footer" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Tanda kasih -->
+    <section id="tab-gift" class="tab-panel hidden">
+      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 mb-5">
+        <h2 class="gold font-semibold mb-4">💝 Tanda Kasih</h2>
+        <F name="gift.heading" label="Judul" />
+        <F name="gift.intro" label="Intro" textarea />
+        <div class="grid md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <h3 class="text-sm text-gray-400 mb-3">🏦 Bank</h3>
+            <F name="gift.bank.name" label="Nama bank" />
+            <F name="gift.bank.number" label="Nomor rekening" />
+            <F name="gift.bank.holder" label="Atas nama" />
+          </div>
+          <div>
+            <h3 class="text-sm text-gray-400 mb-3">🎁 Kado</h3>
+            <F name="gift.kado.name" label="Nama penerima" />
+            <F name="gift.kado.address" label="Alamat" textarea />
+            <F name="gift.kado.note" label="Catatan" />
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="flex items-center gap-2 cursor-pointer mb-3">
+            <input type="checkbox" id="gift.qrisEnabled" class="w-4 h-4 accent-[#c9a227]" /> Tampilkan QRIS
+          </label>
+          <F name="gift.qrisValue" label="Isi QRIS (link atau string QR)" />
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section id="tab-rsvp" class="tab-panel hidden">
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">✅ RSVP</h2>
+          <F name="rsvp.heading" label="Judul" />
+          <F name="rsvp.intro" label="Intro" textarea />
+        </div>
+        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+          <h2 class="gold font-semibold mb-4">💬 Ucapan &amp; Doa</h2>
+          <F name="guestbook.heading" label="Judul" />
+          <F name="guestbook.intro" label="Intro" textarea />
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section id="tab-settings" class="tab-panel hidden">
+      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 max-w-md">
+        <h2 class="gold font-semibold mb-4">🔑 Ganti Password</h2>
+        <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Password lama</label>
+        <input id="oldPw" type="password" class="w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 mb-3 focus:border-gold outline-none" />
+        <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Password baru</label>
+        <input id="newPw" type="password" class="w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 mb-4 focus:border-gold outline-none" />
+        <button onclick="changePw()" class="bg-gold text-[#17100a] font-medium px-6 py-2.5 rounded-xl cursor-pointer">Simpan Password</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast" class="toast hidden bg-green-600 text-white text-sm px-5 py-3 rounded-xl shadow-lg"></div>
+<div id="toastErr" class="toast hidden bg-red-600 text-white text-sm px-5 py-3 rounded-xl shadow-lg"></div>
+
+<script>
+let cfg = null;
+let authOk = false;
+const $ = (id) => document.getElementById(id);
+
+function toast(msg, err) {
+  const el = err ? $("toastErr") : $("toast");
+  el.textContent = msg;
+  el.classList.remove("hidden");
+  setTimeout(() => el.classList.add("hidden"), 3000);
+}
+
+async function api(url, opts = {}) {
+  const r = await fetch(url, { ...opts, headers: { "Content-Type": "application/json", ...(opts.headers || {}) } });
+  if (r.status === 401) { location.reload(); throw new Error("Unauthorized"); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || "Error");
+  return j;
+}
+
+async function login() {
+  try {
+    await api("/api/login", { method: "POST", body: JSON.stringify({ password: $("pw").value }) });
+    authOk = true;
+    boot();
+  } catch {
+    $("loginErr").classList.remove("hidden");
+  }
+}
+$("pw").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
+
+async function logout() {
+  await fetch("/api/logout", { method: "POST" }).catch(() => {});
+  location.reload();
+}
+
+/* ---------- Field helpers ---------- */
+function setPath(obj, path, val) {
+  const parts = path.split(".");
+  let o = obj;
+  for (let i = 0; i < parts.length - 1; i++) o = o[parts[i]];
+  o[parts[parts.length - 1]] = val;
+}
+function getPath(obj, path) {
+  return path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
+}
+
+function F({ name, label, textarea }) {
+  const val = getPath(cfg, name) ?? "";
+  const cls = "w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 text-sm focus:border-gold outline-none mb-3";
+  if (textarea) {
+    return `<label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">${label}</label><textarea data-path="${name}" class="${cls}" rows="2">${esc(val)}</textarea>`;
+  }
+  return `<label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">${label}</label><input data-path="${name}" value="${esc(val)}" class="${cls}" />`;
+}
+function esc(s) { return String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
+
+function renderForms() {
+  document.querySelectorAll("[data-path]").forEach((el) => {
+    el.value = getPath(cfg, el.dataset.path) ?? "";
+  });
+  $("media.videoEnabled").checked = !!getPath(cfg, "media.videoEnabled");
+  $("media.musicEnabled").checked = !!getPath(cfg, "media.musicEnabled");
+  $("gift.qrisEnabled").checked = !!getPath(cfg, "gift.qrisEnabled");
+  renderGalleryList();
+  renderFileList();
+  $("videoInfo").textContent = getPath(cfg, "media.video") || "Belum ada video";
+  $("musicInfo").textContent = getPath(cfg, "media.music") || "Belum ada musik";
+}
+
+/* ---------- Gallery ---------- */
+function renderGalleryList() {
+  const imgs = getPath(cfg, "photos.gallery") || [];
+  $("galleryList").innerHTML = imgs.map((u, i) => `
+    <div class="border border-gold/25 rounded-xl p-3">
+      <img src="${esc(u)}" class="w-full h-32 object-cover rounded-lg mb-2" />
+      <div class="flex gap-2">
+        <button onclick="pickGallery(${i})" class="flex-1 text-xs border border-gold/40 text-gold py-1.5 rounded-lg cursor-pointer">Ganti</button>
+        <button onclick="removeGallery(${i})" class="flex-1 text-xs border border-red-400/40 text-red-400 py-1.5 rounded-lg cursor-pointer">Hapus</button>
+      </div>
+    </div>`).join("") || '<p class="text-xs text-gray-500 col-span-3">Belum ada foto galeri. Klik "+ Tambah".</p>';
+}
+function addGallery() {
+  const input = document.createElement("input");
+  input.type = "file"; input.accept = "image/*"; input.className = "hidden";
+  document.body.appendChild(input);
+  input.onchange = () => uploadFile(input.files[0], (url) => {
+    const arr = getPath(cfg, "photos.gallery") || [];
+    arr.push(url);
+    setPath(cfg, "photos.gallery", arr);
+    renderGalleryList();
+  });
+  input.click();
+}
+function pickGallery(i) {
+  const input = document.createElement("input");
+  input.type = "file"; input.accept = "image/*"; input.className = "hidden";
+  document.body.appendChild(input);
+  input.onchange = () => uploadFile(input.files[0], (url) => {
+    const arr = getPath(cfg, "photos.gallery");
+    arr[i] = url;
+    setPath(cfg, "photos.gallery", arr);
+    renderGalleryList();
+  });
+  input.click();
+}
+function removeGallery(i) {
+  const arr = getPath(cfg, "photos.gallery");
+  arr.splice(i, 1);
+  setPath(cfg, "photos.gallery", arr);
+  renderGalleryList();
+}
+
+/* ---------- Uploads ---------- */
+async function uploadFile(file, cb) {
+  if (!file) return;
+  const fd = new FormData();
+  fd.append("file", file);
+  const r = await fetch("/api/upload", { method: "POST", body: fd });
+  if (r.status === 401) { location.reload(); return; }
+  const j = await r.json();
+  if (!r.ok) { toast(j.error || "Upload gagal", true); return; }
+  cb(j.url);
+  toast("Upload sukses");
+  renderFileList();
+}
+function pickUpload(field) {
+  const input = document.createElement("input");
+  input.type = "file"; input.accept = "image/*"; input.className = "hidden";
+  document.body.appendChild(input);
+  input.onchange = () => uploadFile(input.files[0], (url) => {
+    setPath(cfg, field, url);
+    renderForms();
+  });
+  input.click();
+}
+
+function UploadField({ name, label }) {
+  const url = getPath(cfg, name) || "";
+  return `<div class="border border-gold/25 rounded-xl p-4 text-center">
+    <p class="text-xs text-gray-400 mb-3">${label}</p>
+    ${url ? `<img src="${esc(url)}" class="thumb mx-auto mb-3" />` : '<div class="thumb mx-auto mb-3 bg-[#17100a] border border-dashed border-gold/30 flex items-center justify-center text-2xl text-gray-600">+</div>'}
+    <button onclick="pickUpload('${name}')" class="w-full text-xs border border-gold/40 text-gold py-2 rounded-lg cursor-pointer">${url ? "Ganti" : "Upload"}</button>
+  </div>`;
+}
+
+/* ---------- File manager ---------- */
+async function renderFileList() {
+  try {
+    const files = await api("/api/files");
+    $("fileList").innerHTML = files.map((f) => `
+      <div class="flex items-center gap-2 bg-[#17100a] border border-gold/20 rounded-lg px-3 py-2 text-xs">
+        <span class="text-gray-400">${esc(f.name)}</span>
+        <button onclick="delFile('${esc(f.name)}')" class="text-red-400 hover:text-red-300 cursor-pointer">✕</button>
+      </div>`).join("") || '<span class="text-xs text-gray-500">Kosong</span>';
+  } catch {}
+}
+async function delFile(name) {
+  await fetch("/api/upload/" + encodeURIComponent(name), { method: "DELETE" }).catch(() => {});
+  renderFileList();
+}
+
+/* ---------- Media uploads ---------- */
+$("upload-video").addEventListener("change", (e) => {
+  uploadFile(e.target.files[0], (url) => {
+    setPath(cfg, "media.video", url);
+    $("videoInfo").textContent = url;
+  });
+});
+$("upload-music").addEventListener("change", (e) => {
+  uploadFile(e.target.files[0], (url) => {
+    setPath(cfg, "media.music", url);
+    $("musicInfo").textContent = url;
+  });
+});
+
+/* ---------- Save & Deploy ---------- */
+async function saveAll() {
+  try {
+    // collect inputs
+    document.querySelectorAll("[data-path]").forEach((el) => {
+      setPath(cfg, el.dataset.path, el.value);
+    });
+    setPath(cfg, "media.videoEnabled", $("media.videoEnabled").checked);
+    setPath(cfg, "media.musicEnabled", $("media.musicEnabled").checked);
+    setPath(cfg, "gift.qrisEnabled", $("gift.qrisEnabled").checked);
+    await api("/api/config", { method: "POST", body: JSON.stringify(cfg) });
+    toast("✅ Undangan tersimpan & deployed!");
+  } catch (e) {
+    toast(e.message, true);
+  }
+}
+
+async function changePw() {
+  try {
+    await api("/api/password", { method: "POST", body: JSON.stringify({ current: $("oldPw").value, next: $("newPw").value }) });
+    $("oldPw").value = ""; $("newPw").value = "";
+    toast("Password diganti");
+  } catch (e) { toast(e.message, true); }
+}
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll(".tab-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("tab-active"));
+    document.querySelectorAll(".tab-panel").forEach((p) => p.classList.add("hidden"));
+    btn.classList.add("tab-active");
+    $(btn.dataset.tab).classList.remove("hidden");
+  });
+});
+
+/* ---------- Boot ---------- */
+async function boot() {
+  $("login").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  try {
+    cfg = await api("/api/config");
+  } catch {
+    cfg = {};
+  }
+  renderForms();
+  document.querySelector(".tab-btn").classList.add("tab-active");
+  $("tab-couple").classList.remove("hidden");
+}
+</script>
+</body>
+</html>

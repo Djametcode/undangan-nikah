@@ -1,0 +1,83 @@
+{
+  "brand": {
+    "kicker": "The Wedding Of",
+    "title": "ART JAWA COKLAT",
+    "logoText": "A&I"
+  },
+  "couple": {
+    "groom": "Rizky",
+    "groomFull": "Rizky Pratama",
+    "groomDesc": "Putra pertama dari Bapak Bambang & Ibu Sri",
+    "bride": "Sarah",
+    "brideFull": "Sarah Amelia",
+    "brideDesc": "Putri pertama dari Bapak Joko & Ibu Rina",
+    "ampersand": "&"
+  },
+  "event": {
+    "date": "15 Agustus 2026",
+    "day": "Sabtu",
+    "countdownDate": "2026-08-15T09:00:00+07:00",
+    "akad": {
+      "title": "Akad Nikah",
+      "time": "08.00 WIB - Selesai",
+      "place": "Kediaman mempelai wanita, Jl. Gatot Subroto GG Putri Ayu VI No. 14, KM 5 Bawah",
+      "mapsUrl": "https://maps.google.com/?q=Jl.+Gatot+Subroto+Tanjungpinang"
+    },
+    "resepsi": {
+      "title": "Resepsi",
+      "time": "13.00 WIB - 16.00 WIB",
+      "place": "Gedung Hotel BBR, Jl. Pantai Impian No. 1 - Tanjungpinang",
+      "mapsUrl": "https://maps.google.com/?q=Hotel+BBR+Tanjungpinang"
+    }
+  },
+  "quote": {
+    "text": "\"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.\"",
+    "source": "Ar Rum Ayat 21"
+  },
+  "salam": {
+    "arabic": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ",
+    "text": "Assalamualaikum Warahmatullahi Wabarakatuh",
+    "body": "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk berkenan hadir di acara pernikahan kami."
+  },
+  "gallery": {
+    "heading": "Momen Kami",
+    "images": []
+  },
+  "gift": {
+    "heading": "Kirim Hadiah",
+    "intro": "Tanpa mengurangi rasa hormat, bagi rekan-rekan dan sahabat yang hendak memberikan tanda kasih untuk kami, dapat melalui nomor rekening di bawah ini.",
+    "bank": {
+      "name": "Bank Mandiri",
+      "number": "123123123",
+      "holder": "Elyana Azkiya Nur"
+    },
+    "qrisEnabled": true,
+    "qrisValue": "https://web.galeriundanganofficial.com/art-jawa-coklat-2/",
+    "kado": {
+      "name": "Elyana Azkiya Nur",
+      "address": "Jalan Raya Bojongsari No.5, Gunung Putri, Citeureup, Bogor, Jawa Barat",
+      "note": "Mohon konfirmasi untuk pengiriman gift. Terima kasih."
+    }
+  },
+  "rsvp": {
+    "heading": "Konfirmasi Kehadiran",
+    "intro": "Bantu kami mempersiapkan jamuan yang hangat untuk anda semua dengan mengirimkan konfirmasi kehadiran melalui form berikut ini."
+  },
+  "guestbook": {
+    "heading": "Berikan Doa Terbaik",
+    "intro": "Berikan harapan dan doa tulus anda disini karena kami sangat bersemangat untuk memulai perjalanan baru bersama."
+  },
+  "closing": {
+    "heading": "Merci Beaucoup",
+    "text": "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu."
+  },
+  "media": {
+    "video": "",
+    "videoEnabled": false,
+    "music": "",
+    "musicEnabled": false
+  },
+  "footer": {
+    "credit": "© 2025 ART JAWA COKLAT · Dibuat dengan ❤"
+  }
+}
