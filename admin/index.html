@@ -5,102 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Undangan Studio — Admin</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-  body { font-family: 'Inter', system-ui, sans-serif; background: #17100a; }
-  .gold { color: #c9a227; }
-  .bg-gold { background: #c9a227; }
-  .border-gold { border-color: #c9a227; }
-  input, textarea, select { color-scheme: dark; }
-  .tab-active { background: #c9a227; color: #17100a; }
-  .thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid #c9a22755; }
+  body { font-family: 'Outfit', system-ui, sans-serif; background: #f7f0e3; color: #0f172a; }
+  .terra { color: #9a3412; }
+  .bg-terra { background: #9a3412; }
+  .border-terra { border-color: #9a3412; }
+  input, textarea, select { color-scheme: light; }
+  .tab-active { background: #9a3412; color: #fffbeb; }
+  .thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; border: 1px solid #9a341255; }
   .toast { position: fixed; bottom: 24px; right: 24px; z-index: 100; }
+  .card { background: #ffffff; border: 1px solid #e7d8d3; border-radius: 16px; }
+  .field { background: #fffbeb; border: 1px solid #e7d8d3; border-radius: 10px; padding: 10px 14px; width: 100%; font-size: 14px; outline: none; transition: border-color .15s; }
+  .field:focus { border-color: #9a3412; box-shadow: 0 0 0 3px rgba(154,52,18,.12); }
+  .label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #64748b; margin-bottom: 6px; }
 </style>
 </head>
-<body class="min-h-screen text-gray-200">
-<div id="login" class="hidden min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-sm bg-[#241910] border border-gold/40 rounded-2xl p-8 soft-shadow">
-    <h1 class="text-2xl font-semibold text-center gold mb-6">Undangan Studio</h1>
-    <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Password</label>
-    <input id="pw" type="password" class="w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 mb-4 focus:border-gold outline-none" placeholder="••••••••" />
-    <button onclick="login()" class="w-full bg-gold text-[#17100a] font-medium py-3 rounded-xl hover:opacity-90 transition cursor-pointer">Masuk</button>
-    <p id="loginErr" class="text-red-400 text-sm mt-3 text-center hidden">Password salah</p>
+<body class="min-h-screen">
+<div id="login" style="display:flex" class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-sm card p-8" style="box-shadow: 0 2px 4px rgba(154,52,18,.06), 0 16px 40px rgba(154,52,18,.1)">
+    <h1 class="text-2xl font-semibold text-center terra mb-1">Undangan Studio</h1>
+    <p class="text-center text-sm text-slate-500 mb-6">Kelola undangan digital kamu</p>
+    <label class="label">Password</label>
+    <input id="pw" type="password" class="field mb-4" placeholder="Masukkan password" />
+    <button onclick="login()" class="w-full bg-terra text-[#fffbeb] font-medium py-3 rounded-xl hover:opacity-90 transition cursor-pointer active:scale-[0.98]">Masuk</button>
+    <p id="loginErr" class="text-red-600 text-sm mt-3 text-center" style="display:none">Password salah</p>
   </div>
 </div>
 
-<div id="app" class="hidden">
-  <header class="sticky top-0 z-40 bg-[#1e140c]/95 backdrop-blur border-b border-gold/20">
+<div id="app" style="display:none">
+  <header class="sticky top-0 z-40 bg-[#fffbeb]/95 backdrop-blur border-b border-[#e7d8d3]">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div>
-        <h1 class="text-lg font-semibold gold">Undangan Studio</h1>
-        <p class="text-xs text-gray-500">Admin — edit &amp; deploy undangan</p>
-      </div>
       <div class="flex items-center gap-3">
-        <a href="/" target="_blank" class="text-xs border border-gold/50 text-gold px-3 py-2 rounded-lg hover:bg-gold hover:text-[#17100a] transition cursor-pointer">Preview Undangan ↗</a>
-        <button onclick="saveAll()" class="text-xs bg-gold text-[#17100a] font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer">💾 Simpan &amp; Deploy</button>
-        <button onclick="logout()" class="text-xs border border-gray-600 text-gray-400 px-3 py-2 rounded-lg hover:border-red-400 hover:text-red-400 transition cursor-pointer">Keluar</button>
+        <div class="w-9 h-9 rounded-xl bg-terra text-[#fffbeb] flex items-center justify-center text-lg font-bold">U</div>
+        <div>
+          <h1 class="text-base font-semibold terra leading-tight">Undangan Studio</h1>
+          <p class="text-[11px] text-slate-500">Edit &amp; deploy undangan</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="/" target="_blank" class="text-xs border border-terra text-terra px-3 py-2 rounded-lg hover:bg-terra hover:text-[#fffbeb] transition cursor-pointer">Preview</a>
+        <button onclick="saveAll()" class="text-xs bg-terra text-[#fffbeb] font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition cursor-pointer active:scale-[0.98]">Simpan &amp; Deploy</button>
+        <button onclick="logout()" class="text-xs border border-slate-300 text-slate-500 px-3 py-2 rounded-lg hover:border-red-400 hover:text-red-600 transition cursor-pointer">Keluar</button>
       </div>
     </div>
   </header>
 
-  <nav class="max-w-6xl mx-auto px-4 py-3 flex gap-2 flex-wrap">
-    <button data-tab="tab-couple" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">👫 Mempelai</button>
-    <button data-tab="tab-event" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">📅 Acara</button>
-    <button data-tab="tab-photos" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">🖼️ Foto</button>
-    <button data-tab="tab-media" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">🎬 Video &amp; Musik</button>
-    <button data-tab="tab-text" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">📝 Teks</button>
-    <button data-tab="tab-gift" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">💝 Tanda Kasih</button>
-    <button data-tab="tab-rsvp" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">✅ RSVP &amp; Ucapan</button>
-    <button data-tab="tab-settings" class="tab-btn text-xs px-4 py-2 rounded-full border border-gold/30 text-gold hover:bg-gold/10 transition cursor-pointer">⚙️ Settings</button>
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex gap-2 flex-wrap">
+    <button data-tab="tab-couple" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Mempelai</button>
+    <button data-tab="tab-event" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Acara</button>
+    <button data-tab="tab-photos" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Foto</button>
+    <button data-tab="tab-media" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Video &amp; Musik</button>
+    <button data-tab="tab-text" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Teks</button>
+    <button data-tab="tab-gift" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Tanda Kasih</button>
+    <button data-tab="tab-rsvp" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">RSVP &amp; Ucapan</button>
+    <button data-tab="tab-settings" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Settings</button>
   </nav>
 
   <main class="max-w-6xl mx-auto px-4 pb-24">
 
-    <!-- Mempelai -->
     <section id="tab-couple" class="tab-panel hidden">
       <div class="grid md:grid-cols-2 gap-5">
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">👨 Mempelai Pria</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">Mempelai Pria</h2>
           <F name="couple.groom" label="Nama panggilan" />
           <F name="couple.groomFull" label="Nama lengkap" />
           <F name="couple.groomDesc" label="Deskripsi / orang tua" textarea />
         </div>
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">👰 Mempelai Wanita</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">Mempelai Wanita</h2>
           <F name="couple.bride" label="Nama panggilan" />
           <F name="couple.brideFull" label="Nama lengkap" />
           <F name="couple.brideDesc" label="Deskripsi / orang tua" textarea />
         </div>
-        <div class="md:col-span-2 bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">Branding</h2>
+        <div class="md:col-span-2 card p-6">
+          <h2 class="terra font-semibold mb-4">Branding</h2>
           <div class="grid md:grid-cols-2 gap-4">
-            <F name="brand.kicker" label="Kicker cover (cth: The Wedding Of)" />
-            <F name="brand.logoText" label="Inisial loading (cth: A&I)" />
+            <F name="brand.kicker" label="Kicker cover" />
+            <F name="brand.logoText" label="Inisial loading" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Acara -->
     <section id="tab-event" class="tab-panel hidden">
-      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 mb-5">
-        <h2 class="gold font-semibold mb-4">📅 Tanggal</h2>
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-4">Tanggal</h2>
         <div class="grid md:grid-cols-3 gap-4">
-          <F name="event.day" label="Hari (cth: Sabtu)" />
-          <F name="event.date" label="Tanggal (cth: 10 Oktober 2025)" />
-          <F name="event.countdownDate" label="Countdown target (ISO, cth: 2025-10-10T09:00:00+07:00)" />
+          <F name="event.day" label="Hari" />
+          <F name="event.date" label="Tanggal" />
+          <F name="event.countdownDate" label="Countdown target (ISO)" />
         </div>
       </div>
       <div class="grid md:grid-cols-2 gap-5">
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">🕌 Akad Nikah</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">Akad Nikah</h2>
           <F name="event.akad.title" label="Judul" />
           <F name="event.akad.time" label="Waktu" />
           <F name="event.akad.place" label="Tempat" textarea />
           <F name="event.akad.mapsUrl" label="Link Google Maps" />
         </div>
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">🎉 Resepsi</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">Resepsi</h2>
           <F name="event.resepsi.title" label="Judul" />
           <F name="event.resepsi.time" label="Waktu" />
           <F name="event.resepsi.place" label="Tempat" textarea />
@@ -109,68 +115,65 @@
       </div>
     </section>
 
-    <!-- Foto -->
     <section id="tab-photos" class="tab-panel hidden">
-      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 mb-5">
-        <h2 class="gold font-semibold mb-4">🖼️ Foto Utama</h2>
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-4">Foto Utama</h2>
         <div class="grid md:grid-cols-3 gap-5">
           <UploadField name="photos.cover" label="Cover background" />
           <UploadField name="photos.groom" label="Foto mempelai pria" />
           <UploadField name="photos.bride" label="Foto mempelai wanita" />
         </div>
       </div>
-      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
+      <div class="card p-6">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="gold font-semibold">🖼️ Galeri (carousel)</h2>
-          <button onclick="addGallery()" class="text-xs bg-gold text-[#17100a] px-3 py-1.5 rounded-lg cursor-pointer">+ Tambah</button>
+          <h2 class="terra font-semibold">Galeri (carousel)</h2>
+          <button onclick="addGallery()" class="text-xs bg-terra text-[#fffbeb] px-3 py-1.5 rounded-lg cursor-pointer active:scale-[0.98]">Tambah</button>
         </div>
         <div id="galleryList" class="grid md:grid-cols-3 gap-4"></div>
       </div>
     </section>
 
-    <!-- Media -->
     <section id="tab-media" class="tab-panel hidden">
       <div class="grid md:grid-cols-2 gap-5">
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-2">🎬 Video Cover</h2>
-          <p class="text-xs text-gray-500 mb-4">MP4/WebM, maks 200MB. Kalau aktif, video jadi background cover (ganti foto cover).</p>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-2">Video Cover</h2>
+          <p class="text-xs text-slate-500 mb-4">MP4/WebM, maks 200MB. Aktif = video jadi background cover.</p>
           <label class="flex items-center gap-2 mb-4 cursor-pointer">
-            <input type="checkbox" id="media.videoEnabled" class="w-4 h-4 accent-[#c9a227]" /> Aktifkan video
+            <input type="checkbox" id="media.videoEnabled" class="w-4 h-4 accent-[#9a3412]" /> Aktifkan video
           </label>
           <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden" />
-          <button onclick="document.getElementById('upload-video').click()" class="w-full border border-gold/40 text-gold py-3 rounded-xl text-sm hover:bg-gold/10 transition cursor-pointer">⬆ Upload Video</button>
-          <div id="videoInfo" class="mt-3 text-xs text-gray-400"></div>
+          <button onclick="document.getElementById('upload-video').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Video</button>
+          <div id="videoInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
         </div>
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-2">🎵 Musik</h2>
-          <p class="text-xs text-gray-500 mb-4">MP3, maks 30MB. Tombol musik muncul kalau aktif.</p>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-2">Musik</h2>
+          <p class="text-xs text-slate-500 mb-4">MP3, maks 30MB. Tombol musik muncul kalau aktif.</p>
           <label class="flex items-center gap-2 mb-4 cursor-pointer">
-            <input type="checkbox" id="media.musicEnabled" class="w-4 h-4 accent-[#c9a227]" /> Aktifkan musik
+            <input type="checkbox" id="media.musicEnabled" class="w-4 h-4 accent-[#9a3412]" /> Aktifkan musik
           </label>
           <input type="file" id="upload-music" accept="audio/mp3,audio/ogg,audio/wav" class="hidden" />
-          <button onclick="document.getElementById('upload-music').click()" class="w-full border border-gold/40 text-gold py-3 rounded-xl text-sm hover:bg-gold/10 transition cursor-pointer">⬆ Upload Musik</button>
-          <div id="musicInfo" class="mt-3 text-xs text-gray-400"></div>
+          <button onclick="document.getElementById('upload-music').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Musik</button>
+          <div id="musicInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
         </div>
       </div>
-      <div class="mt-5 bg-[#241910] border border-gold/25 rounded-2xl p-6">
-        <h2 class="gold font-semibold mb-4">🗂️ File Uploaded</h2>
+      <div class="mt-5 card p-6">
+        <h2 class="terra font-semibold mb-4">File Uploaded</h2>
         <div id="fileList" class="flex flex-wrap gap-2"></div>
       </div>
     </section>
 
-    <!-- Teks -->
     <section id="tab-text" class="tab-panel hidden">
       <div class="grid md:grid-cols-2 gap-5">
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">🕌 Salam &amp; Quote</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">Salam &amp; Quote</h2>
           <F name="salam.arabic" label="Bismillah" />
           <F name="salam.text" label="Assalamualaikum" />
           <F name="salam.body" label="Isi salam" textarea />
           <F name="quote.text" label="Quote (Ar Rum)" textarea />
           <F name="quote.source" label="Sumber quote" />
         </div>
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">📝 Section Lain</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">Section Lain</h2>
           <F name="gallery.heading" label="Judul galeri" />
           <F name="closing.heading" label="Judul penutup" />
           <F name="closing.text" label="Teks penutup" textarea />
@@ -179,21 +182,20 @@
       </div>
     </section>
 
-    <!-- Tanda kasih -->
     <section id="tab-gift" class="tab-panel hidden">
-      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 mb-5">
-        <h2 class="gold font-semibold mb-4">💝 Tanda Kasih</h2>
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-4">Tanda Kasih</h2>
         <F name="gift.heading" label="Judul" />
         <F name="gift.intro" label="Intro" textarea />
         <div class="grid md:grid-cols-2 gap-4 mt-4">
           <div>
-            <h3 class="text-sm text-gray-400 mb-3">🏦 Bank</h3>
+            <h3 class="text-sm text-slate-500 mb-3">Bank</h3>
             <F name="gift.bank.name" label="Nama bank" />
             <F name="gift.bank.number" label="Nomor rekening" />
             <F name="gift.bank.holder" label="Atas nama" />
           </div>
           <div>
-            <h3 class="text-sm text-gray-400 mb-3">🎁 Kado</h3>
+            <h3 class="text-sm text-slate-500 mb-3">Kado</h3>
             <F name="gift.kado.name" label="Nama penerima" />
             <F name="gift.kado.address" label="Alamat" textarea />
             <F name="gift.kado.note" label="Catatan" />
@@ -201,38 +203,36 @@
         </div>
         <div class="mt-4">
           <label class="flex items-center gap-2 cursor-pointer mb-3">
-            <input type="checkbox" id="gift.qrisEnabled" class="w-4 h-4 accent-[#c9a227]" /> Tampilkan QRIS
+            <input type="checkbox" id="gift.qrisEnabled" class="w-4 h-4 accent-[#9a3412]" /> Tampilkan QRIS
           </label>
           <F name="gift.qrisValue" label="Isi QRIS (link atau string QR)" />
         </div>
       </div>
     </section>
 
-    <!-- RSVP -->
     <section id="tab-rsvp" class="tab-panel hidden">
       <div class="grid md:grid-cols-2 gap-5">
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">✅ RSVP</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">RSVP</h2>
           <F name="rsvp.heading" label="Judul" />
           <F name="rsvp.intro" label="Intro" textarea />
         </div>
-        <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6">
-          <h2 class="gold font-semibold mb-4">💬 Ucapan &amp; Doa</h2>
+        <div class="card p-6">
+          <h2 class="terra font-semibold mb-4">Ucapan &amp; Doa</h2>
           <F name="guestbook.heading" label="Judul" />
           <F name="guestbook.intro" label="Intro" textarea />
         </div>
       </div>
     </section>
 
-    <!-- Settings -->
     <section id="tab-settings" class="tab-panel hidden">
-      <div class="bg-[#241910] border border-gold/25 rounded-2xl p-6 max-w-md">
-        <h2 class="gold font-semibold mb-4">🔑 Ganti Password</h2>
-        <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Password lama</label>
-        <input id="oldPw" type="password" class="w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 mb-3 focus:border-gold outline-none" />
-        <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Password baru</label>
-        <input id="newPw" type="password" class="w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 mb-4 focus:border-gold outline-none" />
-        <button onclick="changePw()" class="bg-gold text-[#17100a] font-medium px-6 py-2.5 rounded-xl cursor-pointer">Simpan Password</button>
+      <div class="card p-6 max-w-md">
+        <h2 class="terra font-semibold mb-4">Ganti Password</h2>
+        <label class="label">Password lama</label>
+        <input id="oldPw" type="password" class="field mb-3" />
+        <label class="label">Password baru</label>
+        <input id="newPw" type="password" class="field mb-4" />
+        <button onclick="changePw()" class="bg-terra text-[#fffbeb] font-medium px-6 py-2.5 rounded-xl cursor-pointer active:scale-[0.98]">Simpan Password</button>
       </div>
     </section>
 
@@ -268,7 +268,7 @@ async function login() {
     authOk = true;
     boot();
   } catch {
-    $("loginErr").classList.remove("hidden");
+    $("loginErr").style.display = "block";
   }
 }
 $("pw").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
@@ -278,7 +278,6 @@ async function logout() {
   location.reload();
 }
 
-/* ---------- Field helpers ---------- */
 function setPath(obj, path, val) {
   const parts = path.split(".");
   let o = obj;
@@ -289,15 +288,15 @@ function getPath(obj, path) {
   return path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
 }
 
+function esc(s) { return String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
+
 function F({ name, label, textarea }) {
   const val = getPath(cfg, name) ?? "";
-  const cls = "w-full bg-[#17100a] border border-gold/30 rounded-xl px-4 py-3 text-sm focus:border-gold outline-none mb-3";
   if (textarea) {
-    return `<label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">${label}</label><textarea data-path="${name}" class="${cls}" rows="2">${esc(val)}</textarea>`;
+    return `<label class="label">${label}</label><textarea data-path="${name}" class="field mb-3" rows="2">${esc(val)}</textarea>`;
   }
-  return `<label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">${label}</label><input data-path="${name}" value="${esc(val)}" class="${cls}" />`;
+  return `<label class="label">${label}</label><input data-path="${name}" value="${esc(val)}" class="field mb-3" />`;
 }
-function esc(s) { return String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
 
 function renderForms() {
   document.querySelectorAll("[data-path]").forEach((el) => {
@@ -312,17 +311,16 @@ function renderForms() {
   $("musicInfo").textContent = getPath(cfg, "media.music") || "Belum ada musik";
 }
 
-/* ---------- Gallery ---------- */
 function renderGalleryList() {
   const imgs = getPath(cfg, "photos.gallery") || [];
   $("galleryList").innerHTML = imgs.map((u, i) => `
-    <div class="border border-gold/25 rounded-xl p-3">
+    <div class="border border-[#e7d8d3] rounded-xl p-3 bg-[#fffbeb]">
       <img src="${esc(u)}" class="w-full h-32 object-cover rounded-lg mb-2" />
       <div class="flex gap-2">
-        <button onclick="pickGallery(${i})" class="flex-1 text-xs border border-gold/40 text-gold py-1.5 rounded-lg cursor-pointer">Ganti</button>
-        <button onclick="removeGallery(${i})" class="flex-1 text-xs border border-red-400/40 text-red-400 py-1.5 rounded-lg cursor-pointer">Hapus</button>
+        <button onclick="pickGallery(${i})" class="flex-1 text-xs border border-terra/40 text-terra py-1.5 rounded-lg cursor-pointer">Ganti</button>
+        <button onclick="removeGallery(${i})" class="flex-1 text-xs border border-red-400/40 text-red-600 py-1.5 rounded-lg cursor-pointer">Hapus</button>
       </div>
-    </div>`).join("") || '<p class="text-xs text-gray-500 col-span-3">Belum ada foto galeri. Klik "+ Tambah".</p>';
+    </div>`).join("") || '<p class="text-xs text-slate-400 col-span-3">Belum ada foto galeri.</p>';
 }
 function addGallery() {
   const input = document.createElement("input");
@@ -355,7 +353,6 @@ function removeGallery(i) {
   renderGalleryList();
 }
 
-/* ---------- Uploads ---------- */
 async function uploadFile(file, cb) {
   if (!file) return;
   const fd = new FormData();
@@ -381,22 +378,21 @@ function pickUpload(field) {
 
 function UploadField({ name, label }) {
   const url = getPath(cfg, name) || "";
-  return `<div class="border border-gold/25 rounded-xl p-4 text-center">
-    <p class="text-xs text-gray-400 mb-3">${label}</p>
-    ${url ? `<img src="${esc(url)}" class="thumb mx-auto mb-3" />` : '<div class="thumb mx-auto mb-3 bg-[#17100a] border border-dashed border-gold/30 flex items-center justify-center text-2xl text-gray-600">+</div>'}
-    <button onclick="pickUpload('${name}')" class="w-full text-xs border border-gold/40 text-gold py-2 rounded-lg cursor-pointer">${url ? "Ganti" : "Upload"}</button>
+  return `<div class="border border-[#e7d8d3] rounded-xl p-4 text-center bg-[#fffbeb]">
+    <p class="text-xs text-slate-500 mb-3">${label}</p>
+    ${url ? `<img src="${esc(url)}" class="thumb mx-auto mb-3" />` : '<div class="thumb mx-auto mb-3 bg-[#f7f0e3] border border-dashed border-terra/30 flex items-center justify-center text-2xl text-slate-400">+</div>'}
+    <button onclick="pickUpload('${name}')" class="w-full text-xs border border-terra/40 text-terra py-2 rounded-lg cursor-pointer">${url ? "Ganti" : "Upload"}</button>
   </div>`;
 }
 
-/* ---------- File manager ---------- */
 async function renderFileList() {
   try {
     const files = await api("/api/files");
     $("fileList").innerHTML = files.map((f) => `
-      <div class="flex items-center gap-2 bg-[#17100a] border border-gold/20 rounded-lg px-3 py-2 text-xs">
-        <span class="text-gray-400">${esc(f.name)}</span>
-        <button onclick="delFile('${esc(f.name)}')" class="text-red-400 hover:text-red-300 cursor-pointer">✕</button>
-      </div>`).join("") || '<span class="text-xs text-gray-500">Kosong</span>';
+      <div class="flex items-center gap-2 bg-[#fffbeb] border border-[#e7d8d3] rounded-lg px-3 py-2 text-xs">
+        <span class="text-slate-500">${esc(f.name)}</span>
+        <button onclick="delFile('${esc(f.name)}')" class="text-red-600 hover:text-red-500 cursor-pointer">Hapus</button>
+      </div>`).join("") || '<span class="text-xs text-slate-400">Kosong</span>';
   } catch {}
 }
 async function delFile(name) {
@@ -404,7 +400,6 @@ async function delFile(name) {
   renderFileList();
 }
 
-/* ---------- Media uploads ---------- */
 $("upload-video").addEventListener("change", (e) => {
   uploadFile(e.target.files[0], (url) => {
     setPath(cfg, "media.video", url);
@@ -418,10 +413,8 @@ $("upload-music").addEventListener("change", (e) => {
   });
 });
 
-/* ---------- Save & Deploy ---------- */
 async function saveAll() {
   try {
-    // collect inputs
     document.querySelectorAll("[data-path]").forEach((el) => {
       setPath(cfg, el.dataset.path, el.value);
     });
@@ -429,7 +422,7 @@ async function saveAll() {
     setPath(cfg, "media.musicEnabled", $("media.musicEnabled").checked);
     setPath(cfg, "gift.qrisEnabled", $("gift.qrisEnabled").checked);
     await api("/api/config", { method: "POST", body: JSON.stringify(cfg) });
-    toast("✅ Undangan tersimpan & deployed!");
+    toast("Undangan tersimpan & deployed!");
   } catch (e) {
     toast(e.message, true);
   }
@@ -443,7 +436,6 @@ async function changePw() {
   } catch (e) { toast(e.message, true); }
 }
 
-/* ---------- Tabs ---------- */
 document.querySelectorAll(".tab-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("tab-active"));
@@ -453,10 +445,9 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
-/* ---------- Boot ---------- */
 async function boot() {
-  $("login").classList.add("hidden");
-  $("app").classList.remove("hidden");
+  $("login").style.display = "none";
+  $("app").style.display = "block";
   try {
     cfg = await api("/api/config");
   } catch {

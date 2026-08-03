@@ -1,22 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  /* ART JAWA COKLAT — dark brown + gold (replica galeriundangan) */
-  --font-script: "Pinyon Script", cursive;
-  --font-serif: "Cormorant", Georgia, serif;
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-sans: "Poppins", system-ui, sans-serif;
+  /* Terracotta + Slate - bohemian modern earthy (anti-AI-slop)
+     Palette: warm rust + cool slate + bone, ONE emerald accent */
+  --font-script: "Great Vibes", cursive;
+  --font-serif: "Cormorant Infant", Georgia, serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
 
-  --color-gold: #c9a227;
-  --color-gold-light: #e6c15c;
-  --color-gold-dark: #9a7a18;
-  --color-cream: #f2e9d8;
-  --color-bg: #17100a;
-  --color-bg2: #1e140c;
-  --color-surface: #241910;
-  --color-fg: #f2e9d8;
-  --color-muted: #a08d6e;
-  --color-border: rgba(201, 162, 39, 0.28);
+  --color-terra: #9a3412;
+  --color-terra-dark: #7c2d12;
+  --color-terra-light: #c2410c;
+  --color-clay: #b45309;
+  --color-emerald-accent: #059669;
+  --color-slate-ink: #0f172a;
+  --color-slate-mid: #475569;
+  --color-bone: #fffbeb;
+  --color-bone-dark: #f7f0e3;
+  --color-sand: #f2e6e2;
+  --color-border-soft: #e7d8d3;
+
+  --color-bg: #fffbeb;
+  --color-surface: #ffffff;
+  --color-fg: #0f172a;
+  --color-muted: #6b7280;
+  --color-primary: #9a3412;
+  --color-primary-dark: #7c2d12;
+  --color-gold: #b45309;
+  --color-gold-light: #c2410c;
+  --color-border: #e7d8d3;
 }
 
 body {
@@ -29,7 +40,7 @@ html { scroll-behavior: smooth; }
 .script-display {
   font-family: var(--font-script);
   font-weight: 400;
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 /* Serif body */
@@ -37,48 +48,44 @@ html { scroll-behavior: smooth; }
   font-family: var(--font-serif);
 }
 
-/* Display headings */
-.display-head {
-  font-family: var(--font-display);
+/* Soft shadows - warm-tinted, not pure black */
+.soft-shadow {
+  box-shadow: 0 1px 2px rgba(154, 52, 18, 0.05), 0 8px 24px rgba(154, 52, 18, 0.08);
+}
+.soft-shadow-lg {
+  box-shadow: 0 2px 4px rgba(154, 52, 18, 0.06), 0 16px 40px rgba(154, 52, 18, 0.12);
 }
 
 .kicker {
-  @apply text-[11px] uppercase tracking-[0.35em] font-medium text-gold;
+  @apply text-[11px] uppercase tracking-[0.25em] font-medium text-terra;
 }
 
 .hairline {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  background: linear-gradient(90deg, transparent, var(--color-border-soft), transparent);
 }
 
 .soft-card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 16px;
 }
 
-.soft-shadow {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
-}
-.soft-shadow-lg {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45), 0 20px 48px rgba(0, 0, 0, 0.4);
-}
-
-/* Double gold frame (khas undangan jawa) */
+/* Double frame - khas undangan, tapi warm */
 .gold-frame {
   position: relative;
-  border: 1px solid var(--color-gold);
+  border: 1px solid var(--color-terra);
   padding: 6px;
 }
 .gold-frame::after {
   content: "";
   position: absolute;
   inset: 3px;
-  border: 1px solid rgba(201, 162, 39, 0.5);
+  border: 1px solid rgba(154, 52, 18, 0.45);
   pointer-events: none;
 }
 
-/* Decorative blobs — subtle warm glow */
+/* Decorative blobs - warm glow */
 @keyframes blobFloat {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(20px, -30px) scale(1.05); }
@@ -88,7 +95,7 @@ html { scroll-behavior: smooth; }
   position: absolute;
   border-radius: 50%;
   filter: blur(70px);
-  opacity: 0.16;
+  opacity: 0.12;
   pointer-events: none;
   animation: blobFloat 14s ease-in-out infinite;
 }
@@ -121,7 +128,7 @@ html.lenis, html.lenis body { height: auto; }
 .line { overflow: hidden; }
 .line-inner { display: block; }
 
-/* Ring spin (loading) */
+/* Ring spin */
 @keyframes ringSpin { to { transform: rotate(360deg); } }
 .ring-spin { animation: ringSpin 1.2s linear infinite; }
 
@@ -134,7 +141,7 @@ html.lenis, html.lenis body { height: auto; }
   left: -80%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.25), transparent);
   transform: skewX(-20deg);
   animation: sheenMove 3.8s ease-in-out infinite;
 }
@@ -143,10 +150,10 @@ html.lenis, html.lenis body { height: auto; }
   100% { left: 130%; }
 }
 
-/* Floating petals — gold/brown */
+/* Floating petals - terracotta tones */
 @keyframes petalFall {
   0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.6; }
+  10% { opacity: 0.5; }
   100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 .petal {
@@ -157,7 +164,7 @@ html.lenis, html.lenis body { height: auto; }
   pointer-events: none;
 }
 
-/* Dark vignette on images (tekstur khas tema jawa) */
+/* Vignette on cover images */
 .dark-vignette {
   position: relative;
 }
@@ -166,8 +173,8 @@ html.lenis, html.lenis body { height: auto; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at center, transparent 40%, rgba(23, 16, 10, 0.75) 100%),
-    linear-gradient(to bottom, rgba(23, 16, 10, 0.35), rgba(23, 16, 10, 0.15));
+    radial-gradient(ellipse at center, transparent 40%, rgba(15, 23, 42, 0.55) 100%),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.1));
   pointer-events: none;
 }
 
