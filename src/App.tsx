@@ -39,6 +39,16 @@ interface Cfg {
   guestbook: { heading: string; intro: string };
   closing: { heading: string; text: string };
   media: { video: string; videoEnabled: boolean; music: string; musicEnabled: boolean };
+  sectionVideos: {
+    couple: { video: string; enabled: boolean };
+    savedate: { video: string; enabled: boolean };
+    info: { video: string; enabled: boolean };
+    gallery: { video: string; enabled: boolean };
+    gift: { video: string; enabled: boolean };
+    rsvp: { video: string; enabled: boolean };
+    guestbook: { video: string; enabled: boolean };
+    closing: { video: string; enabled: boolean };
+  };
   footer: { credit: string };
   photos: { cover: string; groom: string; bride: string; gallery: string[] };
   theme: {
@@ -185,6 +195,16 @@ const DEFAULT_CFG: Cfg = {
   guestbook: { heading: "Berikan Doa Terbaik", intro: "Berikan harapan dan doa tulus anda disini." },
   closing: { heading: "Merci Beaucoup", text: "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu." },
   media: { video: "", videoEnabled: false, music: "", musicEnabled: false },
+  sectionVideos: {
+    couple: { video: "", enabled: false },
+    savedate: { video: "", enabled: false },
+    info: { video: "", enabled: false },
+    gallery: { video: "", enabled: false },
+    gift: { video: "", enabled: false },
+    rsvp: { video: "", enabled: false },
+    guestbook: { video: "", enabled: false },
+    closing: { video: "", enabled: false },
+  },
   footer: { credit: "© 2025 Undangan Studio" },
   photos: { cover: "", groom: "", bride: "", gallery: [] },
   theme: {
@@ -620,8 +640,9 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
 function Couple({ cfg }: { cfg: Cfg }) {
   const { couple, photos, quote, labels } = cfg;
   return (
-    <section className="py-24 px-4 relative">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-24 px-4 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="couple" />
+      <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-16" data-reveal>
           <span className="kicker block mb-4">{labels.coupleSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
@@ -677,8 +698,9 @@ function SaveTheDate({ cfg }: { cfg: Cfg }) {
   const t = useCountdown(cfg.event.countdownDate);
   const L = cfg.labels;
   return (
-    <section className="py-20 px-4 bg-sand/60">
-      <div className="max-w-3xl mx-auto text-center" data-reveal>
+    <section className="py-20 px-4 bg-sand/60 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="savedate" />
+      <div className="max-w-3xl mx-auto text-center relative z-10" data-reveal>
         <span className="kicker block mb-4">{L.saveTheDate}</span>
         <p className="serif-body text-2xl md:text-3xl text-fg mb-2">{cfg.event.day}, {cfg.event.date}</p>
         <Ornament className="w-36 mx-auto my-6" />
@@ -727,8 +749,9 @@ function EventCard({ title, time, place, mapsUrl, mapLabel }: { title: string; t
 function Info({ cfg }: { cfg: Cfg }) {
   const L = cfg.labels;
   return (
-    <section className="py-24 px-4">
-      <div className="max-w-3xl mx-auto">
+    <section className="py-24 px-4 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="info" />
+      <div className="max-w-3xl mx-auto relative z-10">
         <div className="text-center mb-14" data-reveal>
           <span className="kicker block mb-4">{L.eventSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
@@ -762,8 +785,9 @@ function Gallery({ cfg }: { cfg: Cfg }) {
   if (!images.length) return null;
 
   return (
-    <section className="py-24 px-4 bg-sand/60">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="gallery" />
+      <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal>
           <span className="kicker block mb-4">Galeri</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
@@ -818,6 +842,23 @@ function Gallery({ cfg }: { cfg: Cfg }) {
         )}
       </div>
     </section>
+  );
+}
+
+/* ---------- Section Video Background wrapper ---------- */
+function SectionVideo({ cfg, name }: { cfg: Cfg; name: keyof Cfg["sectionVideos"] }) {
+  const sv = cfg.sectionVideos?.[name];
+  if (!sv?.enabled || !sv.video) return null;
+  const vidMode = cfg.theme.motion?.videoCoverMode || "cover";
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+      <video
+        src={sv.video}
+        autoPlay muted playsInline loop
+        className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} opacity-25`}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/50 to-bg/80" />
+    </div>
   );
 }
 
@@ -956,8 +997,9 @@ function Gift({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section className="py-24 px-4">
-      <div className="max-w-xl mx-auto text-center">
+    <section className="py-24 px-4 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="gift" />
+      <div className="max-w-xl mx-auto text-center relative z-10">
         <div data-reveal>
           <span className="kicker block mb-4">{L.giftSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light mb-5 fade-up ${cfg.theme.headingSize}`}>
@@ -1108,8 +1150,9 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section className="py-24 px-4 bg-sand/60">
-      <div className="max-w-xl mx-auto">
+    <section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="rsvp" />
+      <div className="max-w-xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal>
           <span className="kicker block mb-4">{L.rsvpSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
@@ -1194,8 +1237,9 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section className="py-24 px-4">
-      <div className="max-w-xl mx-auto">
+    <section className="py-24 px-4 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="guestbook" />
+      <div className="max-w-xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal>
           <span className="kicker block mb-4">{L.guestbookSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
@@ -1242,6 +1286,7 @@ function Closing({ cfg }: { cfg: Cfg }) {
   const L = cfg.labels;
   return (
     <section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="closing" />
       <div className="max-w-xl mx-auto relative z-10" data-reveal>
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />

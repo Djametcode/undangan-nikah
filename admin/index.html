@@ -246,6 +246,52 @@ function renderMedia() {
     </div>
   </div>
   <div class="mt-5 card p-6">
+    <h2 class="terra font-semibold mb-2">Video Background per Section</h2>
+    <p class="text-xs text-slate-500 mb-4">Upload video lalu aktifkan di section mana pun. Video tampil sebagai background dengan overlay lembut.</p>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">Mempelai (Couple)</p>
+        ${T("sectionVideos.couple.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.couple.video", "URL video (upload dulu di atas)")}</div>
+      </div>
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">Save The Date</p>
+        ${T("sectionVideos.savedate.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.savedate.video", "URL video")}</div>
+      </div>
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">Info Acara</p>
+        ${T("sectionVideos.info.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.info.video", "URL video")}</div>
+      </div>
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">Galeri</p>
+        ${T("sectionVideos.gallery.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.gallery.video", "URL video")}</div>
+      </div>
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">Tanda Kasih (Gift)</p>
+        ${T("sectionVideos.gift.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.gift.video", "URL video")}</div>
+      </div>
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">RSVP</p>
+        ${T("sectionVideos.rsvp.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.rsvp.video", "URL video")}</div>
+      </div>
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">Ucapan (Guestbook)</p>
+        ${T("sectionVideos.guestbook.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.guestbook.video", "URL video")}</div>
+      </div>
+      <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
+        <p class="text-xs font-medium text-slate-600 mb-3">Penutup (Closing)</p>
+        ${T("sectionVideos.closing.enabled", "Aktifkan video background")}
+        <div class="mt-2">${F("sectionVideos.closing.video", "URL video")}</div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5 card p-6">
     <h2 class="terra font-semibold mb-4">File Uploaded</h2>
     <div id="fileList" class="flex flex-wrap gap-2"></div>
   </div>`;

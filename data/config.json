@@ -219,5 +219,39 @@
     "groom": "/uploads/1785730739599-tema-jawa-2.jpg",
     "bride": "/uploads/1785730739599-tema-jawa-2.jpg",
     "gallery": []
+  },
+  "sectionVideos": {
+    "couple": {
+      "video": "",
+      "enabled": false
+    },
+    "savedate": {
+      "video": "",
+      "enabled": false
+    },
+    "info": {
+      "video": "",
+      "enabled": false
+    },
+    "gallery": {
+      "video": "",
+      "enabled": false
+    },
+    "gift": {
+      "video": "",
+      "enabled": false
+    },
+    "rsvp": {
+      "video": "",
+      "enabled": false
+    },
+    "guestbook": {
+      "video": "",
+      "enabled": false
+    },
+    "closing": {
+      "video": "",
+      "enabled": false
+    }
   }
 }
