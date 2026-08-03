@@ -1,37 +1,49 @@
 @import "tailwindcss";
 
-@theme {
-  /* Terracotta + Slate - bohemian modern earthy (anti-AI-slop)
-     Palette: warm rust + cool slate + bone, ONE emerald accent */
+/* ============================================================
+   THEME ENGINE — semua nilai dari CSS variables.
+   Admin set theme config → JS update :root vars → UI ikut.
+   ============================================================ */
+
+:root {
+  /* Colors (theme) */
+  --clr-primary: #9a3412;
+  --clr-primary-dark: #7c2d12;
+  --clr-primary-light: #c2410c;
+  --clr-accent: #059669;
+  --clr-bg: #fffbeb;
+  --clr-surface: #ffffff;
+  --clr-fg: #0f172a;
+  --clr-muted: #6b7280;
+  --clr-border: #e7d8d3;
+  --clr-sand: #f7f0e3;
+
+  /* Shape */
+  --radius-card: 16px;
+  --radius-btn: 999px;
+
+  /* Fonts */
   --font-script: "Great Vibes", cursive;
   --font-serif: "Cormorant Infant", Georgia, serif;
   --font-sans: "Outfit", system-ui, sans-serif;
+}
 
-  --color-terra: #9a3412;
-  --color-terra-dark: #7c2d12;
-  --color-terra-light: #c2410c;
-  --color-clay: #b45309;
-  --color-emerald-accent: #059669;
-  --color-slate-ink: #0f172a;
-  --color-slate-mid: #475569;
-  --color-bone: #fffbeb;
-  --color-bone-dark: #f7f0e3;
-  --color-sand: #f2e6e2;
-  --color-border-soft: #e7d8d3;
-
-  --color-bg: #fffbeb;
-  --color-surface: #ffffff;
-  --color-fg: #0f172a;
-  --color-muted: #6b7280;
-  --color-primary: #9a3412;
-  --color-primary-dark: #7c2d12;
-  --color-gold: #b45309;
-  --color-gold-light: #c2410c;
-  --color-border: #e7d8d3;
+@theme {
+  --color-primary: var(--clr-primary);
+  --color-primary-dark: var(--clr-primary-dark);
+  --color-primary-light: var(--clr-primary-light);
+  --color-accent: var(--clr-accent);
+  --color-bg: var(--clr-bg);
+  --color-surface: var(--clr-surface);
+  --color-fg: var(--clr-fg);
+  --color-muted: var(--clr-muted);
+  --color-border: var(--clr-border);
+  --color-sand: var(--clr-sand);
 }
 
 body {
-  @apply font-sans text-fg antialiased bg-bg;
+  font-family: var(--font-sans);
+  @apply text-fg antialiased bg-bg;
 }
 
 html { scroll-behavior: smooth; }
@@ -48,44 +60,48 @@ html { scroll-behavior: smooth; }
   font-family: var(--font-serif);
 }
 
-/* Soft shadows - warm-tinted, not pure black */
+/* Shape utilities (theme-driven) */
+.rounded-card { border-radius: var(--radius-card); }
+.rounded-btn { border-radius: var(--radius-btn); }
+
+/* Soft shadows — warm-tinted */
 .soft-shadow {
-  box-shadow: 0 1px 2px rgba(154, 52, 18, 0.05), 0 8px 24px rgba(154, 52, 18, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 .soft-shadow-lg {
-  box-shadow: 0 2px 4px rgba(154, 52, 18, 0.06), 0 16px 40px rgba(154, 52, 18, 0.12);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 16px 40px rgba(0, 0, 0, 0.1);
 }
 
 .kicker {
-  @apply text-[11px] uppercase tracking-[0.25em] font-medium text-terra;
+  @apply text-[11px] uppercase tracking-[0.25em] font-medium text-primary;
 }
 
 .hairline {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-border-soft), transparent);
+  background: linear-gradient(90deg, transparent, var(--clr-border), transparent);
 }
 
 .soft-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-soft);
-  border-radius: 16px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-card);
 }
 
-/* Double frame - khas undangan, tapi warm */
+/* Double frame */
 .gold-frame {
   position: relative;
-  border: 1px solid var(--color-terra);
+  border: 1px solid var(--clr-primary);
   padding: 6px;
 }
 .gold-frame::after {
   content: "";
   position: absolute;
   inset: 3px;
-  border: 1px solid rgba(154, 52, 18, 0.45);
+  border: 1px solid color-mix(in srgb, var(--clr-primary) 45%, transparent);
   pointer-events: none;
 }
 
-/* Decorative blobs - warm glow */
+/* Decorative blobs */
 @keyframes blobFloat {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(20px, -30px) scale(1.05); }
@@ -100,12 +116,6 @@ html { scroll-behavior: smooth; }
   animation: blobFloat 14s ease-in-out infinite;
 }
 
-/* Locomotive scroll (compat) */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
-
 /* Opening */
 @keyframes openFade {
   from { opacity: 1; }
@@ -113,16 +123,34 @@ html.lenis, html.lenis body { height: auto; }
 }
 .open-fade { animation: openFade 0.8s ease forwards; }
 
+/* Entrance animations — direction theme-driven via --reveal-anim */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(22px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.fade-up { opacity: 0; animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.fd-1 { animation-delay: 0.1s; }
-.fd-2 { animation-delay: 0.2s; }
-.fd-3 { animation-delay: 0.3s; }
-.fd-4 { animation-delay: 0.4s; }
-.fd-5 { animation-delay: 0.5s; }
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+:root { --reveal-anim: fadeUp; }
+.fade-up {
+  opacity: 0;
+  animation: var(--reveal-anim) 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--fd, 0s);
+}
+.fd-1 { --fd: 0.1s; }
+.fd-2 { --fd: 0.2s; }
+.fd-3 { --fd: 0.3s; }
+.fd-4 { --fd: 0.4s; }
+.fd-5 { --fd: 0.5s; }
 
 /* Line reveal */
 .line { overflow: hidden; }
@@ -150,7 +178,7 @@ html.lenis, html.lenis body { height: auto; }
   100% { left: 130%; }
 }
 
-/* Floating petals - terracotta tones */
+/* Floating petals — primary tones */
 @keyframes petalFall {
   0% { transform: translateY(-10%) rotate(0deg); opacity: 0; }
   10% { opacity: 0.5; }
@@ -161,20 +189,6 @@ html.lenis, html.lenis body { height: auto; }
   top: 0;
   border-radius: 100% 0 100% 0;
   animation: petalFall linear infinite;
-  pointer-events: none;
-}
-
-/* Vignette on cover images */
-.dark-vignette {
-  position: relative;
-}
-.dark-vignette::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at center, transparent 40%, rgba(15, 23, 42, 0.55) 100%),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.1));
   pointer-events: none;
 }
 

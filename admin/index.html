@@ -59,6 +59,7 @@
     <button data-tab="tab-text" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Teks</button>
     <button data-tab="tab-gift" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Tanda Kasih</button>
     <button data-tab="tab-rsvp" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">RSVP &amp; Ucapan</button>
+    <button data-tab="tab-theme" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Theme</button>
     <button data-tab="tab-settings" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Settings</button>
   </nav>
 
@@ -225,6 +226,69 @@
       </div>
     </section>
 
+    <section id="tab-theme" class="tab-panel hidden">
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-1">Warna</h2>
+        <p class="text-xs text-slate-500 mb-4">Pilih warna tema. Semua section ikut otomatis.</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <C name="theme.primary" label="Primary (aksen utama)" />
+          <C name="theme.primaryDark" label="Primary dark (hover)" />
+          <C name="theme.primaryLight" label="Primary light (heading)" />
+          <C name="theme.accent" label="Accent (secondary)" />
+          <C name="theme.bg" label="Background" />
+          <C name="theme.surface" label="Surface (card)" />
+          <C name="theme.fg" label="Text utama" />
+          <C name="theme.muted" label="Text redup" />
+          <C name="theme.border" label="Border" />
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-4">Shape</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <F name="theme.radiusCard" label="Radius kartu (px, cth: 16px)" />
+          <F name="theme.radiusBtn" label="Radius tombol (px, cth: 999px)" />
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-4">Font &amp; Ukuran Teks</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <F name="theme.fontScript" label="Font judul (cth: Great Vibes, cursive)" />
+          <F name="theme.fontSerif" label="Font body (cth: Cormorant Infant, serif)" />
+          <F name="theme.fontSans" label="Font sans (cth: Outfit, sans-serif)" />
+          <F name="theme.scriptSize" label="Ukuran nama cover (cth: text-6xl md:text-7xl)" />
+          <F name="theme.serifSize" label="Ukuran teks tamu (cth: text-2xl md:text-3xl)" />
+          <F name="theme.headingSize" label="Ukuran heading section (cth: text-5xl)" />
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-4">Animasi Teks</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="label">Arah gerakan teks</label>
+            <select id="theme.revealAnim" class="field">
+              <option value="fadeUp">Naik (fade up)</option>
+              <option value="fadeLeft">Dari kiri (fade left)</option>
+              <option value="fadeRight">Dari kanan (fade right)</option>
+              <option value="zoomIn">Zoom in</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6">
+        <h2 class="terra font-semibold mb-4">Efek Visual</h2>
+        <div class="grid md:grid-cols-2 gap-3">
+          <T name="theme.petalsEnabled" label="Kelopak jatuh (petals)" />
+          <T name="theme.blobsEnabled" label="Glow blur background (blobs)" />
+          <T name="theme.sheenEnabled" label="Efek kilau tombol (sheen)" />
+          <T name="theme.videoCover" label="Video sebagai cover background" />
+        </div>
+      </div>
+    </section>
+
     <section id="tab-settings" class="tab-panel hidden">
       <div class="card p-6 max-w-md">
         <h2 class="terra font-semibold mb-4">Ganti Password</h2>
@@ -298,13 +362,43 @@ function F({ name, label, textarea }) {
   return `<label class="label">${label}</label><input data-path="${name}" value="${esc(val)}" class="field mb-3" />`;
 }
 
+function C({ name, label }) {
+  const val = getPath(cfg, name) ?? "#000000";
+  return `<div class="mb-3">
+    <label class="label">${label}</label>
+    <div class="flex items-center gap-2">
+      <input type="color" data-path="${name}" value="${esc(val)}" class="w-10 h-10 rounded-lg border border-[#e7d8d3] cursor-pointer" />
+      <input data-path="${name}" value="${esc(val)}" class="field flex-1" />
+    </div>
+  </div>`;
+}
+
+function T({ name, label }) {
+  return `<label class="flex items-center gap-2 py-2 cursor-pointer">
+    <input type="checkbox" data-path="${name}" class="w-4 h-4 accent-[#9a3412]" /> ${label}
+  </label>`;
+}
+
+function renderSelects() {
+  const ra = getPath(cfg, "theme.revealAnim") || "fadeUp";
+  const sel = $("theme.revealAnim");
+  if (sel) sel.value = ra;
+}
+
 function renderForms() {
   document.querySelectorAll("[data-path]").forEach((el) => {
-    el.value = getPath(cfg, el.dataset.path) ?? "";
+    if (el.type === "checkbox") {
+      el.checked = !!getPath(cfg, el.dataset.path);
+    } else if (el.type === "color") {
+      el.value = getPath(cfg, el.dataset.path) ?? "#000000";
+    } else {
+      el.value = getPath(cfg, el.dataset.path) ?? "";
+    }
   });
   $("media.videoEnabled").checked = !!getPath(cfg, "media.videoEnabled");
   $("media.musicEnabled").checked = !!getPath(cfg, "media.musicEnabled");
   $("gift.qrisEnabled").checked = !!getPath(cfg, "gift.qrisEnabled");
+  renderSelects();
   renderGalleryList();
   renderFileList();
   $("videoInfo").textContent = getPath(cfg, "media.video") || "Belum ada video";
@@ -416,11 +510,15 @@ $("upload-music").addEventListener("change", (e) => {
 async function saveAll() {
   try {
     document.querySelectorAll("[data-path]").forEach((el) => {
-      setPath(cfg, el.dataset.path, el.value);
+      if (el.type === "checkbox") setPath(cfg, el.dataset.path, el.checked);
+      else if (el.type === "color") setPath(cfg, el.dataset.path, el.value);
+      else setPath(cfg, el.dataset.path, el.value);
     });
     setPath(cfg, "media.videoEnabled", $("media.videoEnabled").checked);
     setPath(cfg, "media.musicEnabled", $("media.musicEnabled").checked);
     setPath(cfg, "gift.qrisEnabled", $("gift.qrisEnabled").checked);
+    const ra = $("theme.revealAnim");
+    if (ra) setPath(cfg, "theme.revealAnim", ra.value);
     await api("/api/config", { method: "POST", body: JSON.stringify(cfg) });
     toast("Undangan tersimpan & deployed!");
   } catch (e) {

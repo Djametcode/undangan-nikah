@@ -79,5 +79,30 @@
   },
   "footer": {
     "credit": "© 2025 ART JAWA COKLAT · Dibuat dengan ❤"
+  },
+  "theme": {
+    "primary": "#9a3412",
+    "primaryDark": "#7c2d12",
+    "primaryLight": "#c2410c",
+    "accent": "#059669",
+    "bg": "#fffbeb",
+    "surface": "#ffffff",
+    "fg": "#0f172a",
+    "muted": "#6b7280",
+    "border": "#e7d8d3",
+    "sand": "#f7f0e3",
+    "radiusCard": "16px",
+    "radiusBtn": "999px",
+    "fontScript": "Great Vibes, cursive",
+    "fontSerif": "Cormorant Infant, Georgia, serif",
+    "fontSans": "Outfit, system-ui, sans-serif",
+    "revealAnim": "fadeUp",
+    "petalsEnabled": true,
+    "blobsEnabled": true,
+    "videoCover": false,
+    "sheenEnabled": true,
+    "scriptSize": "text-6xl md:text-7xl",
+    "serifSize": "text-2xl md:text-3xl",
+    "headingSize": "text-5xl"
   }
 }

@@ -37,6 +37,31 @@ interface Cfg {
   media: { video: string; videoEnabled: boolean; music: string; musicEnabled: boolean };
   footer: { credit: string };
   photos: { cover: string; groom: string; bride: string; gallery: string[] };
+  theme: {
+    primary: string;
+    primaryDark: string;
+    primaryLight: string;
+    accent: string;
+    bg: string;
+    surface: string;
+    fg: string;
+    muted: string;
+    border: string;
+    sand: string;
+    radiusCard: string;
+    radiusBtn: string;
+    fontScript: string;
+    fontSerif: string;
+    fontSans: string;
+    revealAnim: string;
+    petalsEnabled: boolean;
+    blobsEnabled: boolean;
+    videoCover: boolean;
+    sheenEnabled: boolean;
+    scriptSize: string;
+    serifSize: string;
+    headingSize: string;
+  };
 }
 
 const DEFAULT_CFG: Cfg = {
@@ -66,6 +91,31 @@ const DEFAULT_CFG: Cfg = {
   media: { video: "", videoEnabled: false, music: "", musicEnabled: false },
   footer: { credit: "© 2025 Undangan Studio" },
   photos: { cover: "", groom: "", bride: "", gallery: [] },
+  theme: {
+    primary: "#9a3412",
+    primaryDark: "#7c2d12",
+    primaryLight: "#c2410c",
+    accent: "#059669",
+    bg: "#fffbeb",
+    surface: "#ffffff",
+    fg: "#0f172a",
+    muted: "#6b7280",
+    border: "#e7d8d3",
+    sand: "#f7f0e3",
+    radiusCard: "16px",
+    radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive",
+    fontSerif: "Cormorant Infant, Georgia, serif",
+    fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp",
+    petalsEnabled: true,
+    blobsEnabled: true,
+    videoCover: false,
+    sheenEnabled: true,
+    scriptSize: "text-6xl md:text-7xl",
+    serifSize: "text-lg",
+    headingSize: "text-5xl",
+  },
 };
 
 function deepMerge(base: Cfg, incoming: Partial<Cfg>): Cfg {
@@ -93,6 +143,35 @@ function useConfig() {
       .catch(() => setCfg(DEFAULT_CFG));
   }, []);
   return cfg;
+}
+
+/* Apply theme config to CSS variables */
+function useApplyTheme(cfg: Cfg | null) {
+  useEffect(() => {
+    if (!cfg?.theme) return;
+    const t = cfg.theme;
+    const r = document.documentElement.style;
+    r.setProperty("--clr-primary", t.primary);
+    r.setProperty("--clr-primary-dark", t.primaryDark);
+    r.setProperty("--clr-primary-light", t.primaryLight);
+    r.setProperty("--clr-accent", t.accent);
+    r.setProperty("--clr-bg", t.bg);
+    r.setProperty("--clr-surface", t.surface);
+    r.setProperty("--clr-fg", t.fg);
+    r.setProperty("--clr-muted", t.muted);
+    r.setProperty("--clr-border", t.border);
+    r.setProperty("--clr-sand", t.sand);
+    r.setProperty("--radius-card", t.radiusCard);
+    r.setProperty("--radius-btn", t.radiusBtn);
+    r.setProperty("--font-script", t.fontScript);
+    r.setProperty("--font-serif", t.fontSerif);
+    r.setProperty("--font-sans", t.fontSans);
+    r.setProperty("--reveal-anim", t.revealAnim);
+    // body classes for toggles
+    document.body.classList.toggle("no-petals", t.petalsEnabled === false);
+    document.body.classList.toggle("no-blobs", t.blobsEnabled === false);
+    document.body.classList.toggle("no-sheen", t.sheenEnabled === false);
+  }, [cfg]);
 }
 
 /* ---------- Guest name from URL (?to=...) ---------- */
@@ -215,16 +294,16 @@ function useWeddingAnimations(dep: unknown = true) {
 function Blobs() {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden>
-      <div className="blob w-80 h-80 bg-terra/30" style={{ top: "8%", left: "-8%" }} />
-      <div className="blob w-96 h-96 bg-terra/20" style={{ top: "45%", right: "-12%", animationDelay: "4s" }} />
-      <div className="blob w-72 h-72 bg-terra/25" style={{ bottom: "8%", left: "18%", animationDelay: "8s" }} />
+      <div className="blob w-80 h-80 bg-primary/30" style={{ top: "8%", left: "-8%" }} />
+      <div className="blob w-96 h-96 bg-primary/20" style={{ top: "45%", right: "-12%", animationDelay: "4s" }} />
+      <div className="blob w-72 h-72 bg-primary/25" style={{ bottom: "8%", left: "18%", animationDelay: "8s" }} />
     </div>
   );
 }
 
 function CornerOrnament({ className = "", flip = false }: { className?: string; flip?: boolean }) {
   return (
-    <svg viewBox="0 0 120 120" fill="none" className={`text-terra ${className} ${flip ? "rotate-180" : ""}`} aria-hidden>
+    <svg viewBox="0 0 120 120" fill="none" className={`text-primary ${className} ${flip ? "rotate-180" : ""}`} aria-hidden>
       <path d="M0 120V0h8v112h112v8H0z" stroke="currentColor" strokeWidth="1.5" />
       <path d="M8 120V8h8v104h104v8H8z" stroke="currentColor" strokeWidth="0.75" opacity="0.6" />
       <path d="M18 60c14-4 22-12 26-26 4 14 12 22 26 26-14 4-22 12-26 26-4-14-12-22-26-26z" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
@@ -235,7 +314,7 @@ function CornerOrnament({ className = "", flip = false }: { className?: string; 
 
 function Ornament({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 200 24" fill="none" className={`text-terra ${className}`} aria-hidden>
+    <svg viewBox="0 0 200 24" fill="none" className={`text-primary ${className}`} aria-hidden>
       <path d="M0 12h78M122 12h78" stroke="currentColor" strokeWidth="0.75" opacity="0.7" />
       <path d="M100 2c8 5 8 15 0 20-8-5-8-15 0-20z" fill="currentColor" opacity="0.85" />
       <path d="M92 12h16M96 7h8M96 17h8" stroke="currentColor" strokeWidth="0.5" opacity="0.6" />
@@ -277,14 +356,14 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
   return (
     <div className="fixed inset-0 z-50 bg-bg flex flex-col items-center justify-center">
       <div className="relative mb-8">
-        <div className="w-20 h-20 rounded-full border border-terra/20 border-t-gold ring-spin" />
+        <div className="w-20 h-20 rounded-full border border-primary/20 border-t-gold ring-spin" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="script-display text-2xl text-terra">A&nbsp;&amp;&nbsp;A</span>
+          <span className="script-display text-2xl text-primary">A&nbsp;&amp;&nbsp;A</span>
         </div>
       </div>
-      <div className="script-display text-4xl text-terra mb-8">Loading</div>
-      <div className="w-56 h-1.5 bg-terra/15 rounded-full overflow-hidden">
-        <div className="h-full bg-terra rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+      <div className="script-display text-4xl text-primary mb-8">Loading</div>
+      <div className="w-56 h-1.5 bg-primary/15 rounded-full overflow-hidden">
+        <div className="h-full bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
       </div>
       <small className="mt-4 text-muted text-xs">{progress}%</small>
     </div>
@@ -293,8 +372,8 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
 
 /* ---------- Cover ---------- */
 function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg: Cfg }) {
-  const { couple, brand, photos, media } = cfg;
-  const hasVideo = media.videoEnabled && media.video;
+  const { couple, brand, photos, media, theme } = cfg;
+  const hasVideo = (media.videoEnabled || theme.videoCover) && media.video;
   return (
     <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden bg-bg">
@@ -309,22 +388,22 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-b from-bg/70 via-bg/20 to-bg" />
       </div>
-      <Petals />
+      {theme.petalsEnabled && <Petals />}
 
       <div className="relative z-10 px-4">
         <p className="kicker fade-up fd-1 mb-6 tracking-[0.5em]">{brand.kicker}</p>
-        <h1 data-line-reveal className="script-display text-6xl md:text-7xl text-terra-light fade-up fd-2">
+        <h1 data-line-reveal className={`script-display text-primary fade-up fd-2 ${theme.scriptSize}`}>
           <span className="line"><span className="line-inner">{couple.groom} {couple.ampersand} {couple.bride}</span></span>
         </h1>
         <Ornament className="w-40 mx-auto my-6 fade-up fd-3" />
 
-        <p className="text-slate-mid/60 text-xs uppercase tracking-[0.25em] mt-8 fade-up fd-4">Kepada Bapak/Ibu/Saudara/i</p>
-        <p className="serif-body text-2xl md:text-3xl text-slate-ink my-2 fade-up fd-4">{guest}</p>
-        <p className="text-slate-mid/60 text-xs uppercase tracking-[0.25em] fade-up fd-4">Di Tempat</p>
+        <p className="text-muted/60 text-xs uppercase tracking-[0.25em] mt-8 fade-up fd-4">Kepada Bapak/Ibu/Saudara/i</p>
+        <p className={`serif-body text-fg my-2 fade-up fd-4 ${theme.serifSize}`}>{guest}</p>
+        <p className="text-muted/60 text-xs uppercase tracking-[0.25em] fade-up fd-4">Di Tempat</p>
 
         <button
           onClick={onOpen}
-          className="sheen fade-up fd-5 mt-10 border border-terra text-terra-light hover:bg-terra hover:text-bg px-10 py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+          className={`${theme.sheenEnabled ? "sheen " : ""}fade-up fd-5 mt-10 border border-primary text-primary hover:bg-primary hover:text-bg px-10 py-4 text-sm font-medium rounded-btn transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer`}
         >
           Buka Undangan
         </button>
@@ -332,10 +411,10 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
 
       <div className="absolute bottom-8 z-10">
         <div className="flex flex-col items-center gap-1.5 opacity-60">
-          <div className="w-5 h-8 border border-terra/50 rounded-full flex justify-center pt-1.5">
-            <div className="w-1 h-1.5 bg-terra rounded-full animate-bounce" />
+          <div className="w-5 h-8 border border-primary/50 rounded-full flex justify-center pt-1.5">
+            <div className="w-1 h-1.5 bg-primary rounded-full animate-bounce" />
           </div>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-ink/50">Scroll</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted/60">Scroll</span>
         </div>
       </div>
     </section>
@@ -350,7 +429,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16" data-reveal>
           <span className="kicker block mb-4">Kedua Mempelai</span>
-          <h2 data-line-reveal className="script-display text-5xl md:text-6xl text-terra-light">
+          <h2 data-line-reveal className="script-display text-5xl md:text-6xl text-primary-light">
             <span className="line"><span className="line-inner">{couple.groom} {couple.ampersand} {couple.bride}</span></span>
           </h2>
           <Ornament className="w-40 mx-auto mt-6" />
@@ -363,12 +442,12 @@ function Couple({ cfg }: { cfg: Cfg }) {
                 {photos.groom ? (
                   <img src={photos.groom} alt={couple.groomFull} className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
                 ) : (
-                  <div className="w-full aspect-[3/4] flex items-center justify-center"><span className="script-display text-4xl text-terra/50">{couple.groom.charAt(0)}</span></div>
+                  <div className="w-full aspect-[3/4] flex items-center justify-center"><span className="script-display text-4xl text-primary/50">{couple.groom.charAt(0)}</span></div>
                 )}
               </div>
             </div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-terra mb-2">Mempelai Pria</p>
-            <h3 className="serif-body text-3xl text-slate-ink">{couple.groomFull}</h3>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">Mempelai Pria</p>
+            <h3 className="serif-body text-3xl text-fg">{couple.groomFull}</h3>
             <p className="mt-2 serif-body text-muted leading-relaxed max-w-xs mx-auto">{couple.groomDesc}</p>
           </div>
 
@@ -378,19 +457,19 @@ function Couple({ cfg }: { cfg: Cfg }) {
                 {photos.bride ? (
                   <img src={photos.bride} alt={couple.brideFull} className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
                 ) : (
-                  <div className="w-full aspect-[3/4] flex items-center justify-center"><span className="script-display text-4xl text-terra/50">{couple.bride.charAt(0)}</span></div>
+                  <div className="w-full aspect-[3/4] flex items-center justify-center"><span className="script-display text-4xl text-primary/50">{couple.bride.charAt(0)}</span></div>
                 )}
               </div>
             </div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-terra mb-2">Mempelai Wanita</p>
-            <h3 className="serif-body text-3xl text-slate-ink">{couple.brideFull}</h3>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">Mempelai Wanita</p>
+            <h3 className="serif-body text-3xl text-fg">{couple.brideFull}</h3>
             <p className="mt-2 serif-body text-muted leading-relaxed max-w-xs mx-auto">{couple.brideDesc}</p>
           </div>
         </div>
 
         <div className="text-center mt-20" data-reveal>
-          <p className="script-display text-4xl text-terra mb-6">{couple.ampersand}</p>
-          <p className="serif-body text-lg text-slate-mid/80 italic leading-relaxed max-w-2xl mx-auto">{quote.text}</p>
+          <p className="script-display text-4xl text-primary mb-6">{couple.ampersand}</p>
+          <p className="serif-body text-lg text-muted/80 italic leading-relaxed max-w-2xl mx-auto">{quote.text}</p>
           <p className="text-muted text-xs uppercase tracking-[0.3em] mt-4">{quote.source}</p>
         </div>
       </div>
@@ -405,7 +484,7 @@ function SaveTheDate({ cfg }: { cfg: Cfg }) {
     <section className="py-20 px-4 bg-sand/60">
       <div className="max-w-3xl mx-auto text-center" data-reveal>
         <span className="kicker block mb-4">Save The Date</span>
-        <p className="serif-body text-2xl md:text-3xl text-slate-ink mb-2">{cfg.event.day}, {cfg.event.date}</p>
+        <p className="serif-body text-2xl md:text-3xl text-fg mb-2">{cfg.event.day}, {cfg.event.date}</p>
         <Ornament className="w-36 mx-auto my-6" />
         <div className="flex justify-center gap-3 md:gap-6">
           {[
@@ -415,7 +494,7 @@ function SaveTheDate({ cfg }: { cfg: Cfg }) {
             { label: "Detik", value: t.s },
           ].map((c) => (
             <div key={c.label} className="flex flex-col items-center soft-card px-4 md:px-7 py-5 soft-shadow min-w-[76px] md:min-w-[104px]">
-              <div className="serif-body text-4xl md:text-5xl text-terra-light tabular-nums">{c.value}</div>
+              <div className="serif-body text-4xl md:text-5xl text-primary-light tabular-nums">{c.value}</div>
               <div className="text-[10px] uppercase tracking-[0.25em] text-muted mt-2">{c.label}</div>
             </div>
           ))}
@@ -431,13 +510,13 @@ function EventCard({ title, time, place, mapsUrl }: { title: string; time: strin
     <div data-reveal className="soft-card p-10 text-center soft-shadow hover:soft-shadow-lg transition-shadow duration-300 relative overflow-hidden">
       <CornerOrnament className="absolute top-3 left-3 w-10" />
       <CornerOrnament className="absolute bottom-3 right-3 w-10 flip" />
-      <h3 className="serif-body text-3xl text-terra-light mb-3">{title}</h3>
+      <h3 className="serif-body text-3xl text-primary-light mb-3">{title}</h3>
       <div className="hairline w-16 mx-auto mb-6" />
-      <div className="serif-body text-2xl text-slate-ink mb-2">{time}</div>
+      <div className="serif-body text-2xl text-fg mb-2">{time}</div>
       <div className="serif-body text-muted leading-relaxed max-w-sm mx-auto">{place}</div>
       <a
         href={mapsUrl} target="_blank" rel="noreferrer"
-        className="mt-7 inline-flex items-center gap-2 border border-terra text-terra-light hover:bg-terra hover:text-bg px-6 py-2.5 text-xs uppercase tracking-[0.2em] rounded-full transition-all duration-300 cursor-pointer"
+        className="mt-7 inline-flex items-center gap-2 border border-primary text-primary-light hover:bg-primary hover:text-bg px-6 py-2.5 text-xs uppercase tracking-[0.2em] rounded-full transition-all duration-300 cursor-pointer"
       >
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -455,7 +534,7 @@ function Info({ cfg }: { cfg: Cfg }) {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-14" data-reveal>
           <span className="kicker block mb-4">Info Acara</span>
-          <h2 data-line-reveal className="script-display text-5xl text-terra-light">
+          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
             <span className="line"><span className="line-inner">Rangkaian Acara</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
@@ -489,7 +568,7 @@ function Gallery({ cfg }: { cfg: Cfg }) {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12" data-reveal>
           <span className="kicker block mb-4">Galeri</span>
-          <h2 data-line-reveal className="script-display text-5xl text-terra-light">
+          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
             <span className="line"><span className="line-inner">{cfg.gallery.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
@@ -506,15 +585,15 @@ function Gallery({ cfg }: { cfg: Cfg }) {
           </div>
           {images.length > 1 && (
             <>
-              <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-terra hover:text-bg border border-terra/40 text-terra-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Sebelumnya">
+              <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-primary hover:text-bg border border-primary/40 text-primary-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Sebelumnya">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
               </button>
-              <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-terra hover:text-bg border border-terra/40 text-terra-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Berikutnya">
+              <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-primary hover:text-bg border border-primary/40 text-primary-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Berikutnya">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
               </button>
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                 {images.map((_, i) => (
-                  <button key={i} onClick={() => setIdx(i)} className={`w-2 h-2 rounded-full transition-all cursor-pointer ${i === idx % images.length ? "bg-terra w-6" : "bg-cream/40 hover:bg-cream/70"}`} aria-label={`Foto ${i + 1}`} />
+                  <button key={i} onClick={() => setIdx(i)} className={`w-2 h-2 rounded-full transition-all cursor-pointer ${i === idx % images.length ? "bg-primary w-6" : "bg-muted/40 hover:bg-muted/70"}`} aria-label={`Foto ${i + 1}`} />
                 ))}
               </div>
             </>
@@ -551,7 +630,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
       <div className="max-w-xl mx-auto text-center">
         <div data-reveal>
           <span className="kicker block mb-4">Tanda Kasih</span>
-          <h2 data-line-reveal className="script-display text-5xl text-terra-light mb-5">
+          <h2 data-line-reveal className="script-display text-5xl text-primary-light mb-5">
             <span className="line"><span className="line-inner">{gift.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mb-6" />
@@ -561,21 +640,21 @@ function Gift({ cfg }: { cfg: Cfg }) {
         <div className={`grid gap-3 ${gift.qrisEnabled ? "grid-cols-3" : "grid-cols-2"}`} data-reveal>
           <button
             onClick={() => setOpen(open === "bank" ? null : "bank")}
-            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "bank" ? "bg-terra text-bg border-terra soft-shadow" : "border border-terra/40 text-terra-light hover:border-terra"}`}
+            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "bank" ? "bg-primary text-bg border-primary soft-shadow" : "border border-primary/40 text-primary-light hover:border-primary"}`}
           >
             Transfer Bank
           </button>
           {gift.qrisEnabled && (
             <button
               onClick={() => setOpen(open === "qris" ? null : "qris")}
-              className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "qris" ? "bg-terra text-bg border-terra soft-shadow" : "border border-terra/40 text-terra-light hover:border-terra"}`}
+              className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "qris" ? "bg-primary text-bg border-primary soft-shadow" : "border border-primary/40 text-primary-light hover:border-primary"}`}
             >
               QRIS
             </button>
           )}
           <button
             onClick={() => setOpen(open === "kado" ? null : "kado")}
-            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "kado" ? "bg-terra text-bg border-terra soft-shadow" : "border border-terra/40 text-terra-light hover:border-terra"}`}
+            className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "kado" ? "bg-primary text-bg border-primary soft-shadow" : "border border-primary/40 text-primary-light hover:border-primary"}`}
           >
             Kirim Kado
           </button>
@@ -595,11 +674,11 @@ function Gift({ cfg }: { cfg: Cfg }) {
             <div className="flex justify-between items-center border-b border-border pb-4">
               <div>
                 <p className="text-muted text-sm">{gift.bank.name}</p>
-                <p className="serif-body text-2xl text-slate-ink mt-1">{gift.bank.number}</p>
+                <p className="serif-body text-2xl text-fg mt-1">{gift.bank.number}</p>
               </div>
               <button
                 onClick={() => copy("bank", gift.bank.number)}
-                className="border border-terra text-terra-light hover:bg-terra hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
+                className="border border-primary text-primary-light hover:bg-primary hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
               >
                 {copied === "bank" ? "Tersalin ✓" : "Copy Rekening"}
               </button>
@@ -613,12 +692,12 @@ function Gift({ cfg }: { cfg: Cfg }) {
             <div className="flex justify-between items-start gap-4 border-b border-border pb-4">
               <div>
                 <p className="text-muted text-sm mb-1">Kirim Kado:</p>
-                <p className="serif-body text-lg text-slate-ink">{gift.kado.name}</p>
+                <p className="serif-body text-lg text-fg">{gift.kado.name}</p>
                 <p className="text-muted text-sm mt-1">{gift.kado.address}</p>
               </div>
               <button
                 onClick={() => copy("kado", `${gift.kado.name}, ${gift.kado.address}`)}
-                className="shrink-0 border border-terra text-terra-light hover:bg-terra hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
+                className="shrink-0 border border-primary text-primary-light hover:bg-primary hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
               >
                 {copied === "kado" ? "Tersalin ✓" : "Copy Alamat"}
               </button>
@@ -635,14 +714,14 @@ function Gift({ cfg }: { cfg: Cfg }) {
 
           {status === "sent" ? (
             <div className="soft-card p-10 text-center soft-shadow-lg">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-terra/15 flex items-center justify-center">
-                <svg className="w-7 h-7 text-terra-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/15 flex items-center justify-center">
+                <svg className="w-7 h-7 text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="script-display text-4xl text-terra-light mb-2">Terima kasih!</p>
+              <p className="script-display text-4xl text-primary-light mb-2">Terima kasih!</p>
               <p className="serif-body text-muted">Konfirmasi Anda sudah tercatat.</p>
-              <button onClick={() => { setStatus("idle"); setForm({ name: "", bank: "", nominal: "", ucapan: "", file: "" }); }} className="mt-6 text-terra-light hover:text-terra text-sm font-medium transition-colors cursor-pointer">
+              <button onClick={() => { setStatus("idle"); setForm({ name: "", bank: "", nominal: "", ucapan: "", file: "" }); }} className="mt-6 text-primary-light hover:text-primary text-sm font-medium transition-colors cursor-pointer">
                 Kirim lagi
               </button>
             </div>
@@ -650,27 +729,27 @@ function Gift({ cfg }: { cfg: Cfg }) {
             <form onSubmit={submit} className="space-y-5">
               <div>
                 <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama *</label>
-                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-terra focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
+                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama Bank</label>
-                  <input value={form.bank} onChange={(e) => setForm({ ...form, bank: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-terra focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="BCA / Mandiri / dll" />
+                  <input value={form.bank} onChange={(e) => setForm({ ...form, bank: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="BCA / Mandiri / dll" />
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nominal</label>
-                  <input value={form.nominal} onChange={(e) => setForm({ ...form, nominal: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-terra focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Rp. 100.000" />
+                  <input value={form.nominal} onChange={(e) => setForm({ ...form, nominal: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Rp. 100.000" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest text-muted mb-2">Ucapan</label>
-                <textarea value={form.ucapan} onChange={(e) => setForm({ ...form, ucapan: e.target.value })} rows={3} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-terra focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none" placeholder="Tulis ucapan..." />
+                <textarea value={form.ucapan} onChange={(e) => setForm({ ...form, ucapan: e.target.value })} rows={3} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none" placeholder="Tulis ucapan..." />
               </div>
               <div>
                 <label className="block text-xs uppercase tracking-widest text-muted mb-2">Bukti TF</label>
-                <input type="file" accept="image/*" onChange={(e) => setForm({ ...form, file: e.target.files?.[0]?.name || "" })} className="w-full text-sm text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:bg-terra/15 file:text-terra-light file:text-xs file:uppercase file:tracking-widest file:cursor-pointer hover:file:bg-terra/25 cursor-pointer" />
+                <input type="file" accept="image/*" onChange={(e) => setForm({ ...form, file: e.target.files?.[0]?.name || "" })} className="w-full text-sm text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:bg-primary/15 file:text-primary-light file:text-xs file:uppercase file:tracking-widest file:cursor-pointer hover:file:bg-primary/25 cursor-pointer" />
               </div>
-              <button type="submit" disabled={status === "sending"} className="sheen w-full bg-terra hover:bg-terra-light text-bg py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer">
+              <button type="submit" disabled={status === "sending"} className="sheen w-full bg-primary hover:bg-primary-light text-bg py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer">
                 {status === "sending" ? (
                   <span className="inline-flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full border-2 border-bg/40 border-t-bg ring-spin" />
@@ -702,7 +781,7 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-12" data-reveal>
           <span className="kicker block mb-4">RSVP</span>
-          <h2 data-line-reveal className="script-display text-5xl text-terra-light">
+          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
             <span className="line"><span className="line-inner">{cfg.rsvp.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
@@ -711,14 +790,14 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
 
         {status === "sent" ? (
           <div data-reveal className="soft-card p-12 text-center soft-shadow-lg">
-            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-terra/15 flex items-center justify-center">
-              <svg className="w-7 h-7 text-terra-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/15 flex items-center justify-center">
+              <svg className="w-7 h-7 text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p className="script-display text-4xl text-terra-light mb-2">Terima kasih!</p>
+            <p className="script-display text-4xl text-primary-light mb-2">Terima kasih!</p>
             <p className="serif-body text-muted">Konfirmasi Anda sudah tercatat.</p>
-            <button onClick={() => { setStatus("idle"); setForm({ name: "", presence: "Hadir", jumlah: "1 Orang" }); }} className="mt-6 text-terra-light hover:text-terra text-sm font-medium transition-colors cursor-pointer">
+            <button onClick={() => { setStatus("idle"); setForm({ name: "", presence: "Hadir", jumlah: "1 Orang" }); }} className="mt-6 text-primary-light hover:text-primary text-sm font-medium transition-colors cursor-pointer">
               Kirim lagi
             </button>
           </div>
@@ -726,13 +805,13 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
           <form onSubmit={submit} data-reveal className="space-y-5">
             <div>
               <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama *</label>
-              <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-terra focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
+              <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
             </div>
             <div>
               <label className="block text-xs uppercase tracking-widest text-muted mb-2">Konfirmasi Kehadiran *</label>
               <div className="grid grid-cols-2 gap-3">
                 {["Hadir", "Tidak Hadir"].map((p) => (
-                  <button type="button" key={p} onClick={() => setForm({ ...form, presence: p })} className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${form.presence === p ? "bg-terra text-bg border-terra soft-shadow" : "border-terra/30 text-muted hover:border-terra"}`}>
+                  <button type="button" key={p} onClick={() => setForm({ ...form, presence: p })} className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${form.presence === p ? "bg-primary text-bg border-primary soft-shadow" : "border-primary/30 text-muted hover:border-primary"}`}>
                     {p}
                   </button>
                 ))}
@@ -742,13 +821,13 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
               <label className="block text-xs uppercase tracking-widest text-muted mb-2">Jumlah *</label>
               <div className="grid grid-cols-2 gap-3">
                 {["1 Orang", "2 Orang"].map((p) => (
-                  <button type="button" key={p} onClick={() => setForm({ ...form, jumlah: p })} className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${form.jumlah === p ? "bg-terra text-bg border-terra soft-shadow" : "border-terra/30 text-muted hover:border-terra"}`}>
+                  <button type="button" key={p} onClick={() => setForm({ ...form, jumlah: p })} className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${form.jumlah === p ? "bg-primary text-bg border-primary soft-shadow" : "border-primary/30 text-muted hover:border-primary"}`}>
                     {p}
                   </button>
                 ))}
               </div>
             </div>
-            <button type="submit" disabled={status === "sending"} className="sheen w-full bg-terra hover:bg-terra-light text-bg py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer">
+            <button type="submit" disabled={status === "sending"} className="sheen w-full bg-primary hover:bg-primary-light text-bg py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer">
               {status === "sending" ? (
                 <span className="inline-flex items-center gap-2">
                   <span className="w-4 h-4 rounded-full border-2 border-bg/40 border-t-bg ring-spin" />
@@ -787,7 +866,7 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-12" data-reveal>
           <span className="kicker block mb-4">Ucapan &amp; Doa</span>
-          <h2 data-line-reveal className="script-display text-5xl text-terra-light">
+          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
             <span className="line"><span className="line-inner">{cfg.guestbook.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
@@ -797,13 +876,13 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
         <form onSubmit={submit} data-reveal className="soft-card p-6 soft-shadow space-y-4">
           <div>
             <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama</label>
-            <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-terra focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
+            <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
           </div>
           <div>
             <label className="block text-xs uppercase tracking-widest text-muted mb-2">Ucapan</label>
-            <textarea required value={msg} onChange={(e) => setMsg(e.target.value)} rows={3} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-terra focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none" placeholder="Silakan kasih ucapan di bawah ini" />
+            <textarea required value={msg} onChange={(e) => setMsg(e.target.value)} rows={3} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none" placeholder="Silakan kasih ucapan di bawah ini" />
           </div>
-          <button type="submit" className="w-full bg-terra hover:bg-terra-light text-bg py-3.5 text-sm font-medium rounded-full transition-all duration-300 soft-shadow cursor-pointer active:scale-[0.98]">
+          <button type="submit" className="w-full bg-primary hover:bg-primary-light text-bg py-3.5 text-sm font-medium rounded-full transition-all duration-300 soft-shadow cursor-pointer active:scale-[0.98]">
             {sent ? "Terkirim ✓" : "Kirim"}
           </button>
         </form>
@@ -811,11 +890,11 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
         <div className="mt-8 space-y-3" data-reveal>
           {list.map((g, i) => (
             <div key={i} className="soft-card p-5 soft-shadow flex gap-4 items-start">
-              <div className="w-11 h-11 shrink-0 rounded-full bg-terra/15 border border-terra/40 flex items-center justify-center text-terra-light font-medium">
+              <div className="w-11 h-11 shrink-0 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center text-primary-light font-medium">
                 {g.name.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <p className="text-slate-ink text-sm font-medium">{g.name}</p>
+                <p className="text-fg text-sm font-medium">{g.name}</p>
                 <p className="serif-body text-muted mt-1 leading-relaxed">{g.msg}</p>
               </div>
             </div>
@@ -834,12 +913,12 @@ function Closing({ cfg }: { cfg: Cfg }) {
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
         <span className="kicker block mb-4">Terima Kasih</span>
-        <h2 data-line-reveal className="script-display text-6xl text-terra-light mb-6">
+        <h2 data-line-reveal className="script-display text-6xl text-primary-light mb-6">
           <span className="line"><span className="line-inner">{cfg.closing.heading}</span></span>
         </h2>
         <Ornament className="w-40 mx-auto mb-8" />
-        <p className="serif-body text-lg text-slate-mid/80 leading-relaxed max-w-md mx-auto">{cfg.closing.text}</p>
-        <p className="serif-body text-3xl text-terra-light mt-12 mb-2">{cfg.couple.groomFull} &amp; {cfg.couple.brideFull}</p>
+        <p className="serif-body text-lg text-muted/80 leading-relaxed max-w-md mx-auto">{cfg.closing.text}</p>
+        <p className="serif-body text-3xl text-primary-light mt-12 mb-2">{cfg.couple.groomFull} &amp; {cfg.couple.brideFull}</p>
         <p className="text-muted text-xs uppercase tracking-[0.3em]">{cfg.event.date}</p>
       </div>
     </section>
@@ -849,7 +928,7 @@ function Closing({ cfg }: { cfg: Cfg }) {
 /* ---------- Footer ---------- */
 function Footer({ cfg }: { cfg: Cfg }) {
   return (
-    <footer className="py-10 px-4 text-center border-t border-terra/15">
+    <footer className="py-10 px-4 text-center border-t border-primary/15">
       <p className="text-muted text-xs">{cfg.footer.credit}</p>
     </footer>
   );
@@ -858,6 +937,7 @@ function Footer({ cfg }: { cfg: Cfg }) {
 /* ---------- App ---------- */
 export default function App() {
   const cfg = useConfig();
+  useApplyTheme(cfg);
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   const [opening, setOpening] = useState(false);
@@ -878,7 +958,7 @@ export default function App() {
       <Blobs />
 
       <div className="fixed top-0 left-0 right-0 h-0.5 bg-transparent z-50">
-        <div data-progress className="h-full bg-terra origin-left scale-x-0" />
+        <div data-progress className="h-full bg-primary origin-left scale-x-0" />
       </div>
 
       {!opened ? (
@@ -904,7 +984,7 @@ export default function App() {
       {cfg.media.musicEnabled && cfg.media.music && (
         <button
           onClick={toggle}
-          className="fixed bottom-5 right-5 z-40 w-12 h-12 rounded-full border border-terra bg-bg/85 backdrop-blur text-terra-light flex items-center justify-center soft-shadow-lg hover:bg-terra hover:text-bg transition-colors cursor-pointer"
+          className="fixed bottom-5 right-5 z-40 w-12 h-12 rounded-full border border-primary bg-bg/85 backdrop-blur text-primary-light flex items-center justify-center soft-shadow-lg hover:bg-primary hover:text-bg transition-colors cursor-pointer"
           aria-label={playing ? "Matikan musik" : "Putar musik"}
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
