@@ -428,8 +428,112 @@ function renderRsvp() {
   </div>`;
 }
 
+/* ---------- Theme Presets ---------- */
+const PRESETS = {
+  soft: {
+    name: "Soft UI Evolution",
+    primary: "#db2777", primaryDark: "#be185d", primaryLight: "#f472b6", accent: "#a16207",
+    bg: "#fdf2f8", surface: "#ffffff", fg: "#1e1b4b", muted: "#6b7280", border: "#f3d9e4", sand: "#fbeaf1",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  java: {
+    name: "ART JAWA COKLAT",
+    primary: "#9a3412", primaryDark: "#7c2d12", primaryLight: "#c2410c", accent: "#059669",
+    bg: "#fffbeb", surface: "#ffffff", fg: "#0f172a", muted: "#6b7280", border: "#e7d8d3", sand: "#f7f0e3",
+    radiusCard: "16px", radiusBtn: "999px",
+    fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "zoomIn", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "high", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  terra: {
+    name: "Terracotta + Slate",
+    primary: "#9a3412", primaryDark: "#7c2d12", primaryLight: "#c2410c", accent: "#0f172a",
+    bg: "#fffbeb", surface: "#ffffff", fg: "#1e293b", muted: "#6b7280", border: "#e7d8d3", sand: "#f2e6e2",
+    radiusCard: "16px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: false, videoCover: false, sheenEnabled: true,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  sage: {
+    name: "Sage Serenity",
+    primary: "#3d6b4f", primaryDark: "#2e5440", primaryLight: "#7ba384", accent: "#b08d57",
+    bg: "#f6f4ee", surface: "#ffffff", fg: "#2a352c", muted: "#7c857a", border: "#dfe6da", sand: "#ecefe4",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Parisienne, cursive", fontSerif: "Cormorant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: false, videoCover: false, sheenEnabled: true,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  midnight: {
+    name: "Royal Midnight",
+    primary: "#c9a227", primaryDark: "#a8871d", primaryLight: "#e0bd5e", accent: "#a8b8cf",
+    bg: "#0d1626", surface: "#16233a", fg: "#f2ead8", muted: "#94a3b8", border: "#2c3e5c", sand: "#1b2a44",
+    radiusCard: "24px", radiusBtn: "999px",
+    fontScript: "Sacramento, cursive", fontSerif: "Prata, Georgia, serif", fontSans: "Inter, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: false, blobsEnabled: true, videoCover: false, sheenEnabled: true,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "high", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "70", bgOpacity: "25"
+  }
+};
+
+function applyPreset(name) {
+  const p = PRESETS[name];
+  if (!p) return;
+  // set cfg.theme langsung (deep merge 2 level: theme + theme.motion) — sand ikut ter-set
+  cfg.theme = { ...cfg.theme, ...p, motion: { ...(cfg.theme.motion || {}), ...p.motion } };
+  renderAll("tab-theme");
+  toast("Preset '" + p.name + "' diterapkan. Klik Simpan & Deploy untuk menyimpan.");
+}
+
 function renderTheme() {
   return `<div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-1">Tema Preset</h2>
+    <p class="text-xs text-slate-500 mb-4">Klik satu preset → semua warna, font, radius &amp; animasi ke-isi otomatis. Bisa diedit manual dulu, lalu <b>Simpan &amp; Deploy</b>.</p>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      <button onclick="applyPreset('soft')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer">
+        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#db2777,#a16207)"></div>
+        <p class="text-xs font-semibold text-slate-700">Soft UI Evolution</p>
+        <p class="text-[10px] text-slate-400">Pink + gold, terang</p>
+      </button>
+      <button onclick="applyPreset('java')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer">
+        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#17100a,#c9a227)"></div>
+        <p class="text-xs font-semibold text-slate-700">ART JAWA COKLAT</p>
+        <p class="text-[10px] text-slate-400">Coklat gelap + emas</p>
+      </button>
+      <button onclick="applyPreset('terra')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer">
+        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#9a3412,#0f172a)"></div>
+        <p class="text-xs font-semibold text-slate-700">Terracotta + Slate</p>
+        <p class="text-[10px] text-slate-400">Earthy bohemian</p>
+      </button>
+      <button onclick="applyPreset('sage')" class="text-left border border-[#3d6b4f]/40 rounded-xl p-3 hover:border-[#3d6b4f] hover:bg-[#3d6b4f]/5 transition cursor-pointer ring-1 ring-[#3d6b4f]/20">
+        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#3d6b4f,#f6f4ee)"></div>
+        <p class="text-xs font-semibold text-slate-700">Sage Serenity <span class="text-[9px] bg-[#3d6b4f] text-white px-1.5 py-0.5 rounded-full">BARU</span></p>
+        <p class="text-[10px] text-slate-400">Botanical minimalis</p>
+      </button>
+      <button onclick="applyPreset('midnight')" class="text-left border border-[#c9a227]/40 rounded-xl p-3 hover:border-[#c9a227] hover:bg-[#c9a227]/5 transition cursor-pointer ring-1 ring-[#c9a227]/20">
+        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#0d1626,#c9a227)"></div>
+        <p class="text-xs font-semibold text-slate-700">Royal Midnight <span class="text-[9px] bg-[#c9a227] text-white px-1.5 py-0.5 rounded-full">BARU</span></p>
+        <p class="text-[10px] text-slate-400">Navy + emas, mewah</p>
+      </button>
+    </div>
+  </div>
+  <div class="card p-6 mb-5">
     <h2 class="terra font-semibold mb-1">Warna</h2>
     <p class="text-xs text-slate-500 mb-4">Pilih warna tema. Semua section ikut otomatis.</p>
     <div class="grid md:grid-cols-3 gap-4">
@@ -454,9 +558,43 @@ function renderTheme() {
   <div class="card p-6 mb-5">
     <h2 class="terra font-semibold mb-4">Font &amp; Ukuran Teks</h2>
     <div class="grid md:grid-cols-2 gap-4">
-      ${F("theme.fontScript", "Font judul (cth: Great Vibes, cursive)")}
-      ${F("theme.fontSerif", "Font body (cth: Cormorant Infant, serif)")}
-      ${F("theme.fontSans", "Font sans (cth: Outfit, sans-serif)")}
+      <div>
+        <label class="label">Font judul (script)</label>
+        <select id="theme.fontScript" class="field">
+          <option value="Great Vibes, cursive">Great Vibes</option>
+          <option value="Pinyon Script, cursive">Pinyon Script</option>
+          <option value="Dancing Script, cursive">Dancing Script</option>
+          <option value="Parisienne, cursive">Parisienne</option>
+          <option value="Sacramento, cursive">Sacramento</option>
+          <option value="Allura, cursive">Allura</option>
+          <option value="Tangerine, cursive">Tangerine</option>
+          <option value="Brush Script MT, cursive">Brush Script</option>
+        </select>
+      </div>
+      <div>
+        <label class="label">Font body (serif)</label>
+        <select id="theme.fontSerif" class="field">
+          <option value="Cormorant Infant, Georgia, serif">Cormorant Infant</option>
+          <option value="Cormorant, Georgia, serif">Cormorant</option>
+          <option value="Playfair Display, Georgia, serif">Playfair Display</option>
+          <option value="Lora, Georgia, serif">Lora</option>
+          <option value="EB Garamond, Georgia, serif">EB Garamond</option>
+          <option value="Prata, Georgia, serif">Prata</option>
+          <option value="Libre Baskerville, Georgia, serif">Libre Baskerville</option>
+        </select>
+      </div>
+      <div>
+        <label class="label">Font sans (umum)</label>
+        <select id="theme.fontSans" class="field">
+          <option value="Outfit, system-ui, sans-serif">Outfit</option>
+          <option value="Poppins, system-ui, sans-serif">Poppins</option>
+          <option value="Inter, system-ui, sans-serif">Inter</option>
+          <option value="Montserrat, system-ui, sans-serif">Montserrat</option>
+          <option value="Lato, system-ui, sans-serif">Lato</option>
+          <option value="Nunito, system-ui, sans-serif">Nunito</option>
+          <option value="Quicksand, system-ui, sans-serif">Quicksand</option>
+        </select>
+      </div>
       ${F("theme.scriptSize", "Ukuran nama cover (cth: text-6xl md:text-7xl)")}
       ${F("theme.serifSize", "Ukuran teks tamu (cth: text-2xl md:text-3xl)")}
       ${F("theme.headingSize", "Ukuran heading section (cth: text-5xl)")}
@@ -502,6 +640,21 @@ function renderTheme() {
     </div>
   </div>
   <div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Opacity Background</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="label">Opacity video background (%)</label>
+        <input type="range" data-path="theme.videoOpacity" min="10" max="100" step="5" class="w-full accent-[#9a3412]" />
+        <span id="videoOpacityVal" class="text-xs text-slate-500"></span>
+      </div>
+      <div>
+        <label class="label">Opacity overlay background (%)</label>
+        <input type="range" data-path="theme.bgOpacity" min="0" max="100" step="5" class="w-full accent-[#9a3412]" />
+        <span id="bgOpacityVal" class="text-xs text-slate-500"></span>
+      </div>
+    </div>
+  </div>
+  <div class="card p-6 mb-5">
     <h2 class="terra font-semibold mb-4">Galeri</h2>
     <div class="grid md:grid-cols-2 gap-4">
       <div>
@@ -536,7 +689,7 @@ function renderSettings() {
 }
 
 /* ---------- Render all panels ---------- */
-function renderAll() {
+function renderAll(activeTab) {
   $("main").innerHTML = `
     <section id="tab-couple" class="tab-panel hidden">${renderCouple()}</section>
     <section id="tab-event" class="tab-panel hidden">${renderEvent()}</section>
@@ -582,9 +735,28 @@ function renderAll() {
   if (pl) pl.value = getPath(cfg, "theme.motion.parallaxLevel") || "medium";
   const vc = $("theme.motion.videoCoverMode");
   if (vc) vc.value = getPath(cfg, "theme.motion.videoCoverMode") || "cover";
-  // activate first tab
-  document.querySelector(".tab-btn").classList.add("tab-active");
-  $("tab-couple").classList.remove("hidden");
+  const fs = $("theme.fontScript");
+  if (fs) fs.value = getPath(cfg, "theme.fontScript") || "Great Vibes, cursive";
+  const fse = $("theme.fontSerif");
+  if (fse) fse.value = getPath(cfg, "theme.fontSerif") || "Cormorant Infant, Georgia, serif";
+  const fsa = $("theme.fontSans");
+  if (fsa) fsa.value = getPath(cfg, "theme.fontSans") || "Outfit, system-ui, sans-serif";
+  const vop = $("videoOpacityVal");
+  if (vop) vop.textContent = "Nilai: " + (getPath(cfg, "theme.videoOpacity") || "70") + "%";
+  const bop = $("bgOpacityVal");
+  if (bop) bop.textContent = "Nilai: " + (getPath(cfg, "theme.bgOpacity") || "100") + "%";
+  // range input listeners
+  document.querySelectorAll('input[type="range"][data-path]').forEach((el) => {
+    el.addEventListener("input", () => {
+      if (el.dataset.path === "theme.videoOpacity") { const t = $("videoOpacityVal"); if (t) t.textContent = "Nilai: " + el.value + "%"; }
+      if (el.dataset.path === "theme.bgOpacity") { const t = $("bgOpacityVal"); if (t) t.textContent = "Nilai: " + el.value + "%"; }
+    });
+  });
+  // activate tab (default pertama; bisa diarahkan via argumen, e.g. renderAll("tab-theme"))
+  document.querySelectorAll(".tab-panel").forEach((p) => p.classList.add("hidden"));
+  const targetTab = activeTab || "tab-couple";
+  document.querySelectorAll(".tab-btn").forEach((b) => b.classList.toggle("tab-active", b.dataset.tab === targetTab));
+  $(targetTab).classList.remove("hidden");
   renderGalleryList();
   renderFileList();
   $("videoInfo").textContent = getPath(cfg, "media.video") || "Belum ada video";
@@ -693,6 +865,12 @@ async function saveAll() {
     if (pl) setPath(cfg, "theme.motion.parallaxLevel", pl.value);
     const vc = $("theme.motion.videoCoverMode");
     if (vc) setPath(cfg, "theme.motion.videoCoverMode", vc.value);
+    const fs = $("theme.fontScript");
+    if (fs) setPath(cfg, "theme.fontScript", fs.value);
+    const fse = $("theme.fontSerif");
+    if (fse) setPath(cfg, "theme.fontSerif", fse.value);
+    const fsa = $("theme.fontSans");
+    if (fsa) setPath(cfg, "theme.fontSans", fsa.value);
     await api("/api/config", { method: "POST", body: JSON.stringify(cfg) });
     toast("Undangan tersimpan & deployed!");
   } catch (e) {
