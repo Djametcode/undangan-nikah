@@ -65,6 +65,61 @@ interface Cfg {
     serifSize: string;
     headingSize: string;
   };
+  labels: {
+    guestPrefix: string;
+    guestSuffix: string;
+    openInvite: string;
+    scroll: string;
+    coupleSection: string;
+    groomLabel: string;
+    brideLabel: string;
+    saveTheDate: string;
+    dayLabel: string;
+    hourLabel: string;
+    minuteLabel: string;
+    secondLabel: string;
+    eventSection: string;
+    googleMap: string;
+    gallerySection: string;
+    giftSection: string;
+    transferBank: string;
+    qris: string;
+    sendGift: string;
+    scanQr: string;
+    copyRekening: string;
+    copyAlamat: string;
+    copied: string;
+    sendGiftLabel: string;
+    giftConfirmNote: string;
+    giftFormTitle: string;
+    nameRequired: string;
+    bankName: string;
+    nominal: string;
+    ucapan: string;
+    buktiTf: string;
+    confirmBtn: string;
+    sending: string;
+    thanksTitle: string;
+    thanksBody: string;
+    sendAgain: string;
+    namePlaceholder: string;
+    rsvpSection: string;
+    rsvpPresence: string;
+    rsvpHadir: string;
+    rsvpTidak: string;
+    rsvpJumlah: string;
+    rsvp1Orang: string;
+    rsvp2Orang: string;
+    rsvpSubmit: string;
+    guestbookSection: string;
+    guestbookName: string;
+    guestbookMsg: string;
+    guestbookPlaceholder: string;
+    guestbookSend: string;
+    guestbookSent: string;
+    closingTitle: string;
+    loading: string;
+  };
 }
 
 const DEFAULT_CFG: Cfg = {
@@ -121,6 +176,61 @@ const DEFAULT_CFG: Cfg = {
     scriptSize: "text-6xl md:text-7xl",
     serifSize: "text-2xl md:text-3xl",
     headingSize: "text-5xl",
+  },
+  labels: {
+    guestPrefix: "Kepada Bapak/Ibu/Saudara/i",
+    guestSuffix: "Di Tempat",
+    openInvite: "Buka Undangan",
+    scroll: "Scroll",
+    coupleSection: "Kedua Mempelai",
+    groomLabel: "Mempelai Pria",
+    brideLabel: "Mempelai Wanita",
+    saveTheDate: "Save The Date",
+    dayLabel: "Hari",
+    hourLabel: "Jam",
+    minuteLabel: "Menit",
+    secondLabel: "Detik",
+    eventSection: "Rangkaian Acara",
+    googleMap: "Google Map",
+    gallerySection: "Galeri",
+    giftSection: "Tanda Kasih",
+    transferBank: "Transfer Bank",
+    qris: "QRIS",
+    sendGift: "Kirim Kado",
+    scanQr: "Scan QR di atas untuk memberi tanda kasih",
+    copyRekening: "Copy Rekening",
+    copyAlamat: "Copy Alamat",
+    copied: "Tersalin ✓",
+    sendGiftLabel: "Kirim Kado:",
+    giftConfirmNote: "Mohon konfirmasi untuk pengiriman gift. Terima kasih.",
+    giftFormTitle: "Konfirmasi Gift",
+    nameRequired: "Nama *",
+    bankName: "Nama Bank",
+    nominal: "Nominal",
+    ucapan: "Ucapan",
+    buktiTf: "Bukti TF",
+    confirmBtn: "Konfirmasi",
+    sending: "Mengirim...",
+    thanksTitle: "Terima kasih!",
+    thanksBody: "Konfirmasi Anda sudah tercatat.",
+    sendAgain: "Kirim lagi",
+    namePlaceholder: "Nama Anda",
+    rsvpSection: "RSVP",
+    rsvpPresence: "Konfirmasi Kehadiran *",
+    rsvpHadir: "Hadir",
+    rsvpTidak: "Tidak Hadir",
+    rsvpJumlah: "Jumlah *",
+    rsvp1Orang: "1 Orang",
+    rsvp2Orang: "2 Orang",
+    rsvpSubmit: "Submit",
+    guestbookSection: "Ucapan & Doa",
+    guestbookName: "Nama",
+    guestbookMsg: "Ucapan",
+    guestbookPlaceholder: "Silakan kasih ucapan di bawah ini",
+    guestbookSend: "Kirim",
+    guestbookSent: "Terkirim ✓",
+    closingTitle: "Terima Kasih",
+    loading: "Loading",
   },
 };
 
@@ -381,7 +491,7 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
 
 /* ---------- Cover ---------- */
 function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg: Cfg }) {
-  const { couple, brand, photos, media, theme } = cfg;
+  const { couple, brand, photos, media, theme, labels } = cfg;
   const hasVideo = (media.videoEnabled || theme.videoCover) && media.video;
   return (
     <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden">
@@ -406,15 +516,15 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
         </h1>
         <Ornament className="w-40 mx-auto my-6 fade-up fd-3" />
 
-        <p className="text-muted/60 text-xs uppercase tracking-[0.25em] mt-8 fade-up fd-4">Kepada Bapak/Ibu/Saudara/i</p>
+        <p className="text-muted/60 text-xs uppercase tracking-[0.25em] mt-8 fade-up fd-4">{labels.guestPrefix}</p>
         <p className={`serif-body text-fg my-2 fade-up fd-4 ${theme.serifSize}`}>{guest}</p>
-        <p className="text-muted/60 text-xs uppercase tracking-[0.25em] fade-up fd-4">Di Tempat</p>
+        <p className="text-muted/60 text-xs uppercase tracking-[0.25em] fade-up fd-4">{labels.guestSuffix}</p>
 
         <button
           onClick={onOpen}
           className={`${theme.sheenEnabled ? "sheen " : ""}fade-up fd-5 mt-10 border border-primary text-primary hover:bg-primary hover:text-bg px-10 py-4 text-sm font-medium rounded-btn transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer`}
         >
-          Buka Undangan
+          {labels.openInvite}
         </button>
       </div>
 
@@ -423,7 +533,7 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
           <div className="w-5 h-8 border border-primary/50 rounded-full flex justify-center pt-1.5">
             <div className="w-1 h-1.5 bg-primary rounded-full animate-bounce" />
           </div>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted/60">Scroll</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted/60">{labels.scroll}</span>
         </div>
       </div>
     </section>
@@ -432,13 +542,13 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
 
 /* ---------- Couple ---------- */
 function Couple({ cfg }: { cfg: Cfg }) {
-  const { couple, photos, quote } = cfg;
+  const { couple, photos, quote, labels } = cfg;
   return (
     <section className="py-24 px-4 relative">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16" data-reveal>
-          <span className="kicker block mb-4">Kedua Mempelai</span>
-          <h2 data-line-reveal className="script-display text-5xl md:text-6xl text-primary-light">
+          <span className="kicker block mb-4">{labels.coupleSection}</span>
+          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{couple.groom} {couple.ampersand} {couple.bride}</span></span>
           </h2>
           <Ornament className="w-40 mx-auto mt-6" />
@@ -455,7 +565,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
                 )}
               </div>
             </div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">Mempelai Pria</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">{labels.groomLabel}</p>
             <h3 className="serif-body text-3xl text-fg">{couple.groomFull}</h3>
             <p className="mt-2 serif-body text-muted leading-relaxed max-w-xs mx-auto">{couple.groomDesc}</p>
           </div>
@@ -470,7 +580,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
                 )}
               </div>
             </div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">Mempelai Wanita</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-2">{labels.brideLabel}</p>
             <h3 className="serif-body text-3xl text-fg">{couple.brideFull}</h3>
             <p className="mt-2 serif-body text-muted leading-relaxed max-w-xs mx-auto">{couple.brideDesc}</p>
           </div>
@@ -489,18 +599,19 @@ function Couple({ cfg }: { cfg: Cfg }) {
 /* ---------- Save The Date / Countdown ---------- */
 function SaveTheDate({ cfg }: { cfg: Cfg }) {
   const t = useCountdown(cfg.event.countdownDate);
+  const L = cfg.labels;
   return (
     <section className="py-20 px-4 bg-sand/60">
       <div className="max-w-3xl mx-auto text-center" data-reveal>
-        <span className="kicker block mb-4">Save The Date</span>
+        <span className="kicker block mb-4">{L.saveTheDate}</span>
         <p className="serif-body text-2xl md:text-3xl text-fg mb-2">{cfg.event.day}, {cfg.event.date}</p>
         <Ornament className="w-36 mx-auto my-6" />
         <div className="flex justify-center gap-3 md:gap-6">
           {[
-            { label: "Hari", value: t.d },
-            { label: "Jam", value: t.h },
-            { label: "Menit", value: t.m },
-            { label: "Detik", value: t.s },
+            { label: L.dayLabel, value: t.d },
+            { label: L.hourLabel, value: t.h },
+            { label: L.minuteLabel, value: t.m },
+            { label: L.secondLabel, value: t.s },
           ].map((c) => (
             <div key={c.label} className="flex flex-col items-center soft-card px-4 md:px-7 py-5 soft-shadow min-w-[76px] md:min-w-[104px]">
               <div className="serif-body text-4xl md:text-5xl text-primary-light tabular-nums">{c.value}</div>
@@ -514,7 +625,7 @@ function SaveTheDate({ cfg }: { cfg: Cfg }) {
 }
 
 /* ---------- Event Info ---------- */
-function EventCard({ title, time, place, mapsUrl }: { title: string; time: string; place: string; mapsUrl: string }) {
+function EventCard({ title, time, place, mapsUrl, mapLabel }: { title: string; time: string; place: string; mapsUrl: string; mapLabel?: string }) {
   return (
     <div data-reveal className="soft-card p-10 text-center soft-shadow hover:soft-shadow-lg transition-shadow duration-300 relative overflow-hidden">
       <CornerOrnament className="absolute top-3 left-3 w-10" />
@@ -531,26 +642,27 @@ function EventCard({ title, time, place, mapsUrl }: { title: string; time: strin
           <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        Google Map
+        {mapLabel || "Google Map"}
       </a>
     </div>
   );
 }
 
 function Info({ cfg }: { cfg: Cfg }) {
+  const L = cfg.labels;
   return (
     <section className="py-24 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-14" data-reveal>
-          <span className="kicker block mb-4">Info Acara</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
-            <span className="line"><span className="line-inner">Rangkaian Acara</span></span>
+          <span className="kicker block mb-4">{L.eventSection}</span>
+          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
+            <span className="line"><span className="line-inner">{L.eventSection}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
         </div>
         <div className="grid md:grid-cols-2 gap-6">
-          <EventCard title={cfg.event.akad.title} time={cfg.event.akad.time} place={cfg.event.akad.place} mapsUrl={cfg.event.akad.mapsUrl} />
-          <EventCard title={cfg.event.resepsi.title} time={cfg.event.resepsi.time} place={cfg.event.resepsi.place} mapsUrl={cfg.event.resepsi.mapsUrl} />
+          <EventCard title={cfg.event.akad.title} time={cfg.event.akad.time} place={cfg.event.akad.place} mapsUrl={cfg.event.akad.mapsUrl} mapLabel={L.googleMap} />
+          <EventCard title={cfg.event.resepsi.title} time={cfg.event.resepsi.time} place={cfg.event.resepsi.place} mapsUrl={cfg.event.resepsi.mapsUrl} mapLabel={L.googleMap} />
         </div>
       </div>
     </section>
@@ -639,7 +751,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
   const [open, setOpen] = useState<"bank" | "qris" | "kado" | null>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [form, setForm] = useState({ name: "", bank: "", nominal: "", ucapan: "", file: "" });
-  const { gift } = cfg;
+  const { gift, labels: L } = cfg;
 
   const copy = (key: string, text: string) => {
     navigator.clipboard?.writeText(text).catch(() => {});
@@ -658,8 +770,8 @@ function Gift({ cfg }: { cfg: Cfg }) {
     <section className="py-24 px-4">
       <div className="max-w-xl mx-auto text-center">
         <div data-reveal>
-          <span className="kicker block mb-4">Tanda Kasih</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary-light mb-5">
+          <span className="kicker block mb-4">{L.giftSection}</span>
+          <h2 data-line-reveal className={`script-display text-primary-light mb-5 fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{gift.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mb-6" />
@@ -671,21 +783,21 @@ function Gift({ cfg }: { cfg: Cfg }) {
             onClick={() => setOpen(open === "bank" ? null : "bank")}
             className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "bank" ? "bg-primary text-bg border-primary soft-shadow" : "border border-primary/40 text-primary-light hover:border-primary"}`}
           >
-            Transfer Bank
+            {L.transferBank}
           </button>
           {gift.qrisEnabled && (
             <button
               onClick={() => setOpen(open === "qris" ? null : "qris")}
               className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "qris" ? "bg-primary text-bg border-primary soft-shadow" : "border border-primary/40 text-primary-light hover:border-primary"}`}
             >
-              QRIS
+              {L.qris}
             </button>
           )}
           <button
             onClick={() => setOpen(open === "kado" ? null : "kado")}
             className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "kado" ? "bg-primary text-bg border-primary soft-shadow" : "border border-primary/40 text-primary-light hover:border-primary"}`}
           >
-            Kirim Kado
+            {L.sendGift}
           </button>
         </div>
 
@@ -694,7 +806,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
             <div className="w-44 h-44 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center overflow-hidden p-2">
               <QRCodeCanvas value={gift.qrisValue} size={160} fgColor="#0f172a" bgColor="#ffffff" level="M" />
             </div>
-            <p className="text-muted text-xs">Scan QR di atas untuk memberi tanda kasih</p>
+            <p className="text-muted text-xs">{L.scanQr}</p>
           </div>
         )}
 
@@ -709,7 +821,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
                 onClick={() => copy("bank", gift.bank.number)}
                 className="border border-primary text-primary-light hover:bg-primary hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
               >
-                {copied === "bank" ? "Tersalin ✓" : "Copy Rekening"}
+                {copied === "bank" ? L.copied : L.copyRekening}
               </button>
             </div>
             <p className="text-muted text-sm mt-4">a.n. {gift.bank.holder}</p>
@@ -720,7 +832,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
           <div data-reveal className="mt-6 soft-card p-8 soft-shadow text-left">
             <div className="flex justify-between items-start gap-4 border-b border-border pb-4">
               <div>
-                <p className="text-muted text-sm mb-1">Kirim Kado:</p>
+                <p className="text-muted text-sm mb-1">{L.sendGiftLabel}</p>
                 <p className="serif-body text-lg text-fg">{gift.kado.name}</p>
                 <p className="text-muted text-sm mt-1">{gift.kado.address}</p>
               </div>
@@ -728,7 +840,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
                 onClick={() => copy("kado", `${gift.kado.name}, ${gift.kado.address}`)}
                 className="shrink-0 border border-primary text-primary-light hover:bg-primary hover:text-bg px-4 py-2 text-xs uppercase tracking-widest rounded-full transition-all cursor-pointer"
               >
-                {copied === "kado" ? "Tersalin ✓" : "Copy Alamat"}
+                {copied === "kado" ? L.copied : L.copyAlamat || "Copy Alamat"}
               </button>
             </div>
             <p className="text-muted text-sm mt-4">{gift.kado.note}</p>
@@ -737,7 +849,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
 
         <div className="mt-10 text-left" data-reveal>
           <div className="text-center mb-6">
-            <span className="kicker block">Konfirmasi Gift</span>
+            <span className="kicker block">{L.giftFormTitle}</span>
             <Ornament className="w-28 mx-auto mt-4" />
           </div>
 
@@ -748,43 +860,43 @@ function Gift({ cfg }: { cfg: Cfg }) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="script-display text-4xl text-primary-light mb-2">Terima kasih!</p>
-              <p className="serif-body text-muted">Konfirmasi Anda sudah tercatat.</p>
+              <p className="script-display text-4xl text-primary-light mb-2">{L.thanksTitle}</p>
+              <p className="serif-body text-muted">{L.thanksBody}</p>
               <button onClick={() => { setStatus("idle"); setForm({ name: "", bank: "", nominal: "", ucapan: "", file: "" }); }} className="mt-6 text-primary-light hover:text-primary text-sm font-medium transition-colors cursor-pointer">
-                Kirim lagi
+                {L.sendAgain}
               </button>
             </div>
           ) : (
             <form onSubmit={submit} className="space-y-5">
               <div>
-                <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama *</label>
-                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
+                <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.nameRequired}</label>
+                <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder={L.namePlaceholder} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama Bank</label>
-                  <input value={form.bank} onChange={(e) => setForm({ ...form, bank: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="BCA / Mandiri / dll" />
+                  <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.bankName}</label>
+                  <input value={form.bank} onChange={(e) => setForm({ ...form, bank: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="BCA / Mandiri / dll" />
                 </div>
                 <div>
-                  <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nominal</label>
-                  <input value={form.nominal} onChange={(e) => setForm({ ...form, nominal: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Rp. 100.000" />
+                  <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.nominal}</label>
+                  <input value={form.nominal} onChange={(e) => setForm({ ...form, nominal: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Rp. 100.000" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-widest text-muted mb-2">Ucapan</label>
-                <textarea value={form.ucapan} onChange={(e) => setForm({ ...form, ucapan: e.target.value })} rows={3} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none" placeholder="Tulis ucapan..." />
+                <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.ucapan}</label>
+                <textarea value={form.ucapan} onChange={(e) => setForm({ ...form, ucapan: e.target.value })} rows={3} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none" placeholder="Tulis ucapan..." />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-widest text-muted mb-2">Bukti TF</label>
+                <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.buktiTf}</label>
                 <input type="file" accept="image/*" onChange={(e) => setForm({ ...form, file: e.target.files?.[0]?.name || "" })} className="w-full text-sm text-muted file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:bg-primary/15 file:text-primary-light file:text-xs file:uppercase file:tracking-widest file:cursor-pointer hover:file:bg-primary/25 cursor-pointer" />
               </div>
               <button type="submit" disabled={status === "sending"} className="sheen w-full bg-primary hover:bg-primary-light text-bg py-4 text-sm font-medium rounded-full transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer">
                 {status === "sending" ? (
                   <span className="inline-flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full border-2 border-bg/40 border-t-bg ring-spin" />
-                    Mengirim...
+                    {L.sending}
                   </span>
-                ) : "Konfirmasi"}
+                ) : L.confirmBtn}
               </button>
             </form>
           )}
@@ -798,6 +910,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
 function Rsvp({ cfg }: { cfg: Cfg }) {
   const [form, setForm] = useState({ name: "", presence: "Hadir", jumlah: "1 Orang" });
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const L = cfg.labels;
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (status !== "idle") return;
@@ -809,8 +922,8 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
     <section className="py-24 px-4 bg-sand/60">
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-12" data-reveal>
-          <span className="kicker block mb-4">RSVP</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
+          <span className="kicker block mb-4">{L.rsvpSection}</span>
+          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{cfg.rsvp.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
@@ -824,22 +937,22 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p className="script-display text-4xl text-primary-light mb-2">Terima kasih!</p>
-            <p className="serif-body text-muted">Konfirmasi Anda sudah tercatat.</p>
+            <p className="script-display text-4xl text-primary-light mb-2">{L.thanksTitle}</p>
+            <p className="serif-body text-muted">{L.thanksBody}</p>
             <button onClick={() => { setStatus("idle"); setForm({ name: "", presence: "Hadir", jumlah: "1 Orang" }); }} className="mt-6 text-primary-light hover:text-primary text-sm font-medium transition-colors cursor-pointer">
-              Kirim lagi
+              {L.sendAgain}
             </button>
           </div>
         ) : (
           <form onSubmit={submit} data-reveal className="space-y-5">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama *</label>
-              <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
+              <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.nameRequired}</label>
+              <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder={L.namePlaceholder} />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Konfirmasi Kehadiran *</label>
+              <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.rsvpPresence}</label>
               <div className="grid grid-cols-2 gap-3">
-                {["Hadir", "Tidak Hadir"].map((p) => (
+                {[L.rsvpHadir, L.rsvpTidak].map((p) => (
                   <button type="button" key={p} onClick={() => setForm({ ...form, presence: p })} className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${form.presence === p ? "bg-primary text-bg border-primary soft-shadow" : "border-primary/30 text-muted hover:border-primary"}`}>
                     {p}
                   </button>
@@ -847,9 +960,9 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
               </div>
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-muted mb-2">Jumlah *</label>
+              <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.rsvpJumlah}</label>
               <div className="grid grid-cols-2 gap-3">
-                {["1 Orang", "2 Orang"].map((p) => (
+                {[L.rsvp1Orang, L.rsvp2Orang].map((p) => (
                   <button type="button" key={p} onClick={() => setForm({ ...form, jumlah: p })} className={`py-3.5 border text-sm rounded-xl transition-all duration-300 cursor-pointer ${form.jumlah === p ? "bg-primary text-bg border-primary soft-shadow" : "border-primary/30 text-muted hover:border-primary"}`}>
                     {p}
                   </button>
@@ -860,9 +973,9 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
               {status === "sending" ? (
                 <span className="inline-flex items-center gap-2">
                   <span className="w-4 h-4 rounded-full border-2 border-bg/40 border-t-bg ring-spin" />
-                  Mengirim...
+                  {L.sending}
                 </span>
-              ) : "Submit"}
+              ) : L.rsvpSubmit}
             </button>
           </form>
         )}
@@ -879,6 +992,7 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
     { name: "Yogi dan Ratna", msg: "Selamat menempuh hidup baru, semoga menjadi keluarga yang sakinah mawaddah warahmah. Aamiin." },
   ]);
   const [sent, setSent] = useState(false);
+  const L = cfg.labels;
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -894,8 +1008,8 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
     <section className="py-24 px-4">
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-12" data-reveal>
-          <span className="kicker block mb-4">Ucapan &amp; Doa</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
+          <span className="kicker block mb-4">{L.guestbookSection}</span>
+          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{cfg.guestbook.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
@@ -904,15 +1018,15 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
 
         <form onSubmit={submit} data-reveal className="soft-card p-6 soft-shadow space-y-4">
           <div>
-            <label className="block text-xs uppercase tracking-widest text-muted mb-2">Nama</label>
-            <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Nama Anda" />
+            <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.guestbookName}</label>
+            <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder={L.namePlaceholder} />
           </div>
           <div>
-            <label className="block text-xs uppercase tracking-widest text-muted mb-2">Ucapan</label>
-            <textarea required value={msg} onChange={(e) => setMsg(e.target.value)} rows={3} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none" placeholder="Silakan kasih ucapan di bawah ini" />
+            <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.guestbookMsg}</label>
+            <textarea required value={msg} onChange={(e) => setMsg(e.target.value)} rows={3} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none" placeholder={L.guestbookPlaceholder} />
           </div>
           <button type="submit" className="w-full bg-primary hover:bg-primary-light text-bg py-3.5 text-sm font-medium rounded-full transition-all duration-300 soft-shadow cursor-pointer active:scale-[0.98]">
-            {sent ? "Terkirim ✓" : "Kirim"}
+            {sent ? L.guestbookSent : L.guestbookSend}
           </button>
         </form>
 
@@ -936,13 +1050,14 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
 
 /* ---------- Closing ---------- */
 function Closing({ cfg }: { cfg: Cfg }) {
+  const L = cfg.labels;
   return (
     <section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
       <div className="max-w-xl mx-auto relative z-10" data-reveal>
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
-        <span className="kicker block mb-4">Terima Kasih</span>
-        <h2 data-line-reveal className="script-display text-6xl text-primary-light mb-6">
+        <span className="kicker block mb-4">{L.closingTitle}</span>
+        <h2 data-line-reveal className={`script-display text-primary-light mb-6 fade-up ${cfg.theme.headingSize}`}>
           <span className="line"><span className="line-inner">{cfg.closing.heading}</span></span>
         </h2>
         <Ornament className="w-40 mx-auto mb-8" />

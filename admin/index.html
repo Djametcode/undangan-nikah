@@ -57,6 +57,7 @@
     <button data-tab="tab-photos" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Foto</button>
     <button data-tab="tab-media" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Video &amp; Musik</button>
     <button data-tab="tab-text" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Teks</button>
+    <button data-tab="tab-label" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Label</button>
     <button data-tab="tab-gift" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Tanda Kasih</button>
     <button data-tab="tab-rsvp" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">RSVP &amp; Ucapan</button>
     <button data-tab="tab-theme" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Theme</button>
@@ -222,6 +223,66 @@
           <h2 class="terra font-semibold mb-4">Ucapan &amp; Doa</h2>
           <F name="guestbook.heading" label="Judul" />
           <F name="guestbook.intro" label="Intro" textarea />
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-label" class="tab-panel hidden">
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-1">Label Teks Semua Bagian</h2>
+        <p class="text-xs text-slate-500 mb-4">Ubah semua teks tombol, label form, dan judul section.</p>
+        <div class="grid md:grid-cols-2 gap-x-6">
+          <div>
+            <F name="labels.guestPrefix" label="Teks tamu (atas nama)" />
+            <F name="labels.guestSuffix" label="Teks 'Di Tempat'" />
+            <F name="labels.openInvite" label="Tombol 'Buka Undangan'" />
+            <F name="labels.scroll" label="Label 'Scroll'" />
+            <F name="labels.coupleSection" label="Section 'Kedua Mempelai'" />
+            <F name="labels.groomLabel" label="Label 'Mempelai Pria'" />
+            <F name="labels.brideLabel" label="Label 'Mempelai Wanita'" />
+            <F name="labels.saveTheDate" label="Section 'Save The Date'" />
+            <F name="labels.dayLabel" label="Countdown 'Hari'" />
+            <F name="labels.hourLabel" label="Countdown 'Jam'" />
+            <F name="labels.minuteLabel" label="Countdown 'Menit'" />
+            <F name="labels.secondLabel" label="Countdown 'Detik'" />
+            <F name="labels.eventSection" label="Section 'Rangkaian Acara'" />
+            <F name="labels.googleMap" label="Tombol 'Google Map'" />
+            <F name="labels.gallerySection" label="Section 'Galeri'" />
+          </div>
+          <div>
+            <F name="labels.giftSection" label="Section 'Tanda Kasih'" />
+            <F name="labels.transferBank" label="Tombol 'Transfer Bank'" />
+            <F name="labels.qris" label="Tombol 'QRIS'" />
+            <F name="labels.sendGift" label="Tombol 'Kirim Kado'" />
+            <F name="labels.scanQr" label="Teks scan QR" />
+            <F name="labels.copyRekening" label="Tombol 'Copy Rekening'" />
+            <F name="labels.copyAlamat" label="Tombol 'Copy Alamat'" />
+            <F name="labels.giftFormTitle" label="Judul form gift" />
+            <F name="labels.nameRequired" label="Label 'Nama *'" />
+            <F name="labels.bankName" label="Label 'Nama Bank'" />
+            <F name="labels.nominal" label="Label 'Nominal'" />
+            <F name="labels.ucapan" label="Label 'Ucapan'" />
+            <F name="labels.buktiTf" label="Label 'Bukti TF'" />
+            <F name="labels.confirmBtn" label="Tombol 'Konfirmasi'" />
+            <F name="labels.sending" label="Teks 'Mengirim...'" />
+            <F name="labels.thanksTitle" label="Judul 'Terima kasih!'" />
+            <F name="labels.thanksBody" label="Isi 'Konfirmasi tercatat'" />
+            <F name="labels.sendAgain" label="Tombol 'Kirim lagi'" />
+            <F name="labels.namePlaceholder" label="Placeholder 'Nama Anda'" />
+            <F name="labels.rsvpSection" label="Section 'RSVP'" />
+            <F name="labels.rsvpPresence" label="RSVP 'Konfirmasi Kehadiran'" />
+            <F name="labels.rsvpHadir" label="RSVP 'Hadir'" />
+            <F name="labels.rsvpTidak" label="RSVP 'Tidak Hadir'" />
+            <F name="labels.rsvpJumlah" label="RSVP 'Jumlah'" />
+            <F name="labels.rsvp1Orang" label="RSVP '1 Orang'" />
+            <F name="labels.rsvp2Orang" label="RSVP '2 Orang'" />
+            <F name="labels.rsvpSubmit" label="Tombol RSVP 'Submit'" />
+            <F name="labels.guestbookSection" label="Section 'Ucapan & Doa'" />
+            <F name="labels.guestbookMsg" label="Label 'Ucapan'" />
+            <F name="labels.guestbookPlaceholder" label="Placeholder ucapan" />
+            <F name="labels.guestbookSend" label="Tombol 'Kirim'" />
+            <F name="labels.closingTitle" label="Judul 'Terima Kasih'" />
+          </div>
         </div>
       </div>
     </section>
