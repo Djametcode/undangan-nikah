@@ -103,6 +103,9 @@
     "sheenEnabled": true,
     "scriptSize": "text-6xl md:text-7xl",
     "serifSize": "text-2xl md:text-3xl",
-    "headingSize": "text-5xl"
+    "headingSize": "text-5xl",
+    "revealBaseDelay": "3000",
+    "revealStagger": "120",
+    "galleryLayout": "justified"
   }
 }

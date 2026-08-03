@@ -265,7 +265,7 @@
 
       <div class="card p-6 mb-5">
         <h2 class="terra font-semibold mb-4">Animasi Teks</h2>
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="grid md:grid-cols-3 gap-4">
           <div>
             <label class="label">Arah gerakan teks</label>
             <select id="theme.revealAnim" class="field">
@@ -273,6 +273,21 @@
               <option value="fadeLeft">Dari kiri (fade left)</option>
               <option value="fadeRight">Dari kanan (fade right)</option>
               <option value="zoomIn">Zoom in</option>
+            </select>
+          </div>
+          <F name="theme.revealBaseDelay" label="Delay awal (ms, cth: 3000 = muncul 3 detik setelah buka)" />
+          <F name="theme.revealStagger" label="Jarak antar elemen (ms, cth: 120)" />
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-4">Galeri</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="label">Layout galeri</label>
+            <select id="theme.galleryLayout" class="field">
+              <option value="carousel">Carousel (auto-play)</option>
+              <option value="justified">Justified grid (seperti Melody)</option>
             </select>
           </div>
         </div>
@@ -383,6 +398,9 @@ function renderSelects() {
   const ra = getPath(cfg, "theme.revealAnim") || "fadeUp";
   const sel = $("theme.revealAnim");
   if (sel) sel.value = ra;
+  const gl = getPath(cfg, "theme.galleryLayout") || "carousel";
+  const gsel = $("theme.galleryLayout");
+  if (gsel) gsel.value = gl;
 }
 
 function renderForms() {
@@ -519,6 +537,8 @@ async function saveAll() {
     setPath(cfg, "gift.qrisEnabled", $("gift.qrisEnabled").checked);
     const ra = $("theme.revealAnim");
     if (ra) setPath(cfg, "theme.revealAnim", ra.value);
+    const gl = $("theme.galleryLayout");
+    if (gl) setPath(cfg, "theme.galleryLayout", gl.value);
     await api("/api/config", { method: "POST", body: JSON.stringify(cfg) });
     toast("Undangan tersimpan & deployed!");
   } catch (e) {

@@ -140,17 +140,17 @@ html { scroll-behavior: smooth; }
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
 }
-:root { --reveal-anim: fadeUp; }
+:root { --reveal-anim: fadeUp; --reveal-base-delay: 0ms; --reveal-stagger: 120ms; }
 .fade-up {
   opacity: 0;
   animation: var(--reveal-anim) 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: var(--fd, 0s);
+  animation-delay: calc(var(--reveal-base-delay) + var(--fd, 0s));
 }
-.fd-1 { --fd: 0.1s; }
-.fd-2 { --fd: 0.2s; }
-.fd-3 { --fd: 0.3s; }
-.fd-4 { --fd: 0.4s; }
-.fd-5 { --fd: 0.5s; }
+.fd-1 { --fd: 0s; }
+.fd-2 { --fd: calc(var(--reveal-stagger) * 1); }
+.fd-3 { --fd: calc(var(--reveal-stagger) * 2); }
+.fd-4 { --fd: calc(var(--reveal-stagger) * 3); }
+.fd-5 { --fd: calc(var(--reveal-stagger) * 4); }
 
 /* Line reveal */
 .line { overflow: hidden; }

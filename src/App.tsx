@@ -54,10 +54,13 @@ interface Cfg {
     fontSerif: string;
     fontSans: string;
     revealAnim: string;
+    revealBaseDelay: string;
+    revealStagger: string;
     petalsEnabled: boolean;
     blobsEnabled: boolean;
     videoCover: boolean;
     sheenEnabled: boolean;
+    galleryLayout: string;
     scriptSize: string;
     serifSize: string;
     headingSize: string;
@@ -108,12 +111,15 @@ const DEFAULT_CFG: Cfg = {
     fontSerif: "Cormorant Infant, Georgia, serif",
     fontSans: "Outfit, system-ui, sans-serif",
     revealAnim: "fadeUp",
+    revealBaseDelay: "3000",
+    revealStagger: "120",
     petalsEnabled: true,
     blobsEnabled: true,
     videoCover: false,
     sheenEnabled: true,
+    galleryLayout: "carousel",
     scriptSize: "text-6xl md:text-7xl",
-    serifSize: "text-lg",
+    serifSize: "text-2xl md:text-3xl",
     headingSize: "text-5xl",
   },
 };
@@ -167,10 +173,13 @@ function useApplyTheme(cfg: Cfg | null) {
     r.setProperty("--font-serif", t.fontSerif);
     r.setProperty("--font-sans", t.fontSans);
     r.setProperty("--reveal-anim", t.revealAnim);
+    r.setProperty("--reveal-base-delay", (parseInt(t.revealBaseDelay) || 0) + "ms");
+    r.setProperty("--reveal-stagger", (parseInt(t.revealStagger) || 0) + "ms");
     // body classes for toggles
     document.body.classList.toggle("no-petals", t.petalsEnabled === false);
     document.body.classList.toggle("no-blobs", t.blobsEnabled === false);
     document.body.classList.toggle("no-sheen", t.sheenEnabled === false);
+    document.body.classList.toggle("gallery-justified", t.galleryLayout === "justified");
   }, [cfg]);
 }
 
@@ -548,9 +557,10 @@ function Info({ cfg }: { cfg: Cfg }) {
   );
 }
 
-/* ---------- Gallery (carousel) ---------- */
+/* ---------- Gallery (carousel / justified) ---------- */
 function Gallery({ cfg }: { cfg: Cfg }) {
   const images = cfg.gallery.images?.length ? cfg.gallery.images : cfg.photos.gallery;
+  const layout = cfg.theme.galleryLayout;
   const [idx, setIdx] = useState(0);
   const next = useCallback(() => setIdx((i) => (i + 1) % Math.max(1, images.length)), [images.length]);
   const prev = () => setIdx((i) => (i - 1 + Math.max(1, images.length)) % Math.max(1, images.length));
@@ -565,40 +575,59 @@ function Gallery({ cfg }: { cfg: Cfg }) {
 
   return (
     <section className="py-24 px-4 bg-sand/60">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12" data-reveal>
           <span className="kicker block mb-4">Galeri</span>
-          <h2 data-line-reveal className="script-display text-5xl text-primary-light">
+          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{cfg.gallery.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
         </div>
 
-        <div data-reveal className="relative gold-frame rounded-sm overflow-hidden soft-shadow-lg">
-          <div className="overflow-hidden rounded-[3px] aspect-[4/3]">
-            <img
-              src={images[idx % images.length]}
-              alt=""
-              className="w-full h-full object-cover transition-opacity duration-700"
-              style={{ animation: "fadeUp 0.6s ease" }}
-            />
+        {layout === "justified" ? (
+          /* Justified masonry — rata kiri-kanan seperti ART MELODY */
+          <div data-reveal className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+            {images.map((src, i) => (
+              <a
+                key={i}
+                href={src}
+                target="_blank"
+                rel="noreferrer"
+                className={`group overflow-hidden rounded-card relative ${i % 3 === 2 ? "row-span-2" : ""} ${i % 4 === 0 ? "md:col-span-2" : ""}`}
+              >
+                <img src={src} alt="" loading="lazy" className="w-full h-full object-cover min-h-[180px] transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/20 transition-colors duration-300" />
+              </a>
+            ))}
           </div>
-          {images.length > 1 && (
-            <>
-              <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-primary hover:text-bg border border-primary/40 text-primary-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Sebelumnya">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-              </button>
-              <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-primary hover:text-bg border border-primary/40 text-primary-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Berikutnya">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-              </button>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                {images.map((_, i) => (
-                  <button key={i} onClick={() => setIdx(i)} className={`w-2 h-2 rounded-full transition-all cursor-pointer ${i === idx % images.length ? "bg-primary w-6" : "bg-muted/40 hover:bg-muted/70"}`} aria-label={`Foto ${i + 1}`} />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
+        ) : (
+          /* Carousel — auto-play seperti asli */
+          <div data-reveal className="relative gold-frame rounded-sm overflow-hidden soft-shadow-lg">
+            <div className="overflow-hidden rounded-[3px] aspect-[4/3]">
+              <img
+                src={images[idx % images.length]}
+                alt=""
+                className="w-full h-full object-cover transition-opacity duration-700"
+                style={{ animation: "fadeUp 0.6s ease" }}
+              />
+            </div>
+            {images.length > 1 && (
+              <>
+                <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-primary hover:text-bg border border-primary/40 text-primary-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Sebelumnya">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                </button>
+                <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-bg/60 hover:bg-primary hover:text-bg border border-primary/40 text-primary-light flex items-center justify-center cursor-pointer transition-colors z-10" aria-label="Berikutnya">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                </button>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {images.map((_, i) => (
+                    <button key={i} onClick={() => setIdx(i)} className={`w-2 h-2 rounded-full transition-all cursor-pointer ${i === idx % images.length ? "bg-primary w-6" : "bg-muted/40 hover:bg-muted/70"}`} aria-label={`Foto ${i + 1}`} />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );
