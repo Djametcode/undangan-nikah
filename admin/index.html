@@ -65,358 +65,7 @@
     <button data-tab="tab-settings" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Settings</button>
   </nav>
 
-  <main class="max-w-6xl mx-auto px-4 pb-24">
-
-    <section id="tab-couple" class="tab-panel hidden">
-      <div class="grid md:grid-cols-2 gap-5">
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">Mempelai Pria</h2>
-          <F name="couple.groom" label="Nama panggilan" />
-          <F name="couple.groomFull" label="Nama lengkap" />
-          <F name="couple.groomDesc" label="Deskripsi / orang tua" textarea />
-        </div>
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">Mempelai Wanita</h2>
-          <F name="couple.bride" label="Nama panggilan" />
-          <F name="couple.brideFull" label="Nama lengkap" />
-          <F name="couple.brideDesc" label="Deskripsi / orang tua" textarea />
-        </div>
-        <div class="md:col-span-2 card p-6">
-          <h2 class="terra font-semibold mb-4">Branding</h2>
-          <div class="grid md:grid-cols-2 gap-4">
-            <F name="brand.kicker" label="Kicker cover" />
-            <F name="brand.logoText" label="Inisial loading" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-event" class="tab-panel hidden">
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-4">Tanggal</h2>
-        <div class="grid md:grid-cols-3 gap-4">
-          <F name="event.day" label="Hari" />
-          <F name="event.date" label="Tanggal" />
-          <F name="event.countdownDate" label="Countdown target (ISO)" />
-        </div>
-      </div>
-      <div class="grid md:grid-cols-2 gap-5">
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">Akad Nikah</h2>
-          <F name="event.akad.title" label="Judul" />
-          <F name="event.akad.time" label="Waktu" />
-          <F name="event.akad.place" label="Tempat" textarea />
-          <F name="event.akad.mapsUrl" label="Link Google Maps" />
-        </div>
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">Resepsi</h2>
-          <F name="event.resepsi.title" label="Judul" />
-          <F name="event.resepsi.time" label="Waktu" />
-          <F name="event.resepsi.place" label="Tempat" textarea />
-          <F name="event.resepsi.mapsUrl" label="Link Google Maps" />
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-photos" class="tab-panel hidden">
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-4">Foto Utama</h2>
-        <div class="grid md:grid-cols-3 gap-5">
-          <UploadField name="photos.cover" label="Cover background" />
-          <UploadField name="photos.groom" label="Foto mempelai pria" />
-          <UploadField name="photos.bride" label="Foto mempelai wanita" />
-        </div>
-      </div>
-      <div class="card p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="terra font-semibold">Galeri (carousel)</h2>
-          <button onclick="addGallery()" class="text-xs bg-terra text-[#fffbeb] px-3 py-1.5 rounded-lg cursor-pointer active:scale-[0.98]">Tambah</button>
-        </div>
-        <div id="galleryList" class="grid md:grid-cols-3 gap-4"></div>
-      </div>
-    </section>
-
-    <section id="tab-media" class="tab-panel hidden">
-      <div class="grid md:grid-cols-2 gap-5">
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-2">Video Cover</h2>
-          <p class="text-xs text-slate-500 mb-4">MP4/WebM, maks 200MB. Aktif = video jadi background cover.</p>
-          <label class="flex items-center gap-2 mb-4 cursor-pointer">
-            <input type="checkbox" id="media.videoEnabled" class="w-4 h-4 accent-[#9a3412]" /> Aktifkan video
-          </label>
-          <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden" />
-          <button onclick="document.getElementById('upload-video').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Video</button>
-          <div id="videoInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
-        </div>
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-2">Musik</h2>
-          <p class="text-xs text-slate-500 mb-4">MP3, maks 30MB. Tombol musik muncul kalau aktif.</p>
-          <label class="flex items-center gap-2 mb-4 cursor-pointer">
-            <input type="checkbox" id="media.musicEnabled" class="w-4 h-4 accent-[#9a3412]" /> Aktifkan musik
-          </label>
-          <input type="file" id="upload-music" accept="audio/mp3,audio/ogg,audio/wav" class="hidden" />
-          <button onclick="document.getElementById('upload-music').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Musik</button>
-          <div id="musicInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
-        </div>
-      </div>
-      <div class="mt-5 card p-6">
-        <h2 class="terra font-semibold mb-4">File Uploaded</h2>
-        <div id="fileList" class="flex flex-wrap gap-2"></div>
-      </div>
-    </section>
-
-    <section id="tab-text" class="tab-panel hidden">
-      <div class="grid md:grid-cols-2 gap-5">
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">Salam &amp; Quote</h2>
-          <F name="salam.arabic" label="Bismillah" />
-          <F name="salam.text" label="Assalamualaikum" />
-          <F name="salam.body" label="Isi salam" textarea />
-          <F name="quote.text" label="Quote (Ar Rum)" textarea />
-          <F name="quote.source" label="Sumber quote" />
-        </div>
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">Section Lain</h2>
-          <F name="gallery.heading" label="Judul galeri" />
-          <F name="closing.heading" label="Judul penutup" />
-          <F name="closing.text" label="Teks penutup" textarea />
-          <F name="footer.credit" label="Credit footer" />
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-gift" class="tab-panel hidden">
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-4">Tanda Kasih</h2>
-        <F name="gift.heading" label="Judul" />
-        <F name="gift.intro" label="Intro" textarea />
-        <div class="grid md:grid-cols-2 gap-4 mt-4">
-          <div>
-            <h3 class="text-sm text-slate-500 mb-3">Bank</h3>
-            <F name="gift.bank.name" label="Nama bank" />
-            <F name="gift.bank.number" label="Nomor rekening" />
-            <F name="gift.bank.holder" label="Atas nama" />
-          </div>
-          <div>
-            <h3 class="text-sm text-slate-500 mb-3">Kado</h3>
-            <F name="gift.kado.name" label="Nama penerima" />
-            <F name="gift.kado.address" label="Alamat" textarea />
-            <F name="gift.kado.note" label="Catatan" />
-          </div>
-        </div>
-        <div class="mt-4">
-          <label class="flex items-center gap-2 cursor-pointer mb-3">
-            <input type="checkbox" id="gift.qrisEnabled" class="w-4 h-4 accent-[#9a3412]" /> Tampilkan QRIS
-          </label>
-          <F name="gift.qrisValue" label="Isi QRIS (link atau string QR)" />
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-rsvp" class="tab-panel hidden">
-      <div class="grid md:grid-cols-2 gap-5">
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">RSVP</h2>
-          <F name="rsvp.heading" label="Judul" />
-          <F name="rsvp.intro" label="Intro" textarea />
-        </div>
-        <div class="card p-6">
-          <h2 class="terra font-semibold mb-4">Ucapan &amp; Doa</h2>
-          <F name="guestbook.heading" label="Judul" />
-          <F name="guestbook.intro" label="Intro" textarea />
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-label" class="tab-panel hidden">
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-1">Label Teks Semua Bagian</h2>
-        <p class="text-xs text-slate-500 mb-4">Ubah semua teks tombol, label form, dan judul section.</p>
-        <div class="grid md:grid-cols-2 gap-x-6">
-          <div>
-            <F name="labels.guestPrefix" label="Teks tamu (atas nama)" />
-            <F name="labels.guestSuffix" label="Teks 'Di Tempat'" />
-            <F name="labels.openInvite" label="Tombol 'Buka Undangan'" />
-            <F name="labels.scroll" label="Label 'Scroll'" />
-            <F name="labels.coupleSection" label="Section 'Kedua Mempelai'" />
-            <F name="labels.groomLabel" label="Label 'Mempelai Pria'" />
-            <F name="labels.brideLabel" label="Label 'Mempelai Wanita'" />
-            <F name="labels.saveTheDate" label="Section 'Save The Date'" />
-            <F name="labels.dayLabel" label="Countdown 'Hari'" />
-            <F name="labels.hourLabel" label="Countdown 'Jam'" />
-            <F name="labels.minuteLabel" label="Countdown 'Menit'" />
-            <F name="labels.secondLabel" label="Countdown 'Detik'" />
-            <F name="labels.eventSection" label="Section 'Rangkaian Acara'" />
-            <F name="labels.googleMap" label="Tombol 'Google Map'" />
-            <F name="labels.gallerySection" label="Section 'Galeri'" />
-          </div>
-          <div>
-            <F name="labels.giftSection" label="Section 'Tanda Kasih'" />
-            <F name="labels.transferBank" label="Tombol 'Transfer Bank'" />
-            <F name="labels.qris" label="Tombol 'QRIS'" />
-            <F name="labels.sendGift" label="Tombol 'Kirim Kado'" />
-            <F name="labels.scanQr" label="Teks scan QR" />
-            <F name="labels.copyRekening" label="Tombol 'Copy Rekening'" />
-            <F name="labels.copyAlamat" label="Tombol 'Copy Alamat'" />
-            <F name="labels.giftFormTitle" label="Judul form gift" />
-            <F name="labels.nameRequired" label="Label 'Nama *'" />
-            <F name="labels.bankName" label="Label 'Nama Bank'" />
-            <F name="labels.nominal" label="Label 'Nominal'" />
-            <F name="labels.ucapan" label="Label 'Ucapan'" />
-            <F name="labels.buktiTf" label="Label 'Bukti TF'" />
-            <F name="labels.confirmBtn" label="Tombol 'Konfirmasi'" />
-            <F name="labels.sending" label="Teks 'Mengirim...'" />
-            <F name="labels.thanksTitle" label="Judul 'Terima kasih!'" />
-            <F name="labels.thanksBody" label="Isi 'Konfirmasi tercatat'" />
-            <F name="labels.sendAgain" label="Tombol 'Kirim lagi'" />
-            <F name="labels.namePlaceholder" label="Placeholder 'Nama Anda'" />
-            <F name="labels.rsvpSection" label="Section 'RSVP'" />
-            <F name="labels.rsvpPresence" label="RSVP 'Konfirmasi Kehadiran'" />
-            <F name="labels.rsvpHadir" label="RSVP 'Hadir'" />
-            <F name="labels.rsvpTidak" label="RSVP 'Tidak Hadir'" />
-            <F name="labels.rsvpJumlah" label="RSVP 'Jumlah'" />
-            <F name="labels.rsvp1Orang" label="RSVP '1 Orang'" />
-            <F name="labels.rsvp2Orang" label="RSVP '2 Orang'" />
-            <F name="labels.rsvpSubmit" label="Tombol RSVP 'Submit'" />
-            <F name="labels.guestbookSection" label="Section 'Ucapan & Doa'" />
-            <F name="labels.guestbookMsg" label="Label 'Ucapan'" />
-            <F name="labels.guestbookPlaceholder" label="Placeholder ucapan" />
-            <F name="labels.guestbookSend" label="Tombol 'Kirim'" />
-            <F name="labels.closingTitle" label="Judul 'Terima Kasih'" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-section" class="tab-panel hidden">
-      <div class="grid md:grid-cols-2 gap-5">
-        <div class="card p-6">
-          <T name="initial.enabled" label="Aktifkan Inisial pasangan (F & H)" />
-          <F name="initial.text" label="Teks inisial (cth: F & H)" />
-        </div>
-        <div class="card p-6">
-          <T name="timeline.enabled" label="Aktifkan Timeline (perjalanan cinta)" />
-          <F name="timeline.heading" label="Judul timeline" />
-          <div class="mt-2 text-xs text-slate-500 mb-2">3 momen (judul, tanggal, deskripsi)</div>
-          <F name="timeline.items.0.title" label="Momen 1 judul" />
-          <F name="timeline.items.0.date" label="Momen 1 tanggal" />
-          <F name="timeline.items.0.desc" label="Momen 1 deskripsi" textarea />
-          <F name="timeline.items.1.title" label="Momen 2 judul" />
-          <F name="timeline.items.1.date" label="Momen 2 tanggal" />
-          <F name="timeline.items.1.desc" label="Momen 2 deskripsi" textarea />
-          <F name="timeline.items.2.title" label="Momen 3 judul" />
-          <F name="timeline.items.2.date" label="Momen 3 tanggal" />
-          <F name="timeline.items.2.desc" label="Momen 3 deskripsi" textarea />
-        </div>
-        <div class="card p-6">
-          <T name="liveStream.enabled" label="Aktifkan Live Streaming" />
-          <F name="liveStream.subheading" label="Sub-heading" />
-          <F name="liveStream.heading" label="Judul" />
-          <F name="liveStream.text" label="Teks" textarea />
-          <F name="liveStream.buttonLabel" label="Label tombol" />
-          <F name="liveStream.buttonUrl" label="URL tombol (Instagram/YouTube)" />
-        </div>
-        <div class="card p-6">
-          <T name="exclusive.enabled" label="Aktifkan Exclusive Invitation" />
-          <F name="exclusive.heading" label="Judul" />
-          <F name="exclusive.text" label="Teks" textarea />
-          <F name="exclusive.logoUrl" label="URL logo (kosongkan jika tidak ada)" />
-          <F name="exclusive.instagramUrl" label="URL Instagram" />
-          <F name="exclusive.whatsappUrl" label="URL WhatsApp" />
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-theme" class="tab-panel hidden">
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-1">Warna</h2>
-        <p class="text-xs text-slate-500 mb-4">Pilih warna tema. Semua section ikut otomatis.</p>
-        <div class="grid md:grid-cols-3 gap-4">
-          <C name="theme.primary" label="Primary (aksen utama)" />
-          <C name="theme.primaryDark" label="Primary dark (hover)" />
-          <C name="theme.primaryLight" label="Primary light (heading)" />
-          <C name="theme.accent" label="Accent (secondary)" />
-          <C name="theme.bg" label="Background" />
-          <C name="theme.surface" label="Surface (card)" />
-          <C name="theme.fg" label="Text utama" />
-          <C name="theme.muted" label="Text redup" />
-          <C name="theme.border" label="Border" />
-        </div>
-      </div>
-
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-4">Shape</h2>
-        <div class="grid md:grid-cols-2 gap-4">
-          <F name="theme.radiusCard" label="Radius kartu (px, cth: 16px)" />
-          <F name="theme.radiusBtn" label="Radius tombol (px, cth: 999px)" />
-        </div>
-      </div>
-
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-4">Font &amp; Ukuran Teks</h2>
-        <div class="grid md:grid-cols-2 gap-4">
-          <F name="theme.fontScript" label="Font judul (cth: Great Vibes, cursive)" />
-          <F name="theme.fontSerif" label="Font body (cth: Cormorant Infant, serif)" />
-          <F name="theme.fontSans" label="Font sans (cth: Outfit, sans-serif)" />
-          <F name="theme.scriptSize" label="Ukuran nama cover (cth: text-6xl md:text-7xl)" />
-          <F name="theme.serifSize" label="Ukuran teks tamu (cth: text-2xl md:text-3xl)" />
-          <F name="theme.headingSize" label="Ukuran heading section (cth: text-5xl)" />
-        </div>
-      </div>
-
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-4">Animasi Teks</h2>
-        <div class="grid md:grid-cols-3 gap-4">
-          <div>
-            <label class="label">Arah gerakan teks</label>
-            <select id="theme.revealAnim" class="field">
-              <option value="fadeUp">Naik (fade up)</option>
-              <option value="fadeLeft">Dari kiri (fade left)</option>
-              <option value="fadeRight">Dari kanan (fade right)</option>
-              <option value="zoomIn">Zoom in</option>
-            </select>
-          </div>
-          <F name="theme.revealBaseDelay" label="Delay awal (ms, cth: 3000 = muncul 3 detik setelah buka)" />
-          <F name="theme.revealStagger" label="Jarak antar elemen (ms, cth: 120)" />
-        </div>
-      </div>
-
-      <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-4">Galeri</h2>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="label">Layout galeri</label>
-            <select id="theme.galleryLayout" class="field">
-              <option value="carousel">Carousel (auto-play)</option>
-              <option value="justified">Justified grid (seperti Melody)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="card p-6">
-        <h2 class="terra font-semibold mb-4">Efek Visual</h2>
-        <div class="grid md:grid-cols-2 gap-3">
-          <T name="theme.petalsEnabled" label="Kelopak jatuh (petals)" />
-          <T name="theme.blobsEnabled" label="Glow blur background (blobs)" />
-          <T name="theme.sheenEnabled" label="Efek kilau tombol (sheen)" />
-          <T name="theme.videoCover" label="Video sebagai cover background" />
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-settings" class="tab-panel hidden">
-      <div class="card p-6 max-w-md">
-        <h2 class="terra font-semibold mb-4">Ganti Password</h2>
-        <label class="label">Password lama</label>
-        <input id="oldPw" type="password" class="field mb-3" />
-        <label class="label">Password baru</label>
-        <input id="newPw" type="password" class="field mb-4" />
-        <button onclick="changePw()" class="bg-terra text-[#fffbeb] font-medium px-6 py-2.5 rounded-xl cursor-pointer active:scale-[0.98]">Simpan Password</button>
-      </div>
-    </section>
-
-  </main>
+  <main class="max-w-6xl mx-auto px-4 pb-24" id="main"></main>
 </div>
 
 <div id="toast" class="toast hidden bg-green-600 text-white text-sm px-5 py-3 rounded-xl shadow-lg"></div>
@@ -424,7 +73,6 @@
 
 <script>
 let cfg = null;
-let authOk = false;
 const $ = (id) => document.getElementById(id);
 
 function toast(msg, err) {
@@ -445,7 +93,6 @@ async function api(url, opts = {}) {
 async function login() {
   try {
     await api("/api/login", { method: "POST", body: JSON.stringify({ password: $("pw").value }) });
-    authOk = true;
     boot();
   } catch {
     $("loginErr").style.display = "block";
@@ -458,10 +105,14 @@ async function logout() {
   location.reload();
 }
 
+/* ---------- Path helpers ---------- */
 function setPath(obj, path, val) {
   const parts = path.split(".");
   let o = obj;
-  for (let i = 0; i < parts.length - 1; i++) o = o[parts[i]];
+  for (let i = 0; i < parts.length - 1; i++) {
+    if (o[parts[i]] === undefined) o[parts[i]] = {};
+    o = o[parts[i]];
+  }
   o[parts[parts.length - 1]] = val;
 }
 function getPath(obj, path) {
@@ -470,7 +121,8 @@ function getPath(obj, path) {
 
 function esc(s) { return String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
 
-function F({ name, label, textarea }) {
+/* ---------- Field builders (return HTML strings) ---------- */
+function F(name, label, textarea) {
   const val = getPath(cfg, name) ?? "";
   if (textarea) {
     return `<label class="label">${label}</label><textarea data-path="${name}" class="field mb-3" rows="2">${esc(val)}</textarea>`;
@@ -478,7 +130,7 @@ function F({ name, label, textarea }) {
   return `<label class="label">${label}</label><input data-path="${name}" value="${esc(val)}" class="field mb-3" />`;
 }
 
-function C({ name, label }) {
+function C(name, label) {
   const val = getPath(cfg, name) ?? "#000000";
   return `<div class="mb-3">
     <label class="label">${label}</label>
@@ -489,44 +141,389 @@ function C({ name, label }) {
   </div>`;
 }
 
-function T({ name, label }) {
+function T(name, label) {
   return `<label class="flex items-center gap-2 py-2 cursor-pointer">
     <input type="checkbox" data-path="${name}" class="w-4 h-4 accent-[#9a3412]" /> ${label}
   </label>`;
 }
 
-function renderSelects() {
-  const ra = getPath(cfg, "theme.revealAnim") || "fadeUp";
-  const sel = $("theme.revealAnim");
-  if (sel) sel.value = ra;
-  const gl = getPath(cfg, "theme.galleryLayout") || "carousel";
-  const gsel = $("theme.galleryLayout");
-  if (gsel) gsel.value = gl;
+function UploadField(name, label) {
+  const url = getPath(cfg, name) || "";
+  return `<div class="border border-[#e7d8d3] rounded-xl p-4 text-center bg-[#fffbeb]">
+    <p class="text-xs text-slate-500 mb-3">${label}</p>
+    ${url ? `<img src="${esc(url)}" class="thumb mx-auto mb-3" />` : '<div class="thumb mx-auto mb-3 bg-[#f7f0e3] border border-dashed border-terra/30 flex items-center justify-center text-2xl text-slate-400">+</div>'}
+    <button onclick="pickUpload('${name}')" class="w-full text-xs border border-terra/40 text-terra py-2 rounded-lg cursor-pointer">${url ? "Ganti" : "Upload"}</button>
+  </div>`;
 }
 
-function renderForms() {
-  document.querySelectorAll("[data-path]").forEach((el) => {
-    if (el.type === "checkbox") {
-      el.checked = !!getPath(cfg, el.dataset.path);
-    } else if (el.type === "color") {
-      el.value = getPath(cfg, el.dataset.path) ?? "#000000";
-    } else {
-      el.value = getPath(cfg, el.dataset.path) ?? "";
-    }
+/* ---------- Panel renderers (pure JS, call F/C/T/UploadField) ---------- */
+function renderCouple() {
+  return `<div class="grid md:grid-cols-2 gap-5">
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">Mempelai Pria</h2>
+      ${F("couple.groom", "Nama panggilan")}
+      ${F("couple.groomFull", "Nama lengkap")}
+      ${F("couple.groomDesc", "Deskripsi / orang tua", true)}
+    </div>
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">Mempelai Wanita</h2>
+      ${F("couple.bride", "Nama panggilan")}
+      ${F("couple.brideFull", "Nama lengkap")}
+      ${F("couple.brideDesc", "Deskripsi / orang tua", true)}
+    </div>
+    <div class="md:col-span-2 card p-6">
+      <h2 class="terra font-semibold mb-4">Branding</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        ${F("brand.kicker", "Kicker cover")}
+        ${F("brand.logoText", "Inisial loading")}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderEvent() {
+  return `<div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Tanggal</h2>
+    <div class="grid md:grid-cols-3 gap-4">
+      ${F("event.day", "Hari")}
+      ${F("event.date", "Tanggal")}
+      ${F("event.countdownDate", "Countdown target (ISO)")}
+    </div>
+  </div>
+  <div class="grid md:grid-cols-2 gap-5">
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">Akad Nikah</h2>
+      ${F("event.akad.title", "Judul")}
+      ${F("event.akad.time", "Waktu")}
+      ${F("event.akad.place", "Tempat", true)}
+      ${F("event.akad.mapsUrl", "Link Google Maps")}
+    </div>
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">Resepsi</h2>
+      ${F("event.resepsi.title", "Judul")}
+      ${F("event.resepsi.time", "Waktu")}
+      ${F("event.resepsi.place", "Tempat", true)}
+      ${F("event.resepsi.mapsUrl", "Link Google Maps")}
+    </div>
+  </div>`;
+}
+
+function renderPhotos() {
+  return `<div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Foto Utama</h2>
+    <div class="grid md:grid-cols-3 gap-5">
+      ${UploadField("photos.cover", "Cover background")}
+      ${UploadField("photos.groom", "Foto mempelai pria")}
+      ${UploadField("photos.bride", "Foto mempelai wanita")}
+    </div>
+  </div>
+  <div class="card p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="terra font-semibold">Galeri (carousel)</h2>
+      <button onclick="addGallery()" class="text-xs bg-terra text-[#fffbeb] px-3 py-1.5 rounded-lg cursor-pointer active:scale-[0.98]">Tambah</button>
+    </div>
+    <div id="galleryList" class="grid md:grid-cols-3 gap-4"></div>
+  </div>`;
+}
+
+function renderMedia() {
+  return `<div class="grid md:grid-cols-2 gap-5">
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-2">Video Cover</h2>
+      <p class="text-xs text-slate-500 mb-4">MP4/WebM, maks 200MB. Aktif = video jadi background cover.</p>
+      ${T("media.videoEnabled", "Aktifkan video")}
+      <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden" />
+      <button onclick="document.getElementById('upload-video').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Video</button>
+      <div id="videoInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
+    </div>
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-2">Musik</h2>
+      <p class="text-xs text-slate-500 mb-4">MP3, maks 30MB. Tombol musik muncul kalau aktif.</p>
+      ${T("media.musicEnabled", "Aktifkan musik")}
+      <input type="file" id="upload-music" accept="audio/mp3,audio/ogg,audio/wav" class="hidden" />
+      <button onclick="document.getElementById('upload-music').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Musik</button>
+      <div id="musicInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
+    </div>
+  </div>
+  <div class="mt-5 card p-6">
+    <h2 class="terra font-semibold mb-4">File Uploaded</h2>
+    <div id="fileList" class="flex flex-wrap gap-2"></div>
+  </div>`;
+}
+
+function renderText() {
+  return `<div class="grid md:grid-cols-2 gap-5">
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">Salam &amp; Quote</h2>
+      ${F("salam.arabic", "Bismillah")}
+      ${F("salam.text", "Assalamualaikum")}
+      ${F("salam.body", "Isi salam", true)}
+      ${F("quote.text", "Quote (Ar Rum)", true)}
+      ${F("quote.source", "Sumber quote")}
+    </div>
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">Section Lain</h2>
+      ${F("gallery.heading", "Judul galeri")}
+      ${F("closing.heading", "Judul penutup")}
+      ${F("closing.text", "Teks penutup", true)}
+      ${F("footer.credit", "Credit footer")}
+    </div>
+  </div>`;
+}
+
+function renderLabel() {
+  const keys = [
+    ["guestPrefix", "Teks tamu (atas nama)"], ["guestSuffix", "Teks 'Di Tempat'"], ["openInvite", "Tombol 'Buka Undangan'"],
+    ["scroll", "Label 'Scroll'"], ["coupleSection", "Section 'Kedua Mempelai'"], ["groomLabel", "Label 'Mempelai Pria'"],
+    ["brideLabel", "Label 'Mempelai Wanita'"], ["saveTheDate", "Section 'Save The Date'"], ["dayLabel", "Countdown 'Hari'"],
+    ["hourLabel", "Countdown 'Jam'"], ["minuteLabel", "Countdown 'Menit'"], ["secondLabel", "Countdown 'Detik'"],
+    ["eventSection", "Section 'Rangkaian Acara'"], ["googleMap", "Tombol 'Google Map'"], ["gallerySection", "Section 'Galeri'"],
+    ["giftSection", "Section 'Tanda Kasih'"], ["transferBank", "Tombol 'Transfer Bank'"], ["qris", "Tombol 'QRIS'"],
+    ["sendGift", "Tombol 'Kirim Kado'"], ["scanQr", "Teks scan QR"], ["copyRekening", "Tombol 'Copy Rekening'"],
+    ["copyAlamat", "Tombol 'Copy Alamat'"], ["giftFormTitle", "Judul form gift"], ["nameRequired", "Label 'Nama *'"],
+    ["bankName", "Label 'Nama Bank'"], ["nominal", "Label 'Nominal'"], ["ucapan", "Label 'Ucapan'"], ["buktiTf", "Label 'Bukti TF'"],
+    ["confirmBtn", "Tombol 'Konfirmasi'"], ["sending", "Teks 'Mengirim...'"], ["thanksTitle", "Judul 'Terima kasih!'"],
+    ["thanksBody", "Isi 'Konfirmasi tercatat'"], ["sendAgain", "Tombol 'Kirim lagi'"], ["namePlaceholder", "Placeholder 'Nama Anda'"],
+    ["rsvpSection", "Section 'RSVP'"], ["rsvpPresence", "RSVP 'Konfirmasi Kehadiran'"], ["rsvpHadir", "RSVP 'Hadir'"],
+    ["rsvpTidak", "RSVP 'Tidak Hadir'"], ["rsvpJumlah", "RSVP 'Jumlah'"], ["rsvp1Orang", "RSVP '1 Orang'"],
+    ["rsvp2Orang", "RSVP '2 Orang'"], ["rsvpSubmit", "Tombol RSVP 'Submit'"], ["guestbookSection", "Section 'Ucapan & Doa'"],
+    ["guestbookMsg", "Label 'Ucapan'"], ["guestbookPlaceholder", "Placeholder ucapan"], ["guestbookSend", "Tombol 'Kirim'"],
+    ["closingTitle", "Judul 'Terima Kasih'"]
+  ];
+  const half = Math.ceil(keys.length / 2);
+  const cols = [keys.slice(0, half), keys.slice(half)];
+  return `<div class="card p-6">
+    <h2 class="terra font-semibold mb-1">Label Teks Semua Bagian</h2>
+    <p class="text-xs text-slate-500 mb-4">Ubah semua teks tombol, label form, dan judul section.</p>
+    <div class="grid md:grid-cols-2 gap-x-6">
+      <div>${cols[0].map(([k, l]) => F("labels." + k, l)).join("")}</div>
+      <div>${cols[1].map(([k, l]) => F("labels." + k, l)).join("")}</div>
+    </div>
+  </div>`;
+}
+
+function renderSection() {
+  return `<div class="grid md:grid-cols-2 gap-5">
+    <div class="card p-6">
+      ${T("initial.enabled", "Aktifkan Inisial pasangan (F & H)")}
+      ${F("initial.text", "Teks inisial (cth: F & H)")}
+    </div>
+    <div class="card p-6">
+      ${T("timeline.enabled", "Aktifkan Timeline (perjalanan cinta)")}
+      ${F("timeline.heading", "Judul timeline")}
+      <div class="mt-2 text-xs text-slate-500 mb-2">3 momen (judul, tanggal, deskripsi)</div>
+      ${F("timeline.items.0.title", "Momen 1 judul")}
+      ${F("timeline.items.0.date", "Momen 1 tanggal")}
+      ${F("timeline.items.0.desc", "Momen 1 deskripsi", true)}
+      ${F("timeline.items.1.title", "Momen 2 judul")}
+      ${F("timeline.items.1.date", "Momen 2 tanggal")}
+      ${F("timeline.items.1.desc", "Momen 2 deskripsi", true)}
+      ${F("timeline.items.2.title", "Momen 3 judul")}
+      ${F("timeline.items.2.date", "Momen 3 tanggal")}
+      ${F("timeline.items.2.desc", "Momen 3 deskripsi", true)}
+    </div>
+    <div class="card p-6">
+      ${T("liveStream.enabled", "Aktifkan Live Streaming")}
+      ${F("liveStream.subheading", "Sub-heading")}
+      ${F("liveStream.heading", "Judul")}
+      ${F("liveStream.text", "Teks", true)}
+      ${F("liveStream.buttonLabel", "Label tombol")}
+      ${F("liveStream.buttonUrl", "URL tombol (Instagram/YouTube)")}
+    </div>
+    <div class="card p-6">
+      ${T("exclusive.enabled", "Aktifkan Exclusive Invitation")}
+      ${F("exclusive.heading", "Judul")}
+      ${F("exclusive.text", "Teks", true)}
+      ${F("exclusive.logoUrl", "URL logo (kosongkan jika tidak ada)")}
+      ${F("exclusive.instagramUrl", "URL Instagram")}
+      ${F("exclusive.whatsappUrl", "URL WhatsApp")}
+    </div>
+  </div>`;
+}
+
+function renderGift() {
+  return `<div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Tanda Kasih</h2>
+    ${F("gift.heading", "Judul")}
+    ${F("gift.intro", "Intro", true)}
+    <div class="grid md:grid-cols-2 gap-4 mt-4">
+      <div>
+        <h3 class="text-sm text-slate-500 mb-3">Bank</h3>
+        ${F("gift.bank.name", "Nama bank")}
+        ${F("gift.bank.number", "Nomor rekening")}
+        ${F("gift.bank.holder", "Atas nama")}
+      </div>
+      <div>
+        <h3 class="text-sm text-slate-500 mb-3">Kado</h3>
+        ${F("gift.kado.name", "Nama penerima")}
+        ${F("gift.kado.address", "Alamat", true)}
+        ${F("gift.kado.note", "Catatan")}
+      </div>
+    </div>
+    <div class="mt-4">
+      ${T("gift.qrisEnabled", "Tampilkan QRIS")}
+      ${F("gift.qrisValue", "Isi QRIS (link atau string QR)")}
+    </div>
+  </div>`;
+}
+
+function renderRsvp() {
+  return `<div class="grid md:grid-cols-2 gap-5">
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">RSVP</h2>
+      ${F("rsvp.heading", "Judul")}
+      ${F("rsvp.intro", "Intro", true)}
+    </div>
+    <div class="card p-6">
+      <h2 class="terra font-semibold mb-4">Ucapan &amp; Doa</h2>
+      ${F("guestbook.heading", "Judul")}
+      ${F("guestbook.intro", "Intro", true)}
+    </div>
+  </div>`;
+}
+
+function renderTheme() {
+  return `<div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-1">Warna</h2>
+    <p class="text-xs text-slate-500 mb-4">Pilih warna tema. Semua section ikut otomatis.</p>
+    <div class="grid md:grid-cols-3 gap-4">
+      ${C("theme.primary", "Primary (aksen utama)")}
+      ${C("theme.primaryDark", "Primary dark (hover)")}
+      ${C("theme.primaryLight", "Primary light (heading)")}
+      ${C("theme.accent", "Accent (secondary)")}
+      ${C("theme.bg", "Background")}
+      ${C("theme.surface", "Surface (card)")}
+      ${C("theme.fg", "Text utama")}
+      ${C("theme.muted", "Text redup")}
+      ${C("theme.border", "Border")}
+    </div>
+  </div>
+  <div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Shape</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      ${F("theme.radiusCard", "Radius kartu (px, cth: 16px)")}
+      ${F("theme.radiusBtn", "Radius tombol (px, cth: 999px)")}
+    </div>
+  </div>
+  <div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Font &amp; Ukuran Teks</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      ${F("theme.fontScript", "Font judul (cth: Great Vibes, cursive)")}
+      ${F("theme.fontSerif", "Font body (cth: Cormorant Infant, serif)")}
+      ${F("theme.fontSans", "Font sans (cth: Outfit, sans-serif)")}
+      ${F("theme.scriptSize", "Ukuran nama cover (cth: text-6xl md:text-7xl)")}
+      ${F("theme.serifSize", "Ukuran teks tamu (cth: text-2xl md:text-3xl)")}
+      ${F("theme.headingSize", "Ukuran heading section (cth: text-5xl)")}
+    </div>
+  </div>
+  <div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Animasi Teks</h2>
+    <div class="grid md:grid-cols-3 gap-4">
+      <div>
+        <label class="label">Arah gerakan teks</label>
+        <select id="theme.revealAnim" class="field">
+          <option value="fadeUp">Naik (fade up)</option>
+          <option value="fadeLeft">Dari kiri (fade left)</option>
+          <option value="fadeRight">Dari kanan (fade right)</option>
+          <option value="zoomIn">Zoom in</option>
+        </select>
+      </div>
+      ${F("theme.revealBaseDelay", "Delay awal (ms, cth: 3000)")}
+      ${F("theme.revealStagger", "Jarak antar elemen (ms, cth: 120)")}
+    </div>
+  </div>
+  <div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Galeri</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="label">Layout galeri</label>
+        <select id="theme.galleryLayout" class="field">
+          <option value="carousel">Carousel (auto-play)</option>
+          <option value="justified">Justified grid (seperti Melody)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="card p-6">
+    <h2 class="terra font-semibold mb-4">Efek Visual</h2>
+    <div class="grid md:grid-cols-2 gap-3">
+      ${T("theme.petalsEnabled", "Kelopak jatuh (petals)")}
+      ${T("theme.blobsEnabled", "Glow blur background (blobs)")}
+      ${T("theme.sheenEnabled", "Efek kilau tombol (sheen)")}
+      ${T("theme.videoCover", "Video sebagai cover background")}
+    </div>
+  </div>`;
+}
+
+function renderSettings() {
+  return `<div class="card p-6 max-w-md">
+    <h2 class="terra font-semibold mb-4">Ganti Password</h2>
+    <label class="label">Password lama</label>
+    <input id="oldPw" type="password" class="field mb-3" />
+    <label class="label">Password baru</label>
+    <input id="newPw" type="password" class="field mb-4" />
+    <button onclick="changePw()" class="bg-terra text-[#fffbeb] font-medium px-6 py-2.5 rounded-xl cursor-pointer active:scale-[0.98]">Simpan Password</button>
+  </div>`;
+}
+
+/* ---------- Render all panels ---------- */
+function renderAll() {
+  $("main").innerHTML = `
+    <section id="tab-couple" class="tab-panel hidden">${renderCouple()}</section>
+    <section id="tab-event" class="tab-panel hidden">${renderEvent()}</section>
+    <section id="tab-photos" class="tab-panel hidden">${renderPhotos()}</section>
+    <section id="tab-media" class="tab-panel hidden">${renderMedia()}</section>
+    <section id="tab-text" class="tab-panel hidden">${renderText()}</section>
+    <section id="tab-label" class="tab-panel hidden">${renderLabel()}</section>
+    <section id="tab-section" class="tab-panel hidden">${renderSection()}</section>
+    <section id="tab-gift" class="tab-panel hidden">${renderGift()}</section>
+    <section id="tab-rsvp" class="tab-panel hidden">${renderRsvp()}</section>
+    <section id="tab-theme" class="tab-panel hidden">${renderTheme()}</section>
+    <section id="tab-settings" class="tab-panel hidden">${renderSettings()}</section>
+  `;
+  // event listeners
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("tab-active"));
+      document.querySelectorAll(".tab-panel").forEach((p) => p.classList.add("hidden"));
+      btn.classList.add("tab-active");
+      $(btn.dataset.tab).classList.remove("hidden");
+    });
   });
-  $("media.videoEnabled").checked = !!getPath(cfg, "media.videoEnabled");
-  $("media.musicEnabled").checked = !!getPath(cfg, "media.musicEnabled");
-  $("gift.qrisEnabled").checked = !!getPath(cfg, "gift.qrisEnabled");
-  renderSelects();
+  // media upload listeners
+  const uv = $("upload-video");
+  if (uv) uv.addEventListener("change", (e) => {
+    uploadFile(e.target.files[0], (url) => { setPath(cfg, "media.video", url); $("videoInfo").textContent = url; });
+  });
+  const um = $("upload-music");
+  if (um) um.addEventListener("change", (e) => {
+    uploadFile(e.target.files[0], (url) => { setPath(cfg, "media.music", url); $("musicInfo").textContent = url; });
+  });
+  // sync values from cfg
+  document.querySelectorAll("[data-path]").forEach((el) => {
+    if (el.type === "checkbox") el.checked = !!getPath(cfg, el.dataset.path);
+    else if (el.type === "color") el.value = getPath(cfg, el.dataset.path) ?? "#000000";
+    else el.value = getPath(cfg, el.dataset.path) ?? "";
+  });
+  const ra = $("theme.revealAnim");
+  if (ra) ra.value = getPath(cfg, "theme.revealAnim") || "fadeUp";
+  const gl = $("theme.galleryLayout");
+  if (gl) gl.value = getPath(cfg, "theme.galleryLayout") || "carousel";
+  // activate first tab
+  document.querySelector(".tab-btn").classList.add("tab-active");
+  $("tab-couple").classList.remove("hidden");
   renderGalleryList();
   renderFileList();
   $("videoInfo").textContent = getPath(cfg, "media.video") || "Belum ada video";
   $("musicInfo").textContent = getPath(cfg, "media.music") || "Belum ada musik";
 }
 
+/* ---------- Gallery ---------- */
 function renderGalleryList() {
+  const el = $("galleryList");
+  if (!el) return;
   const imgs = getPath(cfg, "photos.gallery") || [];
-  $("galleryList").innerHTML = imgs.map((u, i) => `
+  el.innerHTML = imgs.map((u, i) => `
     <div class="border border-[#e7d8d3] rounded-xl p-3 bg-[#fffbeb]">
       <img src="${esc(u)}" class="w-full h-32 object-cover rounded-lg mb-2" />
       <div class="flex gap-2">
@@ -566,6 +563,7 @@ function removeGallery(i) {
   renderGalleryList();
 }
 
+/* ---------- Uploads ---------- */
 async function uploadFile(file, cb) {
   if (!file) return;
   const fd = new FormData();
@@ -584,24 +582,17 @@ function pickUpload(field) {
   document.body.appendChild(input);
   input.onchange = () => uploadFile(input.files[0], (url) => {
     setPath(cfg, field, url);
-    renderForms();
+    renderAll();
   });
   input.click();
 }
 
-function UploadField({ name, label }) {
-  const url = getPath(cfg, name) || "";
-  return `<div class="border border-[#e7d8d3] rounded-xl p-4 text-center bg-[#fffbeb]">
-    <p class="text-xs text-slate-500 mb-3">${label}</p>
-    ${url ? `<img src="${esc(url)}" class="thumb mx-auto mb-3" />` : '<div class="thumb mx-auto mb-3 bg-[#f7f0e3] border border-dashed border-terra/30 flex items-center justify-center text-2xl text-slate-400">+</div>'}
-    <button onclick="pickUpload('${name}')" class="w-full text-xs border border-terra/40 text-terra py-2 rounded-lg cursor-pointer">${url ? "Ganti" : "Upload"}</button>
-  </div>`;
-}
-
 async function renderFileList() {
+  const el = $("fileList");
+  if (!el) return;
   try {
     const files = await api("/api/files");
-    $("fileList").innerHTML = files.map((f) => `
+    el.innerHTML = files.map((f) => `
       <div class="flex items-center gap-2 bg-[#fffbeb] border border-[#e7d8d3] rounded-lg px-3 py-2 text-xs">
         <span class="text-slate-500">${esc(f.name)}</span>
         <button onclick="delFile('${esc(f.name)}')" class="text-red-600 hover:text-red-500 cursor-pointer">Hapus</button>
@@ -613,19 +604,7 @@ async function delFile(name) {
   renderFileList();
 }
 
-$("upload-video").addEventListener("change", (e) => {
-  uploadFile(e.target.files[0], (url) => {
-    setPath(cfg, "media.video", url);
-    $("videoInfo").textContent = url;
-  });
-});
-$("upload-music").addEventListener("change", (e) => {
-  uploadFile(e.target.files[0], (url) => {
-    setPath(cfg, "media.music", url);
-    $("musicInfo").textContent = url;
-  });
-});
-
+/* ---------- Save ---------- */
 async function saveAll() {
   try {
     document.querySelectorAll("[data-path]").forEach((el) => {
@@ -633,9 +612,6 @@ async function saveAll() {
       else if (el.type === "color") setPath(cfg, el.dataset.path, el.value);
       else setPath(cfg, el.dataset.path, el.value);
     });
-    setPath(cfg, "media.videoEnabled", $("media.videoEnabled").checked);
-    setPath(cfg, "media.musicEnabled", $("media.musicEnabled").checked);
-    setPath(cfg, "gift.qrisEnabled", $("gift.qrisEnabled").checked);
     const ra = $("theme.revealAnim");
     if (ra) setPath(cfg, "theme.revealAnim", ra.value);
     const gl = $("theme.galleryLayout");
@@ -655,15 +631,7 @@ async function changePw() {
   } catch (e) { toast(e.message, true); }
 }
 
-document.querySelectorAll(".tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("tab-active"));
-    document.querySelectorAll(".tab-panel").forEach((p) => p.classList.add("hidden"));
-    btn.classList.add("tab-active");
-    $(btn.dataset.tab).classList.remove("hidden");
-  });
-});
-
+/* ---------- Boot ---------- */
 async function boot() {
   $("login").style.display = "none";
   $("app").style.display = "block";
@@ -672,9 +640,7 @@ async function boot() {
   } catch {
     cfg = {};
   }
-  renderForms();
-  document.querySelector(".tab-btn").classList.add("tab-active");
-  $("tab-couple").classList.remove("hidden");
+  renderAll();
 }
 </script>
 </body>
