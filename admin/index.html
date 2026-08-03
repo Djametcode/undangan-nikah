@@ -58,6 +58,7 @@
     <button data-tab="tab-media" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Video &amp; Musik</button>
     <button data-tab="tab-text" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Teks</button>
     <button data-tab="tab-label" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Label</button>
+    <button data-tab="tab-section" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Section</button>
     <button data-tab="tab-gift" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Tanda Kasih</button>
     <button data-tab="tab-rsvp" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">RSVP &amp; Ucapan</button>
     <button data-tab="tab-theme" class="tab-btn text-xs px-4 py-2 rounded-full border border-terra/30 text-terra hover:bg-terra/10 transition cursor-pointer">Theme</button>
@@ -283,6 +284,45 @@
             <F name="labels.guestbookSend" label="Tombol 'Kirim'" />
             <F name="labels.closingTitle" label="Judul 'Terima Kasih'" />
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-section" class="tab-panel hidden">
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="card p-6">
+          <T name="initial.enabled" label="Aktifkan Inisial pasangan (F & H)" />
+          <F name="initial.text" label="Teks inisial (cth: F & H)" />
+        </div>
+        <div class="card p-6">
+          <T name="timeline.enabled" label="Aktifkan Timeline (perjalanan cinta)" />
+          <F name="timeline.heading" label="Judul timeline" />
+          <div class="mt-2 text-xs text-slate-500 mb-2">3 momen (judul, tanggal, deskripsi)</div>
+          <F name="timeline.items.0.title" label="Momen 1 judul" />
+          <F name="timeline.items.0.date" label="Momen 1 tanggal" />
+          <F name="timeline.items.0.desc" label="Momen 1 deskripsi" textarea />
+          <F name="timeline.items.1.title" label="Momen 2 judul" />
+          <F name="timeline.items.1.date" label="Momen 2 tanggal" />
+          <F name="timeline.items.1.desc" label="Momen 2 deskripsi" textarea />
+          <F name="timeline.items.2.title" label="Momen 3 judul" />
+          <F name="timeline.items.2.date" label="Momen 3 tanggal" />
+          <F name="timeline.items.2.desc" label="Momen 3 deskripsi" textarea />
+        </div>
+        <div class="card p-6">
+          <T name="liveStream.enabled" label="Aktifkan Live Streaming" />
+          <F name="liveStream.subheading" label="Sub-heading" />
+          <F name="liveStream.heading" label="Judul" />
+          <F name="liveStream.text" label="Teks" textarea />
+          <F name="liveStream.buttonLabel" label="Label tombol" />
+          <F name="liveStream.buttonUrl" label="URL tombol (Instagram/YouTube)" />
+        </div>
+        <div class="card p-6">
+          <T name="exclusive.enabled" label="Aktifkan Exclusive Invitation" />
+          <F name="exclusive.heading" label="Judul" />
+          <F name="exclusive.text" label="Teks" textarea />
+          <F name="exclusive.logoUrl" label="URL logo (kosongkan jika tidak ada)" />
+          <F name="exclusive.instagramUrl" label="URL Instagram" />
+          <F name="exclusive.whatsappUrl" label="URL WhatsApp" />
         </div>
       </div>
     </section>

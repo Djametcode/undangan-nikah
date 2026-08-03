@@ -74,7 +74,7 @@
   "media": {
     "video": "",
     "videoEnabled": false,
-    "music": "",
+    "music": "/uploads/1785729856585-03-08-2026-11-04.mp3",
     "musicEnabled": false
   },
   "footer": {
@@ -96,7 +96,7 @@
     "fontScript": "Great Vibes, cursive",
     "fontSerif": "Cormorant Infant, Georgia, serif",
     "fontSans": "Outfit, system-ui, sans-serif",
-    "revealAnim": "fadeUp",
+    "revealAnim": "zoomIn",
     "petalsEnabled": true,
     "blobsEnabled": true,
     "videoCover": false,
@@ -106,7 +106,7 @@
     "headingSize": "text-5xl",
     "revealBaseDelay": "3000",
     "revealStagger": "120",
-    "galleryLayout": "justified"
+    "galleryLayout": "carousel"
   },
   "labels": {
     "guestPrefix": "Kepada Bapak/Ibu/Saudara/i",
@@ -162,5 +162,46 @@
     "guestbookSent": "Terkirim ✓",
     "closingTitle": "Terima Kasih",
     "loading": "Loading"
+  },
+  "timeline": {
+    "enabled": true,
+    "heading": "Perjalanan Cinta",
+    "items": [
+      {
+        "title": "Awal Bertemu",
+        "desc": "Kami pertama kali bertemu dan berkenalan.",
+        "date": "2019"
+      },
+      {
+        "title": "Lamaran",
+        "desc": "Momen sakral meminta restu kedua keluarga.",
+        "date": "2024"
+      },
+      {
+        "title": "Menikah",
+        "desc": "Mengikat janji suci sehidup sesurga.",
+        "date": "2025"
+      }
+    ]
+  },
+  "initial": {
+    "enabled": true,
+    "text": "F & H"
+  },
+  "liveStream": {
+    "enabled": false,
+    "heading": "Live Streaming",
+    "subheading": "LIVE STREAMING",
+    "text": "Pernikahan kami dapat disaksikan secara langsung melalui live streaming di bawah ini.",
+    "buttonLabel": "Tonton Live",
+    "buttonUrl": "https://www.instagram.com/galeriundangan_official"
+  },
+  "exclusive": {
+    "enabled": true,
+    "heading": "Exclusive Web Invitation",
+    "text": "Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.",
+    "logoUrl": "",
+    "instagramUrl": "https://www.instagram.com/galeriundangan_official",
+    "whatsappUrl": "https://wa.me/6282176971754"
   }
 }

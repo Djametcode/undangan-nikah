@@ -25,6 +25,10 @@ interface Cfg {
   quote: { text: string; source: string };
   salam: { arabic: string; text: string; body: string };
   gallery: { heading: string; images: string[] };
+  timeline: { enabled: boolean; heading: string; items: { title: string; desc: string; date: string }[] };
+  initial: { enabled: boolean; text: string };
+  liveStream: { enabled: boolean; heading: string; subheading: string; text: string; buttonLabel: string; buttonUrl: string };
+  exclusive: { enabled: boolean; heading: string; text: string; logoUrl: string; instagramUrl: string; whatsappUrl: string };
   gift: {
     heading: string; intro: string;
     bank: { name: string; number: string; holder: string };
@@ -137,6 +141,32 @@ const DEFAULT_CFG: Cfg = {
   quote: { text: "\"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri.\"", source: "Ar Rum Ayat 21" },
   salam: { arabic: "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ", text: "Assalamualaikum Warahmatullahi Wabarakatuh", body: "Tanpa mengurangi rasa hormat, kami mengundang Anda untuk berkenan hadir di acara pernikahan kami." },
   gallery: { heading: "Momen Kami", images: [] },
+  timeline: {
+    enabled: true,
+    heading: "Perjalanan Cinta",
+    items: [
+      { title: "Awal Bertemu", desc: "Kami pertama kali bertemu dan berkenalan.", date: "2019" },
+      { title: "Lamaran", desc: "Momen sakral meminta restu kedua keluarga.", date: "2024" },
+      { title: "Menikah", desc: "Mengikat janji suci sehidup sesurga.", date: "2025" },
+    ],
+  },
+  initial: { enabled: true, text: "F & H" },
+  liveStream: {
+    enabled: false,
+    heading: "Live Streaming",
+    subheading: "LIVE STREAMING",
+    text: "Pernikahan kami dapat disaksikan secara langsung melalui live streaming di bawah ini.",
+    buttonLabel: "Tonton Live",
+    buttonUrl: "https://www.instagram.com/galeriundangan_official",
+  },
+  exclusive: {
+    enabled: true,
+    heading: "Exclusive Web Invitation",
+    text: "Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.",
+    logoUrl: "",
+    instagramUrl: "https://www.instagram.com/galeriundangan_official",
+    whatsappUrl: "https://wa.me/6282176971754",
+  },
   gift: {
     heading: "Kirim Hadiah", intro: "Tanpa mengurangi rasa hormat, bagi rekan-rekan dan sahabat yang hendak memberikan tanda kasih untuk kami, dapat melalui nomor rekening di bawah ini.",
     bank: { name: "Bank Mandiri", number: "123123123", holder: "Nama Pemilik" },
@@ -745,6 +775,119 @@ function Gallery({ cfg }: { cfg: Cfg }) {
   );
 }
 
+/* ---------- Initial (inisial pasangan besar) ---------- */
+function InitialSection({ cfg }: { cfg: Cfg }) {
+  const { initial } = cfg;
+  if (!initial.enabled) return null;
+  return (
+    <section className="py-20 px-4 text-center" data-reveal>
+      <p className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>{initial.text}</p>
+      <Ornament className="w-32 mx-auto mt-6" />
+    </section>
+  );
+}
+
+/* ---------- Timeline (perjalanan cinta) ---------- */
+function TimelineSection({ cfg }: { cfg: Cfg }) {
+  const { timeline } = cfg;
+  if (!timeline.enabled || !timeline.items?.length) return null;
+  return (
+    <section className="py-24 px-4 bg-sand/60">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-14" data-reveal>
+          <span className="kicker block mb-4">{timeline.heading}</span>
+          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
+            <span className="line"><span className="line-inner">{timeline.heading}</span></span>
+          </h2>
+          <Ornament className="w-36 mx-auto mt-6" />
+        </div>
+        <div className="relative" data-reveal>
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-primary/30" />
+          {timeline.items.map((item, i) => (
+            <div key={i} className={`relative flex items-start gap-6 mb-10 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+              <div className="hidden md:block md:w-1/2" />
+              <div className="absolute left-1/2 -translate-x-1/2 top-2 w-3 h-3 rounded-full bg-primary border-2 border-bg" />
+              <div className={`md:w-1/2 ml-10 md:ml-0 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+                <div className="soft-card p-5 soft-shadow inline-block text-left">
+                  <span className="text-xs uppercase tracking-widest text-primary-light font-medium">{item.date}</span>
+                  <h3 className="serif-body text-xl text-fg mt-1">{item.title}</h3>
+                  <p className="serif-body text-muted text-sm mt-1">{item.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Live Streaming ---------- */
+function LiveStreamSection({ cfg }: { cfg: Cfg }) {
+  const { liveStream } = cfg;
+  if (!liveStream.enabled) return null;
+  return (
+    <section className="py-24 px-4 text-center">
+      <div className="max-w-xl mx-auto" data-reveal>
+        <span className="kicker block mb-4">{liveStream.subheading}</span>
+        <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
+          <span className="line"><span className="line-inner">{liveStream.heading}</span></span>
+        </h2>
+        <Ornament className="w-36 mx-auto my-6" />
+        <p className="serif-body text-muted text-lg leading-relaxed mb-8">{liveStream.text}</p>
+        <a
+          href={liveStream.buttonUrl} target="_blank" rel="noreferrer"
+          className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-bg px-8 py-3.5 text-sm font-medium rounded-btn transition-all duration-300 soft-shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+        >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-2 6l6 4-6 4V8z" />
+          </svg>
+          {liveStream.buttonLabel}
+        </a>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Exclusive Web Invitation ---------- */
+function ExclusiveSection({ cfg }: { cfg: Cfg }) {
+  const { exclusive } = cfg;
+  if (!exclusive.enabled) return null;
+  return (
+    <section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
+      <div className="max-w-xl mx-auto relative z-10" data-reveal>
+        <CornerOrnament className="absolute -top-10 -left-10 w-24" />
+        <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
+        <span className="kicker block mb-4">Invitation</span>
+        <h2 data-line-reveal className={`script-display text-primary-light mb-6 fade-up ${cfg.theme.headingSize}`}>
+          <span className="line"><span className="line-inner">{exclusive.heading}</span></span>
+        </h2>
+        <Ornament className="w-40 mx-auto mb-8" />
+        {exclusive.logoUrl && (
+          <img src={exclusive.logoUrl} alt="logo" className="w-20 h-20 object-contain mx-auto mb-6" />
+        )}
+        <p className="serif-body text-lg text-muted/80 leading-relaxed max-w-md mx-auto mb-8">{exclusive.text}</p>
+        <div className="flex justify-center gap-3">
+          {exclusive.instagramUrl && (
+            <a href={exclusive.instagramUrl} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full border border-primary/40 text-primary-light flex items-center justify-center hover:bg-primary hover:text-bg transition-colors cursor-pointer" aria-label="Instagram">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 3.6a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z" />
+              </svg>
+            </a>
+          )}
+          {exclusive.whatsappUrl && (
+            <a href={exclusive.whatsappUrl} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full border border-primary/40 text-primary-light flex items-center justify-center hover:bg-primary hover:text-bg transition-colors cursor-pointer" aria-label="WhatsApp">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6l.5-.6c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 00-8.7 15L2 22l5.1-1.3A10 10 0 1012 2z" />
+              </svg>
+            </a>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- Gift ---------- */
 function Gift({ cfg }: { cfg: Cfg }) {
   const [copied, setCopied] = useState<string | null>(null);
@@ -1113,12 +1256,16 @@ export default function App() {
         <div className="relative z-10">
           <main>
             <Couple cfg={cfg} />
+            <InitialSection cfg={cfg} />
             <SaveTheDate cfg={cfg} />
+            <TimelineSection cfg={cfg} />
             <Info cfg={cfg} />
+            <LiveStreamSection cfg={cfg} />
             <Gallery cfg={cfg} />
             <Gift cfg={cfg} />
             <Rsvp cfg={cfg} />
             <GuestBook cfg={cfg} />
+            <ExclusiveSection cfg={cfg} />
             <Closing cfg={cfg} />
             <Footer cfg={cfg} />
           </main>
