@@ -433,6 +433,29 @@ function renderTheme() {
     </div>
   </div>
   <div class="card p-6 mb-5">
+    <h2 class="terra font-semibold mb-4">Motion (Parallax &amp; Transisi)</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label class="label">Level parallax</label>
+        <select id="theme.motion.parallaxLevel" class="field">
+          <option value="low">Rendah (halus)</option>
+          <option value="medium">Sedang</option>
+          <option value="high">Kuat (dramatis)</option>
+        </select>
+      </div>
+      <div>
+        <label class="label">Mode video cover</label>
+        <select id="theme.motion.videoCoverMode" class="field">
+          <option value="cover">Cover (isi layar)</option>
+          <option value="contain">Contain (utuh)</option>
+          <option value="parallax">Parallax (gerak saat scroll)</option>
+        </select>
+      </div>
+      ${T("theme.motion.heroZoom", "Zoom pelan pada foto/video cover")}
+      ${T("theme.motion.floatElements", "Ornamen mengambang (float)")}
+    </div>
+  </div>
+  <div class="card p-6 mb-5">
     <h2 class="terra font-semibold mb-4">Galeri</h2>
     <div class="grid md:grid-cols-2 gap-4">
       <div>
@@ -509,6 +532,10 @@ function renderAll() {
   if (ra) ra.value = getPath(cfg, "theme.revealAnim") || "fadeUp";
   const gl = $("theme.galleryLayout");
   if (gl) gl.value = getPath(cfg, "theme.galleryLayout") || "carousel";
+  const pl = $("theme.motion.parallaxLevel");
+  if (pl) pl.value = getPath(cfg, "theme.motion.parallaxLevel") || "medium";
+  const vc = $("theme.motion.videoCoverMode");
+  if (vc) vc.value = getPath(cfg, "theme.motion.videoCoverMode") || "cover";
   // activate first tab
   document.querySelector(".tab-btn").classList.add("tab-active");
   $("tab-couple").classList.remove("hidden");
@@ -616,6 +643,10 @@ async function saveAll() {
     if (ra) setPath(cfg, "theme.revealAnim", ra.value);
     const gl = $("theme.galleryLayout");
     if (gl) setPath(cfg, "theme.galleryLayout", gl.value);
+    const pl = $("theme.motion.parallaxLevel");
+    if (pl) setPath(cfg, "theme.motion.parallaxLevel", pl.value);
+    const vc = $("theme.motion.videoCoverMode");
+    if (vc) setPath(cfg, "theme.motion.videoCoverMode", vc.value);
     await api("/api/config", { method: "POST", body: JSON.stringify(cfg) });
     toast("Undangan tersimpan & deployed!");
   } catch (e) {

@@ -68,6 +68,14 @@ interface Cfg {
     scriptSize: string;
     serifSize: string;
     headingSize: string;
+    motion: {
+      parallaxLevel: string;
+      sectionReveal: string;
+      textEffect: string;
+      videoCoverMode: string;
+      heroZoom: boolean;
+      floatElements: boolean;
+    };
   };
   labels: {
     guestPrefix: string;
@@ -206,6 +214,14 @@ const DEFAULT_CFG: Cfg = {
     scriptSize: "text-6xl md:text-7xl",
     serifSize: "text-2xl md:text-3xl",
     headingSize: "text-5xl",
+    motion: {
+      parallaxLevel: "medium",
+      sectionReveal: "fade-up",
+      textEffect: "none",
+      videoCoverMode: "cover",
+      heroZoom: true,
+      floatElements: true,
+    },
   },
   labels: {
     guestPrefix: "Kepada Bapak/Ibu/Saudara/i",
@@ -388,7 +404,7 @@ function useScrollSetup(enabled: boolean) {
   return scope;
 }
 
-function useWeddingAnimations(dep: unknown = true) {
+function useWeddingAnimations(dep: unknown = true, motion?: Cfg["theme"]["motion"]) {
   const scopeRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!scopeRef.current) return;
@@ -415,8 +431,11 @@ function useWeddingAnimations(dep: unknown = true) {
         );
       });
 
+      // Parallax level: low / medium / high
+      const pLevel = motion?.parallaxLevel || "medium";
+      const pSpeed = pLevel === "low" ? 0.08 : pLevel === "high" ? 0.3 : 0.15;
       gsap.utils.toArray<Element>("[data-parallax]").forEach((el) => {
-        const speed = parseFloat(el.getAttribute("data-parallax") || "0.15");
+        const speed = parseFloat(el.getAttribute("data-parallax") || String(pSpeed));
         gsap.fromTo(
           el,
           { yPercent: -speed * 20 },
@@ -428,6 +447,31 @@ function useWeddingAnimations(dep: unknown = true) {
         );
       });
 
+      // Hero zoom effect (cover image/video slow zoom)
+      if (motion?.heroZoom && document.querySelector("[data-hero-zoom]")) {
+        gsap.fromTo("[data-hero-zoom]", {
+          scale: 1.15,
+        }, {
+          scale: 1,
+          ease: "none",
+          scrollTrigger: { trigger: "[data-hero-zoom]", start: "top top", end: "bottom top", scrub: true },
+        });
+      }
+
+      // Floating elements (petals/ornaments gentle bob)
+      if (motion?.floatElements) {
+        gsap.utils.toArray<Element>("[data-float]").forEach((el, i) => {
+          gsap.to(el, {
+            y: i % 2 === 0 ? -12 : 12,
+            duration: 3 + (i % 3),
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: i * 0.3,
+          });
+        });
+      }
+
       gsap.to("[data-progress]", {
         scaleX: 1,
         ease: "none",
@@ -435,7 +479,7 @@ function useWeddingAnimations(dep: unknown = true) {
       });
     }, scopeRef);
     return () => ctx.revert();
-  }, [dep]);
+  }, [dep, motion?.parallaxLevel, motion?.heroZoom, motion?.floatElements]);
   return scopeRef;
 }
 
@@ -461,9 +505,9 @@ function CornerOrnament({ className = "", flip = false }: { className?: string; 
   );
 }
 
-function Ornament({ className = "" }: { className?: string }) {
+function Ornament({ className = "", float = false }: { className?: string; float?: boolean }) {
   return (
-    <svg viewBox="0 0 200 24" fill="none" className={`text-primary ${className}`} aria-hidden>
+    <svg viewBox="0 0 200 24" fill="none" className={`text-primary ${className} ${float ? "inline-block" : ""}`} data-float={float || undefined} aria-hidden>
       <path d="M0 12h78M122 12h78" stroke="currentColor" strokeWidth="0.75" opacity="0.7" />
       <path d="M100 2c8 5 8 15 0 20-8-5-8-15 0-20z" fill="currentColor" opacity="0.85" />
       <path d="M92 12h16M96 7h8M96 17h8" stroke="currentColor" strokeWidth="0.5" opacity="0.6" />
@@ -523,6 +567,7 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
 function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg: Cfg }) {
   const { couple, brand, photos, media, theme, labels } = cfg;
   const hasVideo = (media.videoEnabled || theme.videoCover) && media.video;
+  const vidMode = theme.motion?.videoCoverMode || "cover";
   return (
     <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden bg-bg">
@@ -530,10 +575,11 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
           <video
             src={media.video}
             autoPlay muted playsInline loop
-            className="w-full h-full object-cover opacity-70 brightness-[0.85]"
+            data-hero-zoom
+            className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} opacity-70 brightness-[0.85]`}
           />
         ) : photos.cover ? (
-          <img src={photos.cover} alt="" className="w-full h-full object-cover opacity-80" />
+          <img src={photos.cover} alt="" data-hero-zoom className="w-full h-full object-cover opacity-80" />
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-b from-bg/70 via-bg/20 to-bg" />
       </div>
@@ -544,7 +590,7 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
         <h1 data-line-reveal className={`script-display text-primary fade-up fd-2 ${theme.scriptSize}`}>
           <span className="line"><span className="line-inner">{couple.groom} {couple.ampersand} {couple.bride}</span></span>
         </h1>
-        <Ornament className="w-40 mx-auto my-6 fade-up fd-3" />
+        <Ornament className="w-40 mx-auto my-6 fade-up fd-3" float />
 
         <p className="text-muted/60 text-xs uppercase tracking-[0.25em] mt-8 fade-up fd-4">{labels.guestPrefix}</p>
         <p className={`serif-body text-fg my-2 fade-up fd-4 ${theme.serifSize}`}>{guest}</p>
@@ -589,7 +635,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
             <div className="gold-frame max-w-xs mx-auto mb-6 rounded-sm overflow-hidden">
               <div className="overflow-hidden rounded-[3px] bg-surface">
                 {photos.groom ? (
-                  <img src={photos.groom} alt={couple.groomFull} className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img src={photos.groom} alt={couple.groomFull} data-parallax="0.12" className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
                 ) : (
                   <div className="w-full aspect-[3/4] flex items-center justify-center"><span className="script-display text-4xl text-primary/50">{couple.groom.charAt(0)}</span></div>
                 )}
@@ -604,7 +650,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
             <div className="gold-frame max-w-xs mx-auto mb-6 rounded-sm overflow-hidden">
               <div className="overflow-hidden rounded-[3px] bg-surface">
                 {photos.bride ? (
-                  <img src={photos.bride} alt={couple.brideFull} className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img src={photos.bride} alt={couple.brideFull} data-parallax="0.15" className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
                 ) : (
                   <div className="w-full aspect-[3/4] flex items-center justify-center"><span className="script-display text-4xl text-primary/50">{couple.bride.charAt(0)}</span></div>
                 )}
@@ -1231,7 +1277,7 @@ export default function App() {
   const guest = useGuestName();
   const { playing, toggle } = useMusicPlayer(cfg?.media.musicEnabled || false, cfg?.media.music || "");
   const scrollScope = useScrollSetup(opened);
-  const animScope = useWeddingAnimations(opened);
+  const animScope = useWeddingAnimations(opened, cfg?.theme.motion);
   const scope = animScope || scrollScope;
   const handleOpen = useCallback(() => {
     setOpening(true);

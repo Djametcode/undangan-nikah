@@ -41,7 +41,9 @@
   },
   "gallery": {
     "heading": "Momen Kami",
-    "images": []
+    "images": [
+      "/uploads/1785730739599-tema-jawa-2.jpg"
+    ]
   },
   "gift": {
     "heading": "Kirim Hadiah",
@@ -106,7 +108,15 @@
     "headingSize": "text-5xl",
     "revealBaseDelay": "3000",
     "revealStagger": "120",
-    "galleryLayout": "carousel"
+    "galleryLayout": "carousel",
+    "motion": {
+      "parallaxLevel": "high",
+      "sectionReveal": "fade-up",
+      "textEffect": "none",
+      "videoCoverMode": "cover",
+      "heroZoom": true,
+      "floatElements": true
+    }
   },
   "labels": {
     "guestPrefix": "Kepada Bapak/Ibu/Saudara/i",
@@ -203,5 +213,11 @@
     "logoUrl": "",
     "instagramUrl": "https://www.instagram.com/galeriundangan_official",
     "whatsappUrl": "https://wa.me/6282176971754"
+  },
+  "photos": {
+    "cover": "/uploads/1785730739599-tema-jawa-2.jpg",
+    "groom": "/uploads/1785730739599-tema-jawa-2.jpg",
+    "bride": "/uploads/1785730739599-tema-jawa-2.jpg",
+    "gallery": []
   }
 }
