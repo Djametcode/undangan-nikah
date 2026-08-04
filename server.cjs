@@ -73,7 +73,19 @@ app.use(express.json({ limit: "2mb" }));
 app.use("/uploads", express.static(UPLOAD_DIR));
 
 // ---------- API ----------
-app.get("/api/config", (req, res) => res.json(config));
+let previewConfig = null;
+app.get("/api/config", (req, res) => res.json(previewConfig || config));
+
+app.post("/api/preview", (req, res) => {
+  const body = req.body || {};
+  if (!body || typeof body !== "object") return res.status(400).json({ error: "Invalid body" });
+  previewConfig = body;
+  res.json({ ok: true });
+});
+app.post("/api/preview-clear", (req, res) => {
+  previewConfig = null;
+  res.json({ ok: true });
+});
 
 app.post("/api/login", (req, res) => {
   const { password } = req.body || {};

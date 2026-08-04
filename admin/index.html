@@ -67,6 +67,20 @@
   .sec-overview-item .dot { width: 8px; height: 8px; border-radius: 50%; }
   .sec-overview-item .dot.on { background: #22c55e; }
   .sec-overview-item .dot.off { background: #cbd5e1; }
+  /* Layout picker — flow preview */
+  .layout-flow { display: flex; flex-wrap: wrap; gap: 3px; align-items: center; }
+  .layout-chip { font-size: 9px; font-weight: 600; padding: 2px 5px; border-radius: 5px; background: #f7f0e3; border: 1px solid #e7d8d3; color: #7c6a5a; letter-spacing: .02em; }
+  .layout-chip.on { background: #dcfce7; border-color: #86efac; color: #166534; }
+  .layout-chip.off { opacity: .45; }
+  .layout-chip.mid { background: #fdf2f8; border-color: #fbcfe8; color: #be185d; }
+  .layout-arrow { font-size: 8px; color: #cbd5e1; }
+  .layout-name { font-size: 12px; font-weight: 600; color: #0f172a; }
+  .layout-desc { font-size: 10px; color: #64748b; line-height: 1.3; }
+  .layout-card { text-align: left; border: 2px solid #e7d8d3; border-radius: 14px; padding: 12px; background: #fff; cursor: pointer; transition: all .18s; }
+  .layout-card:hover { border-color: #9a3412; box-shadow: 0 6px 20px rgba(154,52,18,.1); }
+  .layout-card.active { border-color: #9a3412; box-shadow: 0 6px 24px rgba(154,52,18,.16); }
+  .layout-card.active::after { content: '✓ Dipilih'; position: absolute; top: 8px; right: 10px; background: #9a3412; color: #fffbeb; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .layout-card { position: relative; }
   @media (max-width: 1024px) { .ts-layout { flex-direction: column; } .ts-preview { flex: none; width: 100%; position: static; } .ts-preview-frame { height: 70vh; } }
   @media (max-width: 640px) { .ts-preview-frame { height: 60vh; } .video-preview-lg { max-height: 45vh !important; height: 45vh !important; } .vendor-thumb { height: 120px !important; } }
   .video-preview-lg { max-height: 340px; height: 340px; object-fit: cover; }
@@ -1584,9 +1598,18 @@ function schedulePreview() {
 function refreshPreview() {
   const f = $("tsPreview");
   if (!f) return;
-  f.src = "/?to=Tamu+Preview&t=" + Date.now();
-  const dot = $("tsLiveDot");
-  if (dot) dot.className = "ts-preview-dot ok";
+  // kirim cfg local ke server biar iframe preview baca config terbaru
+  fetch("/api/preview", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cfg),
+  })
+    .catch(() => {})
+    .finally(() => {
+      f.src = "/?to=Tamu+Preview&t=" + Date.now();
+      const dot = $("tsLiveDot");
+      if (dot) dot.className = "ts-preview-dot ok";
+    });
 }
 function filterPresets(q) {
   const s = (q || "").toLowerCase().trim();
@@ -1634,6 +1657,15 @@ const LAYOUTS = [
   { key: "mewah", name: "Mewah Full", desc: "Semua section lengkap + exclusive", sections: ["couple","initial","savedate","timeline","info","liveStream","gallery","gift","rsvp","guestbook"] },
 ];
 
+/* ---------- Layout helper: label + flow preview ---------- */
+const SEC_LABEL = { couple: "Mempelai", initial: "Inisial", savedate: "Countdown", timeline: "Kisah", info: "Acara", liveStream: "Live", gallery: "Galeri", gift: "Gift", rsvp: "RSVP", guestbook: "Ucapan" };
+function secLabel(k) { return SEC_LABEL[k] || k; }
+function layoutFlow(layout) {
+  return `<div class="layout-flow">
+    ${layout.sections.map((s, i) => `<span class="layout-chip on">${secLabel(s)}</span>${i < layout.sections.length - 1 ? '<span class="layout-arrow">›</span>' : ''}`).join('')}
+  </div>`;
+}
+
 function applyLayout(key) {
   const l = LAYOUTS.find((x) => x.key === key);
   if (!l) return;
@@ -1655,15 +1687,17 @@ function renderTheme() {
     <div class="ts-form">
       <div class="card p-6 mb-5">
         <h2 class="terra font-semibold mb-1">🧩 Layout Website</h2>
-        <p class="text-xs text-slate-500 mb-4">Atur urutan &amp; susunan section undangan. Preview di kanan update langsung.</p>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <p class="text-xs text-slate-500 mb-3">Pilih susunan section undangan. Urutan chip = urutan tampil di website.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="layout-chip on">Ada</span>
+          <span class="layout-chip off">Tidak ditampilkan</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           ${LAYOUTS.map((l) => `
-            <button onclick="applyLayout('${l.key}')" class="preset-card ${(cfg.layout?.name || 'klasik') === l.key ? 'active' : ''}" data-layout="${l.key}">
-              <div class="w-full h-14 rounded-lg mb-1.5 border border-[#e7d8d3] bg-[#fffbeb] p-1.5 flex flex-wrap gap-0.5">
-                ${l.sections.slice(0, 6).map(() => `<div class="w-4 h-3 rounded-sm" style="background:${cfg.theme.primary}"></div>`).join('')}
-              </div>
-              <p class="text-[11px] font-semibold text-slate-700">${l.name}</p>
-              <p class="text-[9px] text-slate-400 leading-tight">${l.desc}</p>
+            <button onclick="applyLayout('${l.key}')" class="layout-card ${(cfg.layout?.name || 'klasik') === l.key ? 'active' : ''}" data-layout="${l.key}">
+              <div class="layout-name mb-1">${l.name}</div>
+              ${layoutFlow(l)}
+              <div class="layout-desc mt-2">${l.desc}</div>
             </button>`).join('')}
         </div>
       </div>
@@ -2095,6 +2129,7 @@ async function saveAll() {
     const fsa = $("theme.fontSans");
     if (fsa) setPath(cfg, "theme.fontSans", fsa.value);
     await api("/api/config", { method: "POST", body: JSON.stringify(cfg) });
+    await fetch("/api/preview-clear", { method: "POST" }).catch(() => {});
     toast("Undangan tersimpan & deployed!");
   } catch (e) {
     toast(e.message, true);
