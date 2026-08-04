@@ -299,15 +299,39 @@ function SecF(path, label, hint, textarea) {
 function SecVideoCard(key, label) {
   const url = getPath(cfg, "sectionVideos." + key + ".video") || "";
   const on = !!getPath(cfg, "sectionVideos." + key + ".enabled");
+  const cur = url.split("/").pop() || "";
   return `<div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
     <div class="flex items-center justify-between mb-2">
       <p class="text-xs font-semibold text-slate-700">${label}</p>
       <span class="sec-badge ${on ? "on" : "off"}">${on ? "Aktif" : "Nonaktif"}</span>
     </div>
     ${url ? `<video src="${esc(url)}" muted playsinline preload="metadata" class="w-full h-24 object-cover rounded-lg mb-2 bg-black cursor-pointer" onclick="this.paused ? this.play() : this.pause()" title="Klik preview"></video>` : `<div class="w-full h-24 rounded-lg mb-2 bg-[#f7f0e3] border border-dashed border-terra/30 flex items-center justify-center text-xs text-slate-400">Belum ada video</div>`}
-    ${Sw("sectionVideos." + key + ".enabled", "Aktifkan")}
-    <div class="mt-2">${F("sectionVideos." + key + ".video", "URL video")}</div>
+    <div class="flex gap-2">
+      <select id="sv-${key}" class="field flex-1" onchange="setSecVideoFromSel('${key}', this.value)">
+        <option value="">— Pilih video —</option>
+        ${VENDOR_VIDEOS.map(v => `<option value="${v}" ${cur === v ? 'selected' : ''}>${v}</option>`).join('')}
+      </select>
+    </div>
+    <div class="mt-2 flex items-center gap-2">
+      ${Sw("sectionVideos." + key + ".enabled", "Aktifkan")}
+      <button onclick="clearSecVideo('${key}')" class="text-[10px] text-red-500 hover:text-red-700 cursor-pointer ml-auto">Hapus</button>
+    </div>
   </div>`;
+}
+function setSecVideoFromSel(key, val) {
+  if (!val) return;
+  cfg.sectionVideos = cfg.sectionVideos || {};
+  cfg.sectionVideos[key] = cfg.sectionVideos[key] || {};
+  cfg.sectionVideos[key].video = "/uploads/vendor/videos/" + val;
+  cfg.sectionVideos[key].enabled = true;
+  renderAll("tab-media");
+  toast("Video section '" + key + "' dipasang: " + val + ". Klik Simpan & Deploy.");
+}
+function clearSecVideo(key) {
+  cfg.sectionVideos = cfg.sectionVideos || {};
+  cfg.sectionVideos[key] = { video: "", enabled: false };
+  renderAll("tab-media");
+  toast("Video section '" + key + "' dihapus.");
 }
 
 /* ---------- Vendor assets (35 video hiasan + 50 musik dari 92 tema) ---------- */
@@ -409,71 +433,56 @@ function renderPhotos() {
 }
 
 function renderMedia() {
-  return `<div class="grid md:grid-cols-2 gap-5">
-    <div class="card p-6">
-      <h2 class="terra font-semibold mb-2">Video Cover</h2>
-      <p class="text-xs text-slate-500 mb-4">MP4/WebM, maks 200MB. Aktif = video jadi background cover.</p>
-      ${T("media.videoEnabled", "Aktifkan video")}
-      <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden" />
-      <button onclick="document.getElementById('upload-video').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Video</button>
-      <div id="videoInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
-      <div id="videoPreviewWrap" class="mt-3 ${cfg.media.video ? '' : 'hidden'}">
-        <p class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Preview Video Cover</p>
-        <video id="videoPreview" src="${esc(cfg.media.video || '')}" controls muted playsinline preload="metadata" class="w-full rounded-xl border border-[#e7d8d3] bg-black video-preview-lg"></video>
+  return `<div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="card p-6">
+        <h2 class="terra font-semibold mb-2">Video Cover (Sampul)</h2>
+        <p class="text-xs text-slate-500 mb-3">Video background halaman sampul. Upload sendiri atau pilih dari koleksi.</p>
+        ${T("media.videoEnabled", "Aktifkan video cover")}
+        <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden" />
+        <button onclick="document.getElementById('upload-video').click()" class="w-full border border-terra/40 text-terra py-2.5 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">⬆ Upload Video Sendiri</button>
+        <div class="flex gap-2 mt-2">
+          <select id="vendorVideoSel" class="field flex-1">${VENDOR_VIDEOS.map(v => `<option value="${v}" ${cfg.media.video === '/uploads/vendor/videos/' + v ? 'selected' : ''}>${v}</option>`).join('')}</select>
+          <button onclick="useVendorVideo(document.getElementById('vendorVideoSel').value)" class="border border-terra/40 text-terra px-3 py-2 rounded-xl text-xs hover:bg-terra/10 cursor-pointer">Pakai</button>
+        </div>
+        <div id="videoInfo" class="mt-2 text-[10px] text-slate-400 break-all"></div>
+        <div id="videoPreviewWrap" class="mt-3 ${cfg.media.video ? '' : 'hidden'}">
+          <p class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Preview Video Cover</p>
+          <video id="videoPreview" src="${esc(cfg.media.video || '')}" controls muted playsinline preload="metadata" class="w-full rounded-xl border border-[#e7d8d3] bg-black video-preview-lg"></video>
+        </div>
+      </div>
+      <div class="card p-6">
+        <h2 class="terra font-semibold mb-2">Musik</h2>
+        <p class="text-xs text-slate-500 mb-3">Musik latar undangan. Upload sendiri atau pilih dari koleksi.</p>
+        ${T("media.musicEnabled", "Aktifkan musik")}
+        <input type="file" id="upload-music" accept="audio/mp3,audio/ogg,audio/wav" class="hidden" />
+        <button onclick="document.getElementById('upload-music').click()" class="w-full border border-terra/40 text-terra py-2.5 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">⬆ Upload Musik Sendiri</button>
+        <div class="flex gap-2 mt-2">
+          <select id="vendorMusicSel" class="field flex-1">${VENDOR_MUSIC.map(m => `<option value="${m}" ${cfg.media.music === '/uploads/vendor/music/' + m ? 'selected' : ''}>${m.replace(/-/g, ' ').slice(0, 40)}</option>`).join('')}</select>
+          <button onclick="useVendorMusic(document.getElementById('vendorMusicSel').value)" class="border border-terra/40 text-terra px-3 py-2 rounded-xl text-xs hover:bg-terra/10 cursor-pointer">Pakai</button>
+        </div>
+        <div id="musicInfo" class="mt-2 text-[10px] text-slate-400 break-all"></div>
       </div>
     </div>
-    <div class="card p-6">
-      <h2 class="terra font-semibold mb-2">Musik</h2>
-      <p class="text-xs text-slate-500 mb-4">MP3, maks 30MB. Tombol musik muncul kalau aktif.</p>
-      ${T("media.musicEnabled", "Aktifkan musik")}
-      <input type="file" id="upload-music" accept="audio/mp3,audio/ogg,audio/wav" class="hidden" />
-      <button onclick="document.getElementById('upload-music').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Musik</button>
-      <div id="musicInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
+    <div class="mt-5 card p-6">
+      <h2 class="terra font-semibold mb-2">Video Background per Section</h2>
+      <p class="text-xs text-slate-500 mb-4">Setiap bagian undangan bisa punya video background sendiri. Pilih dari koleksi di bawah — klik video untuk preview dulu.</p>
+      <div class="grid md:grid-cols-2 gap-4">
+        ${SecVideoCard("couple", "Mempelai (Couple)")}
+        ${SecVideoCard("savedate", "Hitung Mundur (Save The Date)")}
+        ${SecVideoCard("initial", "Inisial Pasangan")}
+        ${SecVideoCard("timeline", "Perjalanan Cinta")}
+        ${SecVideoCard("info", "Info Acara (Rangkaian)")}
+        ${SecVideoCard("gallery", "Galeri")}
+        ${SecVideoCard("gift", "Tanda Kasih (Gift)")}
+        ${SecVideoCard("rsvp", "RSVP (Konfirmasi Hadir)")}
+        ${SecVideoCard("guestbook", "Ucapan (Guestbook)")}
+      </div>
     </div>
-  </div>
-  <div class="mt-5 card p-6">
-    <h2 class="terra font-semibold mb-2">Video Hiasan — Bundle ${VENDOR_VIDEOS.length} Tema</h2>
-    <p class="text-xs text-slate-500 mb-3">Video background asli dari ${VENDOR_VIDEOS.length} tema (sudah di-download). Klik video untuk preview. <b>Cover</b> = pasang sebagai background halaman pertama (sampul). Pilih bagian lalu <b>Set</b> = pasang sebagai background di section itu.</p>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-96 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
-      ${VENDOR_VIDEOS.map(v => `
-        <div class="border border-[#e7d8d3] rounded-lg p-2 bg-[#fffbeb]">
-          <video src="/uploads/vendor/videos/${v}" muted playsinline preload="none" class="vendor-thumb w-full h-20 object-cover rounded mb-1 bg-black cursor-pointer" onclick="this.paused ? this.play() : this.pause()" title="Klik untuk preview"></video>
-          <p class="text-[10px] text-slate-600 break-all mb-1">${v}</p>
-          <div class="flex gap-1">
-            <button onclick="useVendorVideo('${v}')" class="flex-1 text-[10px] bg-terra text-[#fffbeb] py-1 rounded cursor-pointer">Cover</button>
-            <select id="vs-${v}" class="text-[10px] border border-terra/40 rounded px-1 py-1 w-16">
-              ${Object.entries(VENDOR_SECTIONS).map(([k, label]) => `<option value="${k}">${label}</option>`).join('')}
-            </select>
-            <button onclick="useVendorSectionVideo('${v}', document.getElementById('vs-${v}').value)" class="text-[10px] border border-terra/40 text-terra py-1 rounded cursor-pointer">Set</button>
-          </div>
-        </div>`).join('')}
+    <div class="mt-5 card p-6">
+      <h2 class="terra font-semibold mb-4">File Uploaded</h2>
+      <div id="fileList" class="flex flex-wrap gap-2"></div>
     </div>
-  </div>
-  <div class="mt-5 card p-6">
-    <h2 class="terra font-semibold mb-2">Musik Hiasan — Bundle 50 Lagu</h2>
-    <p class="text-xs text-slate-500 mb-3">Musik latar dari tema kompetitor. Klik untuk pasang sebagai musik undangan.</p>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
-      ${VENDOR_MUSIC.map(m => `
-        <button onclick="useVendorMusic('${m}')" class="text-left text-[10px] border border-[#e7d8d3] rounded-lg p-2 bg-[#fffbeb] hover:border-terra hover:bg-terra/5 transition cursor-pointer break-all">${m}</button>`).join('')}
-    </div>
-  </div>
-  <div class="mt-5 card p-6">
-    <h2 class="terra font-semibold mb-2">Video Background per Section</h2>
-    <p class="text-xs text-slate-500 mb-4">Upload video lalu aktifkan di section mana pun. Video tampil sebagai background dengan overlay lembut. Klik video untuk preview.</p>
-    <div class="grid md:grid-cols-2 gap-4">
-      ${SecVideoCard("couple", "Mempelai (Couple)")}
-      ${SecVideoCard("savedate", "Hitung Mundur (Save The Date)")}
-      ${SecVideoCard("info", "Info Acara (Rangkaian)")}
-      ${SecVideoCard("gallery", "Galeri")}
-      ${SecVideoCard("gift", "Tanda Kasih (Gift)")}
-      ${SecVideoCard("rsvp", "RSVP (Konfirmasi Hadir)")}
-      ${SecVideoCard("guestbook", "Ucapan (Guestbook)")}
-      ${SecVideoCard("closing", "Penutup (Closing)")}
-    </div>
-  </div>
-  <div class="mt-5 card p-6">
-    <h2 class="terra font-semibold mb-4">File Uploaded</h2>
-    <div id="fileList" class="flex flex-wrap gap-2"></div>
   </div>`;
 }
 
