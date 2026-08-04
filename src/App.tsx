@@ -1057,9 +1057,13 @@ function TimelineSection({ cfg }: { cfg: Cfg }) {
               {/* nomor urut */}
               <div className="hidden md:block md:w-1/2" />
               <div className={`md:w-1/2 w-full md:px-10 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
-                <div className={`group relative overflow-hidden rounded-card border border-primary/20 bg-surface/90 backdrop-blur-sm soft-shadow-lg hover:soft-shadow-xl transition-all duration-300 hover:-translate-y-1 p-7 md:p-8 w-full min-h-[240px] md:min-h-[240px] flex flex-col justify-center ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+                <div className={`group relative overflow-hidden rounded-card border border-primary/25 bg-gradient-to-br from-primary/10 via-surface/95 to-primary/5 backdrop-blur-sm soft-shadow-lg hover:soft-shadow-xl transition-all duration-300 hover:-translate-y-1 p-7 md:p-8 w-full min-h-[240px] md:min-h-[240px] flex flex-col justify-center ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+                  {/* aksen garis atas */}
+                  <div className={`absolute top-0 ${i % 2 === 0 ? "left-0 right-1/2" : "right-0 left-1/2"} h-1 bg-gradient-to-r ${i % 2 === 0 ? "from-primary to-transparent" : "from-transparent to-primary"}`} />
+                  {/* glow pojok */}
+                  <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-primary/10 blur-2xl group-hover:bg-primary/20 transition-colors duration-500" />
                   {/* nomor besar di pojok */}
-                  <span className="absolute left-4 top-3 script-display text-5xl text-primary/10 leading-none select-none">
+                  <span className="absolute left-4 top-3 script-display text-5xl text-primary/15 leading-none select-none">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   {/* date badge */}
