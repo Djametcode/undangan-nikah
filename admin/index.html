@@ -132,13 +132,33 @@ function F(name, label, textarea) {
 
 function C(name, label) {
   const val = getPath(cfg, name) ?? "#000000";
-  return `<div class="mb-3">
+  return `<div class="mb-3" data-color-group="${name}">
     <label class="label">${label}</label>
     <div class="flex items-center gap-2">
-      <input type="color" data-path="${name}" value="${esc(val)}" class="w-10 h-10 rounded-lg border border-[#e7d8d3] cursor-pointer" />
-      <input data-path="${name}" value="${esc(val)}" class="field flex-1" />
+      <input type="color" data-path="${name}" value="${esc(val)}" class="w-10 h-10 rounded-lg border border-[#e7d8d3] cursor-pointer color-picker" oninput="syncColor(this)" />
+      <input data-path="${name}" value="${esc(val)}" class="field flex-1 color-text" oninput="syncColor(this)" />
     </div>
   </div>`;
+}
+
+function syncColor(el) {
+  const grp = el.closest("[data-color-group]");
+  if (!grp) return;
+  const picker = grp.querySelector(".color-picker");
+  const text = grp.querySelector(".color-text");
+  if (!picker || !text) return;
+  if (el === picker) {
+    text.value = picker.value;
+    // update cfg langsung biar preview live ikut
+    setPath(cfg, el.dataset.path, picker.value);
+  } else {
+    let v = text.value.trim();
+    if (!v.startsWith("#")) v = "#" + v;
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+      picker.value = v;
+      setPath(cfg, el.dataset.path, v);
+    }
+  }
 }
 
 function T(name, label) {
@@ -1242,8 +1262,10 @@ async function delFile(name) {
 async function saveAll() {
   try {
     document.querySelectorAll("[data-path]").forEach((el) => {
+      // Color picker + text input share data-path. Text input = source of truth (user edit di situ,
+      // picker auto-sync via syncColor). Skip color picker biar gak nimpain nilai lama.
+      if (el.type === "color") return;
       if (el.type === "checkbox") setPath(cfg, el.dataset.path, el.checked);
-      else if (el.type === "color") setPath(cfg, el.dataset.path, el.value);
       else setPath(cfg, el.dataset.path, el.value);
     });
     const ra = $("theme.revealAnim");
