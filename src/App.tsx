@@ -534,6 +534,34 @@ function useWeddingAnimations(dep: unknown = true, motion?: Cfg["theme"]["motion
         );
       });
 
+      // Video background parallax (videoCoverMode: parallax) — video scale 1.2 + gerak scrub
+      gsap.utils.toArray<Element>(".video-parallax-el").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { scale: 1.25, yPercent: -8 },
+          {
+            scale: 1, yPercent: 8,
+            ease: "none",
+            scrollTrigger: { trigger: el.closest("section"), start: "top bottom", end: "bottom top", scrub: true },
+          }
+        );
+      });
+
+      // Section depth — konten section bergerak lebih lambat dari bg (parallax layer)
+      if (pLevel !== "low") {
+        gsap.utils.toArray<Element>("section[data-section] > div[class*='max-w-']").forEach((el) => {
+          gsap.fromTo(
+            el,
+            { yPercent: 6 },
+            {
+              yPercent: -6,
+              ease: "none",
+              scrollTrigger: { trigger: el.closest("section"), start: "top bottom", end: "bottom top", scrub: true },
+            }
+          );
+        });
+      }
+
       // Hero zoom effect (cover image/video slow zoom)
       if (motion?.heroZoom && document.querySelector("[data-hero-zoom]")) {
         gsap.fromTo("[data-hero-zoom]", {
@@ -709,7 +737,7 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
 function Couple({ cfg }: { cfg: Cfg }) {
   const { couple, photos, quote, salam, labels } = cfg;
   return (
-    <section data-section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="couple" />
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Salam pembuka */}
@@ -775,7 +803,7 @@ function SaveTheDate({ cfg }: { cfg: Cfg }) {
   const t = useCountdown(cfg.event.countdownDate);
   const L = cfg.labels;
   return (
-    <section data-section className="py-20 px-4 bg-sand/60 relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 bg-sand/60 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="savedate" />
       <div className="max-w-3xl mx-auto text-center relative z-10" data-reveal data-entrance>
         <span className="kicker block mb-4">{L.saveTheDate}</span>
@@ -826,7 +854,7 @@ function EventCard({ title, time, place, mapsUrl, mapLabel }: { title: string; t
 function Info({ cfg }: { cfg: Cfg }) {
   const L = cfg.labels;
   return (
-    <section data-section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="info" />
       <div className="max-w-3xl mx-auto relative z-10">
         <div className="text-center mb-14" data-reveal data-entrance>
@@ -862,7 +890,7 @@ function Gallery({ cfg }: { cfg: Cfg }) {
   if (!images.length) return null;
 
   return (
-    <section data-section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 bg-sand/60 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="gallery" />
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal data-entrance>
@@ -929,12 +957,13 @@ function SectionVideo({ cfg, name }: { cfg: Cfg; name: keyof Cfg["sectionVideos"
   const vidMode = cfg.theme.motion?.videoCoverMode || "cover";
   const vidOp = (parseInt(cfg.theme.videoOpacity) || 70) / 100;
   const bgOp = (parseInt(cfg.theme.bgOpacity) || 100) / 100;
+  const isParallax = vidMode === "parallax";
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${isParallax ? "section-video-parallax" : ""}`} aria-hidden>
       <video
         src={sv.video}
         autoPlay muted playsInline loop
-        className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"}`}
+        className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} ${isParallax ? "video-parallax-el" : ""}`}
         style={{ opacity: vidOp }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/50 to-bg/80" style={{ opacity: bgOp }} />
@@ -947,7 +976,7 @@ function InitialSection({ cfg }: { cfg: Cfg }) {
   const { initial } = cfg;
   if (!initial.enabled) return null;
   return (
-    <section data-section className="py-20 px-4 text-center" data-reveal data-entrance>
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 text-center" data-reveal data-entrance>
       <p className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>{initial.text}</p>
       <Ornament className="w-32 mx-auto mt-6" />
     </section>
@@ -959,7 +988,7 @@ function TimelineSection({ cfg }: { cfg: Cfg }) {
   const { timeline } = cfg;
   if (!timeline.enabled || !timeline.items?.length) return null;
   return (
-    <section data-section className="py-24 px-4 bg-sand/60">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 bg-sand/60">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-14" data-reveal data-entrance>
           <span className="kicker block mb-4">{timeline.heading}</span>
@@ -994,7 +1023,7 @@ function LiveStreamSection({ cfg }: { cfg: Cfg }) {
   const { liveStream } = cfg;
   if (!liveStream.enabled) return null;
   return (
-    <section data-section className="py-24 px-4 text-center">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 text-center">
       <div className="max-w-xl mx-auto" data-reveal data-entrance>
         <span className="kicker block mb-4">{liveStream.subheading}</span>
         <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
@@ -1021,7 +1050,7 @@ function ExclusiveSection({ cfg }: { cfg: Cfg }) {
   const { exclusive } = cfg;
   if (!exclusive.enabled) return null;
   return (
-    <section data-section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 bg-sand/60 text-center relative overflow-hidden">
       <div className="max-w-xl mx-auto relative z-10" data-reveal data-entrance>
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
@@ -1077,7 +1106,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section data-section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="gift" />
       <div className="max-w-xl mx-auto text-center relative z-10">
         <div data-reveal data-entrance>
@@ -1230,7 +1259,7 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section data-section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 bg-sand/60 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="rsvp" />
       <div className="max-w-xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal data-entrance>
@@ -1317,7 +1346,7 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section data-section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="guestbook" />
       <div className="max-w-xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal data-entrance>
@@ -1365,7 +1394,7 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
 function Closing({ cfg }: { cfg: Cfg }) {
   const L = cfg.labels;
   return (
-    <section data-section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 bg-sand/60 text-center relative overflow-hidden">
       <SectionVideo cfg={cfg} name="closing" />
       <div className="max-w-xl mx-auto relative z-10" data-reveal data-entrance>
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
