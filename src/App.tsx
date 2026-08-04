@@ -695,6 +695,7 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
           <video
             src={media.video}
             autoPlay muted playsInline loop
+            preload="auto"
             data-hero-zoom
             className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} brightness-[0.85]`}
             style={{ opacity: vidOp }}
@@ -1000,6 +1001,7 @@ function SectionVideo({ cfg, name }: { cfg: Cfg; name: keyof Cfg["sectionVideos"
       <video
         src={sv.video}
         autoPlay muted playsInline loop
+        preload="auto"
         className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} ${isParallax ? "video-parallax-el" : ""}`}
         style={{ opacity: vidOp }}
       />
