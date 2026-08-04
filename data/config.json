@@ -74,30 +74,30 @@
     "text": "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu."
   },
   "media": {
-    "video": "/uploads/vendor/videos/asli-pangkas.mp4",
+    "video": "/uploads/vendor/videos/flow-1.mp4",
     "videoEnabled": true,
-    "music": "/uploads/1785731147295-test-music.mp3",
-    "musicEnabled": false
+    "music": "/uploads/vendor/music/Denny-Caknan-Sinarengan-Lirik-Feat-mp3cut.net_.mp3",
+    "musicEnabled": true
   },
   "footer": {
-    "credit": "© 2025 ART JAWA COKLAT · Dibuat dengan ❤"
+    "credit": "Dibuat dengan ❤"
   },
   "theme": {
-    "primary": "#1f1f1f",
-    "primaryDark": "#000000",
-    "primaryLight": "#4a4a4a",
-    "accent": "#c9a227",
-    "bg": "#0a0a0a",
-    "surface": "#141414",
-    "fg": "#f5f5f5",
-    "muted": "#8a8a8a",
-    "border": "#2e2e2e",
-    "sand": "#181818",
+    "primary": "#8a8a8a",
+    "primaryDark": "#5a5a5a",
+    "primaryLight": "#b5b5b5",
+    "accent": "#a3a3a3",
+    "bg": "#f0f0f0",
+    "surface": "#ffffff",
+    "fg": "#1f2937",
+    "muted": "#6b7280",
+    "border": "#d6d6d6",
+    "sand": "#e8e8e8",
     "radiusCard": "20px",
     "radiusBtn": "999px",
-    "fontScript": "",
-    "fontSerif": "Playfair Display, Georgia, serif",
-    "fontSans": "Montserrat, system-ui, sans-serif",
+    "fontScript": "Sacramento, cursive",
+    "fontSerif": "Lora, Georgia, serif",
+    "fontSans": "Outfit, system-ui, sans-serif",
     "revealAnim": "fadeUp",
     "petalsEnabled": true,
     "blobsEnabled": true,
@@ -108,11 +108,11 @@
     "headingSize": "text-5xl",
     "revealBaseDelay": "3000",
     "revealStagger": "120",
-    "galleryLayout": "justified",
+    "galleryLayout": "carousel",
     "motion": {
       "parallaxLevel": "medium",
       "sectionReveal": "fade-up",
-      "textEffect": "fadeInUp",
+      "textEffect": "",
       "videoCoverMode": "cover",
       "heroZoom": true,
       "floatElements": true
@@ -120,10 +120,10 @@
     "glassEnabled": false,
     "videoOpacity": "55",
     "bgOpacity": "25",
-    "name": "MONOCHROME",
-    "swatch": "linear-gradient(135deg,#0a0a0a,#e0e0e0)",
-    "desc": "Hitam putih + gold accent",
-    "video": "asli-pangkas.mp4"
+    "name": "LOLY",
+    "swatch": "linear-gradient(135deg,#d2d2d2,#8a8a8a)",
+    "desc": "Gray muda minimalis",
+    "video": ""
   },
   "labels": {
     "guestPrefix": "Kepada Bapak/Ibu/Saudara/i",
@@ -206,7 +206,7 @@
     "text": "F & H"
   },
   "liveStream": {
-    "enabled": false,
+    "enabled": true,
     "heading": "Live Streaming",
     "subheading": "LIVE STREAMING",
     "text": "Pernikahan kami dapat disaksikan secara langsung melalui live streaming di bawah ini.",
@@ -273,9 +273,7 @@
       "gallery",
       "gift",
       "rsvp",
-      "guestbook",
-      "exclusive",
-      "closing"
+      "guestbook"
     ]
   }
 }

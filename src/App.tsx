@@ -6,7 +6,7 @@ import { QRCodeCanvas } from "qrcode.react";
 gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
-   Undangan Studio - dynamic template (ART JAWA COKLAT style)
+   Undangan Studio - dynamic template
    Semua data (nama, foto, video, musik, teks) dari /api/config.
    Admin edit config → invitation live update.
    ============================================================ */
@@ -182,14 +182,14 @@ const DEFAULT_CFG: Cfg = {
     subheading: "LIVE STREAMING",
     text: "Pernikahan kami dapat disaksikan secara langsung melalui live streaming di bawah ini.",
     buttonLabel: "Tonton Live",
-    buttonUrl: "https://www.instagram.com/galeriundangan_official",
+    buttonUrl: "https://www.instagram.com/",
   },
   exclusive: {
     enabled: true,
     heading: "Exclusive Web Invitation",
     text: "Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.",
     logoUrl: "",
-    instagramUrl: "https://www.instagram.com/galeriundangan_official",
+    instagramUrl: "https://www.instagram.com/",
     whatsappUrl: "https://wa.me/6282176971754",
   },
   gift: {
@@ -1485,10 +1485,10 @@ function Footer({ cfg }: { cfg: Cfg }) {
   );
 }
 
-/* ---------- Layout presets (dari scrape galeriundanganofficial) ---------- */
+/* ---------- Layout presets ---------- */
 const LAYOUT_PRESETS: { key: string; name: string; desc: string; sections: string[] }[] = [
   {
-    key: "galeri", name: "Galeri Bawah", desc: "Gift awal, galeri di paling bawah (pola galeriundangan)",
+    key: "galeri", name: "Galeri Bawah", desc: "Gift awal, galeri di paling bawah ",
     sections: ["couple", "savedate", "info", "gift", "rsvp", "guestbook", "closing", "gallery"],
   },
   {
@@ -1496,23 +1496,23 @@ const LAYOUT_PRESETS: { key: string; name: string; desc: string; sections: strin
     sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
   },
   {
-    key: "live", name: "Live Streaming", desc: "Live stream ditambah, tanpa timeline (ala ART JAWA/KYRA)",
+    key: "live", name: "Live Streaming", desc: "Live stream ditambah, tanpa timeline ",
     sections: ["couple", "savedate", "info", "liveStream", "gift", "rsvp", "guestbook", "closing", "gallery"],
   },
   {
-    key: "premium", name: "Premium Lengkap", desc: "Live + timeline + galeri bawah (ala GOLD/MACA)",
+    key: "premium", name: "Premium Lengkap", desc: "Live + timeline + galeri bawah ",
     sections: ["couple", "savedate", "timeline", "info", "liveStream", "gift", "rsvp", "guestbook", "closing", "gallery"],
   },
   {
-    key: "story", name: "Kisah Cinta", desc: "Timeline duluan, inisial menonjol (ala CHINESE/DONA)",
+    key: "story", name: "Kisah Cinta", desc: "Timeline duluan, inisial menonjol ",
     sections: ["couple", "initial", "timeline", "savedate", "info", "gift", "rsvp", "guestbook", "closing", "gallery"],
   },
   {
-    key: "savedate", name: "Save Date Awal", desc: "Hitung mundur ditegaskan di awal (ala DESMA/TUMB)",
+    key: "savedate", name: "Save Date Awal", desc: "Hitung mundur ditegaskan di awal ",
     sections: ["couple", "savedate", "info", "liveStream", "gift", "rsvp", "gallery"],
   },
   {
-    key: "minimal", name: "Minimal Ringkas", desc: "Tanpa timeline/live/ucapan (ala BALI/FLOW)",
+    key: "minimal", name: "Minimal Ringkas", desc: "Tanpa timeline/live/ucapan ",
     sections: ["couple", "savedate", "info", "gift", "gallery"],
   },
   {
