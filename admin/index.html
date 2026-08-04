@@ -42,6 +42,31 @@
   .ts-collapsible { overflow: hidden; transition: max-height .25s ease; }
   .sticky-save { position: sticky; bottom: 16px; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #fff; border: 1px solid #e7d8d3; border-radius: 14px; padding: 10px 16px; box-shadow: 0 8px 30px rgba(0,0,0,.1); }
   .save-status { font-size: 12px; color: #64748b; display: flex; align-items: center; gap: 6px; }
+  /* Section admin — easier to understand */
+  .sec-card { border: 1px solid #e7d8d3; border-radius: 14px; overflow: hidden; background: #fff; }
+  .sec-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: #fbf7ef; border-bottom: 1px solid #e7d8d3; }
+  .sec-card-title { display: flex; align-items: center; gap: 10px; }
+  .sec-card-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; background: #fff; border: 1px solid #e7d8d3; flex-shrink: 0; }
+  .sec-card-name { font-weight: 600; color: #0f172a; font-size: 14px; }
+  .sec-card-effect { font-size: 11px; color: #64748b; margin-top: 1px; }
+  .sec-card-body { padding: 14px 16px; }
+  .sec-badge { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: .05em; }
+  .sec-badge.on { background: #dcfce7; color: #166534; }
+  .sec-badge.off { background: #f1f5f9; color: #64748b; }
+  .switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .track { position: absolute; inset: 0; background: #cbd5e1; border-radius: 999px; transition: background .2s; cursor: pointer; }
+  .switch .track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .switch input:checked + .track { background: #9a3412; }
+  .switch input:checked + .track::after { transform: translateX(18px); }
+  .sec-hint { font-size: 11px; color: #8a94a6; margin-top: 3px; }
+  .sec-divider { height: 1px; background: #f1f5f9; margin: 12px 0; }
+  .sec-field-label { font-size: 12px; font-weight: 500; color: #334155; margin-bottom: 4px; }
+  .sec-overview { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .sec-overview-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid #e7d8d3; background: #fff; font-size: 12px; color: #334155; }
+  .sec-overview-item .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .sec-overview-item .dot.on { background: #22c55e; }
+  .sec-overview-item .dot.off { background: #cbd5e1; }
   @media (max-width: 1024px) { .ts-layout { flex-direction: column; } .ts-preview { flex: none; width: 100%; position: static; } .ts-preview-frame { height: 60vh; } }
 </style>
 </head>
@@ -201,6 +226,56 @@ function UploadField(name, label) {
     ${url ? `<img src="${esc(url)}" class="thumb mx-auto mb-3" />` : '<div class="thumb mx-auto mb-3 bg-[#f7f0e3] border border-dashed border-terra/30 flex items-center justify-center text-2xl text-slate-400">+</div>'}
     <button onclick="pickUpload('${name}')" class="w-full text-xs border border-terra/40 text-terra py-2 rounded-lg cursor-pointer">${url ? "Ganti" : "Upload"}</button>
   </div>`;
+}
+
+/* ---------- Section admin helpers (mudah dipahami) ---------- */
+function Sw(name, label) {
+  const checked = !!getPath(cfg, name);
+  return `<label class="switch" title="Klik untuk ${checked ? 'menonaktifkan' : 'mengaktifkan'}">
+    <input type="checkbox" data-path="${name}" ${checked ? "checked" : ""} onchange="onSectionToggle(this)" />
+    <span class="track"></span>
+  </label>`;
+}
+function onSectionToggle(el) {
+  setPath(cfg, el.dataset.path, el.checked);
+  if ($("tsPreview")) schedulePreview();
+  const card = el.closest(".sec-card");
+  if (card) {
+    const badge = card.querySelector(".sec-badge");
+    if (badge) {
+      badge.className = "sec-badge " + (el.checked ? "on" : "off");
+      badge.textContent = el.checked ? "Aktif" : "Nonaktif";
+    }
+  }
+  const ov = document.querySelector(`.sec-overview-item[data-overview="${el.dataset.path.split(".")[0]}"] .dot`);
+  if (ov) ov.className = "dot " + (el.checked ? "on" : "off");
+}
+function Sec(icon, name, effect, enabledPath, bodyHTML) {
+  const on = !!getPath(cfg, enabledPath);
+  return `<div class="sec-card mb-4">
+    <div class="sec-card-head">
+      <div class="sec-card-title">
+        <div class="sec-card-icon">${icon}</div>
+        <div>
+          <div class="sec-card-name">${name}</div>
+          <div class="sec-card-effect">${effect}</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="sec-badge ${on ? "on" : "off"}">${on ? "Aktif" : "Nonaktif"}</span>
+        ${Sw(enabledPath, name)}
+      </div>
+    </div>
+    <div class="sec-card-body">${bodyHTML}</div>
+  </div>`;
+}
+function SecF(path, label, hint, textarea) {
+  const val = getPath(cfg, path) ?? "";
+  const h = hint ? `<div class="sec-hint">${hint}</div>` : "";
+  if (textarea) {
+    return `<div class="mb-3"><div class="sec-field-label">${label}</div><textarea data-path="${path}" class="field" rows="2">${esc(val)}</textarea>${h}</div>`;
+  }
+  return `<div class="mb-3"><div class="sec-field-label">${label}</div><input data-path="${path}" value="${esc(val)}" class="field" />${h}</div>`;
 }
 
 /* ---------- Vendor assets (35 video hiasan + 50 musik dari 92 tema) ---------- */
@@ -454,41 +529,57 @@ function renderLabel() {
 }
 
 function renderSection() {
-  return `<div class="grid md:grid-cols-2 gap-5">
-    <div class="card p-6">
-      ${T("initial.enabled", "Aktifkan Inisial pasangan (F & H)")}
-      ${F("initial.text", "Teks inisial (cth: F & H)")}
+  const on = (p) => !!getPath(cfg, p);
+  return `<div>
+    <div class="card p-6 mb-5">
+      <h2 class="terra font-semibold mb-1">Ringkasan Section</h2>
+      <p class="text-xs text-slate-500 mb-4">Yang aktif di undangan kamu sekarang. Geser toggle di bawah untuk mengubah.</p>
+      <div class="sec-overview">
+        <div class="sec-overview-item" data-overview="initial"><span class="dot ${on("initial.enabled") ? "on" : "off"}"></span> Inisial</div>
+        <div class="sec-overview-item" data-overview="timeline"><span class="dot ${on("timeline.enabled") ? "on" : "off"}"></span> Timeline</div>
+        <div class="sec-overview-item" data-overview="liveStream"><span class="dot ${on("liveStream.enabled") ? "on" : "off"}"></span> Live Stream</div>
+        <div class="sec-overview-item" data-overview="exclusive"><span class="dot ${on("exclusive.enabled") ? "on" : "off"}"></span> Exclusive</div>
+      </div>
     </div>
-    <div class="card p-6">
-      ${T("timeline.enabled", "Aktifkan Timeline (perjalanan cinta)")}
-      ${F("timeline.heading", "Judul timeline")}
-      <div class="mt-2 text-xs text-slate-500 mb-2">3 momen (judul, tanggal, deskripsi)</div>
-      ${F("timeline.items.0.title", "Momen 1 judul")}
-      ${F("timeline.items.0.date", "Momen 1 tanggal")}
-      ${F("timeline.items.0.desc", "Momen 1 deskripsi", true)}
-      ${F("timeline.items.1.title", "Momen 2 judul")}
-      ${F("timeline.items.1.date", "Momen 2 tanggal")}
-      ${F("timeline.items.1.desc", "Momen 2 deskripsi", true)}
-      ${F("timeline.items.2.title", "Momen 3 judul")}
-      ${F("timeline.items.2.date", "Momen 3 tanggal")}
-      ${F("timeline.items.2.desc", "Momen 3 deskripsi", true)}
-    </div>
-    <div class="card p-6">
-      ${T("liveStream.enabled", "Aktifkan Live Streaming")}
-      ${F("liveStream.subheading", "Sub-heading")}
-      ${F("liveStream.heading", "Judul")}
-      ${F("liveStream.text", "Teks", true)}
-      ${F("liveStream.buttonLabel", "Label tombol")}
-      ${F("liveStream.buttonUrl", "URL tombol (Instagram/YouTube)")}
-    </div>
-    <div class="card p-6">
-      ${T("exclusive.enabled", "Aktifkan Exclusive Invitation")}
-      ${F("exclusive.heading", "Judul")}
-      ${F("exclusive.text", "Teks", true)}
-      ${F("exclusive.logoUrl", "URL logo (kosongkan jika tidak ada)")}
-      ${F("exclusive.instagramUrl", "URL Instagram")}
-      ${F("exclusive.whatsappUrl", "URL WhatsApp")}
-    </div>
+
+    ${Sec("🔤", "Inisial Pasangan", "Tampilkan huruf besar pasangan (cth: F & H) di bawah cover — kesan elegan.", "initial.enabled", `
+      ${SecF("initial.text", "Teks inisial", "Contoh: F & H. Huruf awal nama kalian berdua.")}
+    `)}
+
+    ${Sec("📖", "Timeline / Perjalanan Cinta", "Kisah perjalanan kalian: awal bertemu, lamaran, menikah — tampil zigzag.", "timeline.enabled", `
+      ${SecF("timeline.heading", "Judul bagian", "Contoh: Perjalanan Cinta")}
+      <div class="sec-divider"></div>
+      <div class="sec-field-label mb-1">Momen 1</div>
+      ${SecF("timeline.items.0.title", "Judul momen", "Contoh: Awal Bertemu")}
+      ${SecF("timeline.items.0.date", "Tanggal", "Contoh: 2019")}
+      ${SecF("timeline.items.0.desc", "Cerita singkat", "1-2 kalimat tentang momen ini.", true)}
+      <div class="sec-divider"></div>
+      <div class="sec-field-label mb-1">Momen 2</div>
+      ${SecF("timeline.items.1.title", "Judul momen", "Contoh: Lamaran")}
+      ${SecF("timeline.items.1.date", "Tanggal")}
+      ${SecF("timeline.items.1.desc", "Cerita singkat", null, true)}
+      <div class="sec-divider"></div>
+      <div class="sec-field-label mb-1">Momen 3</div>
+      ${SecF("timeline.items.2.title", "Judul momen", "Contoh: Menikah")}
+      ${SecF("timeline.items.2.date", "Tanggal")}
+      ${SecF("timeline.items.2.desc", "Cerita singkat", null, true)}
+    `)}
+
+    ${Sec("📺", "Live Streaming", "Tombol nonton akad/resepsi online (Instagram/YouTube) — tamu jauh bisa ikut.", "liveStream.enabled", `
+      ${SecF("liveStream.heading", "Judul", "Contoh: Live Streaming")}
+      ${SecF("liveStream.subheading", "Sub-judul", "Teks kecil di bawah judul.")}
+      ${SecF("liveStream.text", "Teks ajakan", "Contoh: Ikuti prosesi kami melalui link berikut.", true)}
+      ${SecF("liveStream.buttonLabel", "Teks tombol", "Contoh: Nonton Live")}
+      ${SecF("liveStream.buttonUrl", "Link tujuan", "Tempel link Instagram/YouTube kalian.")}
+    `)}
+
+    ${Sec("💌", "Exclusive Invitation", "Bagian 'hanya untuk kamu' — undangan khusus dengan logo & sosmed.", "exclusive.enabled", `
+      ${SecF("exclusive.heading", "Judul", "Contoh: Exclusive Invitation")}
+      ${SecF("exclusive.text", "Teks", "Contoh: Merupakan suatu kehormatan bagi kami...", true)}
+      ${SecF("exclusive.logoUrl", "URL logo", "Kosongkan jika tidak ada logo.")}
+      ${SecF("exclusive.instagramUrl", "Link Instagram")}
+      ${SecF("exclusive.whatsappUrl", "Link WhatsApp")}
+    `)}
   </div>`;
 }
 
