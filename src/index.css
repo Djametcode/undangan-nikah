@@ -60,6 +60,32 @@ html { scroll-behavior: smooth; }
   font-family: var(--font-serif);
 }
 
+/* Section heading — serif tegas, anti-monoton (BUKAN script semua) */
+.section-heading {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: var(--clr-fg);
+}
+.section-heading .heading-accent {
+  color: var(--clr-primary);
+}
+.section-heading-upper {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--clr-primary);
+}
+.section-heading-line {
+  width: 64px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--clr-primary), transparent);
+  margin: 14px auto 0;
+}
+
 /* Shape utilities (theme-driven) */
 .rounded-card { border-radius: var(--radius-card); }
 .rounded-btn { border-radius: var(--radius-btn); }
@@ -190,6 +216,70 @@ html { scroll-behavior: smooth; }
   border-radius: 100% 0 100% 0;
   animation: petalFall linear infinite;
   pointer-events: none;
+}
+
+/* ============================================================
+   LIQUID GLASS PREMIUM (glass-mode) — body class di-set dari
+   config.theme.glassEnabled. Semua .soft-card jadi glass.
+   ============================================================ */
+@keyframes glassHue {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(25deg); }
+}
+@keyframes glassOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.12); }
+  66% { transform: translate(-25px, 25px) scale(0.94); }
+}
+body.glass-mode {
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 10%, rgba(236, 72, 153, 0.28), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 85% 20%, rgba(168, 85, 247, 0.22), transparent 60%),
+    radial-gradient(ellipse 75% 60% at 70% 85%, rgba(14, 165, 233, 0.2), transparent 60%),
+    radial-gradient(ellipse 65% 55% at 20% 80%, rgba(244, 114, 182, 0.25), transparent 60%),
+    linear-gradient(160deg, #fdf2f8 0%, #f5e9fb 35%, #eaf3fb 70%, #fdf0f4 100%);
+  background-attachment: fixed;
+}
+body.glass-mode .soft-card {
+  background: rgba(255, 255, 255, 0.38);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 8px 32px rgba(190, 90, 160, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+body.glass-mode .soft-shadow { box-shadow: 0 8px 32px rgba(190, 90, 160, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+body.glass-mode .soft-shadow-lg { box-shadow: 0 16px 48px rgba(190, 90, 160, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.65); }
+/* section sand → translucent glass sheet */
+body.glass-mode [class*="bg-sand"] { background: rgba(255, 255, 255, 0.22); }
+/* blobs jadi orb iridescent */
+body.glass-mode .blob {
+  opacity: 0.4;
+  filter: blur(60px) saturate(140%);
+  animation: glassOrb 16s ease-in-out infinite;
+}
+body.glass-mode .blob:nth-child(2n) { animation-duration: 19s; animation-direction: reverse; }
+body.glass-mode .blob:nth-child(3n) { animation-duration: 22s; }
+/* iridescent gradient text — dipakai manual via .glass-text */
+.glass-text {
+  background: linear-gradient(110deg, #ec4899 0%, #a855f7 35%, #0ea5e9 65%, #ec4899 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: glassHue 8s ease-in-out infinite;
+}
+/* form inputs ikut glass */
+body.glass-mode input, body.glass-mode textarea {
+  background: rgba(255, 255, 255, 0.5) !important;
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+/* countdown / kartu kecil lain yang pake bg-bg solid */
+body.glass-mode [class*="bg-bg/"] {
+  background: rgba(255, 255, 255, 0.35) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 /* Reduced motion */

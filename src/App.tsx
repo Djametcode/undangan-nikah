@@ -881,8 +881,9 @@ function Info({ cfg }: { cfg: Cfg }) {
       <div className="max-w-3xl mx-auto relative z-10">
         <div className="text-center mb-14" data-reveal data-entrance>
           <span className="kicker block mb-4">{L.eventSection}</span>
-          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
-            <span className="line"><span className="line-inner">{L.eventSection}</span></span>
+          <h2 data-line-reveal className="section-heading text-3xl md:text-4xl fade-up">
+            <span className="line"><span className="line-inner"><span className="heading-accent">{L.eventSection}</span></span></span>
+            <span className="section-heading-line" />
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
         </div>
@@ -928,8 +929,9 @@ function Gallery({ cfg }: { cfg: Cfg }) {
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal data-entrance>
           <span className="kicker block mb-4">Galeri</span>
-          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
-            <span className="line"><span className="line-inner">{cfg.gallery.heading}</span></span>
+          <h2 data-line-reveal className="section-heading text-3xl md:text-4xl fade-up">
+            <span className="line"><span className="line-inner"><span className="heading-accent">{cfg.gallery.heading}</span></span></span>
+            <span className="section-heading-line" />
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
         </div>
@@ -1025,22 +1027,30 @@ function TimelineSection({ cfg }: { cfg: Cfg }) {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-14" data-reveal data-entrance>
           <span className="kicker block mb-4">{timeline.heading}</span>
-          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
-            <span className="line"><span className="line-inner">{timeline.heading}</span></span>
+          <h2 data-line-reveal className="section-heading text-3xl md:text-4xl fade-up">
+            <span className="line"><span className="line-inner"><span className="heading-accent">{timeline.heading}</span></span></span>
+            <span className="section-heading-line" />
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
         </div>
         <div className="relative" data-reveal data-entrance>
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-primary/30" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-primary/25" />
           {timeline.items.map((item, i) => (
-            <div key={i} className={`relative flex items-start gap-6 mb-10 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+            <div key={i} className={`relative flex items-start gap-6 mb-12 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
               <div className="hidden md:block md:w-1/2" />
-              <div className="absolute left-1/2 -translate-x-1/2 top-2 w-3 h-3 rounded-full bg-primary border-2 border-bg" />
+              <div className="absolute left-1/2 -translate-x-1/2 top-3 w-4 h-4 rounded-full bg-primary border-[3px] border-bg shadow-md shadow-primary/30" />
               <div className={`md:w-1/2 ml-10 md:ml-0 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
-                <div className="soft-card p-5 soft-shadow inline-block text-left">
-                  <span className="text-xs uppercase tracking-widest text-primary-light font-medium">{item.date}</span>
-                  <h3 className="serif-body text-xl text-fg mt-1">{item.title}</h3>
-                  <p className="serif-body text-muted text-sm mt-1">{item.desc}</p>
+                <div className="group relative overflow-hidden rounded-card border border-primary/15 bg-surface/80 backdrop-blur-sm soft-shadow hover:soft-shadow-lg transition-all duration-300 hover:-translate-y-1 inline-block text-left">
+                  {/* date badge */}
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-3 rounded-full bg-primary/10 text-primary-light text-xs font-semibold tracking-widest">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {item.date}
+                  </div>
+                  <h3 className="section-heading text-xl mb-2">{item.title}</h3>
+                  <div className="hairline w-10 mb-3" />
+                  <p className="serif-body text-muted text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             </div>
@@ -1059,8 +1069,9 @@ function LiveStreamSection({ cfg }: { cfg: Cfg }) {
     <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 text-center">
       <div className="max-w-xl mx-auto" data-reveal data-entrance>
         <span className="kicker block mb-4">{liveStream.subheading}</span>
-        <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
-          <span className="line"><span className="line-inner">{liveStream.heading}</span></span>
+        <h2 data-line-reveal className="section-heading text-3xl md:text-4xl fade-up">
+          <span className="line"><span className="line-inner"><span className="heading-accent">{liveStream.heading}</span></span></span>
+          <span className="section-heading-line" />
         </h2>
         <Ornament className="w-36 mx-auto my-6" />
         <p className="serif-body text-muted text-lg leading-relaxed mb-8">{liveStream.text}</p>
@@ -1088,8 +1099,9 @@ function ExclusiveSection({ cfg }: { cfg: Cfg }) {
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
         <span className="kicker block mb-4">Invitation</span>
-        <h2 data-line-reveal className={`script-display text-primary-light mb-6 fade-up ${cfg.theme.headingSize}`}>
-          <span className="line"><span className="line-inner">{exclusive.heading}</span></span>
+        <h2 data-line-reveal className="section-heading text-3xl md:text-4xl mb-6 fade-up">
+          <span className="line"><span className="line-inner"><span className="heading-accent">{exclusive.heading}</span></span></span>
+          <span className="section-heading-line" />
         </h2>
         <Ornament className="w-40 mx-auto mb-8" />
         {exclusive.logoUrl && (
@@ -1144,8 +1156,9 @@ function Gift({ cfg }: { cfg: Cfg }) {
       <div className="max-w-xl mx-auto text-center relative z-10">
         <div data-reveal data-entrance>
           <span className="kicker block mb-4">{L.giftSection}</span>
-          <h2 data-line-reveal className={`script-display text-primary-light mb-5 fade-up ${cfg.theme.headingSize}`}>
-            <span className="line"><span className="line-inner">{gift.heading}</span></span>
+          <h2 data-line-reveal className="section-heading text-3xl md:text-4xl mb-5 fade-up">
+            <span className="line"><span className="line-inner"><span className="heading-accent">{gift.heading}</span></span></span>
+            <span className="section-heading-line" />
           </h2>
           <Ornament className="w-36 mx-auto mb-6" />
           <p className="serif-body text-muted text-lg leading-relaxed mb-8">{gift.intro}</p>
@@ -1312,8 +1325,9 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
       <div className="max-w-xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal data-entrance>
           <span className="kicker block mb-4">{L.rsvpSection}</span>
-          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
-            <span className="line"><span className="line-inner">{cfg.rsvp.heading}</span></span>
+          <h2 data-line-reveal className="section-heading text-3xl md:text-4xl fade-up">
+            <span className="line"><span className="line-inner"><span className="heading-accent">{cfg.rsvp.heading}</span></span></span>
+            <span className="section-heading-line" />
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
           <p className="serif-body text-muted mt-6 max-w-md mx-auto leading-relaxed">{cfg.rsvp.intro}</p>
@@ -1399,8 +1413,9 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
       <div className="max-w-xl mx-auto relative z-10">
         <div className="text-center mb-12" data-reveal data-entrance>
           <span className="kicker block mb-4">{L.guestbookSection}</span>
-          <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
-            <span className="line"><span className="line-inner">{cfg.guestbook.heading}</span></span>
+          <h2 data-line-reveal className="section-heading text-3xl md:text-4xl fade-up">
+            <span className="line"><span className="line-inner"><span className="heading-accent">{cfg.guestbook.heading}</span></span></span>
+            <span className="section-heading-line" />
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
           <p className="serif-body text-muted mt-6 max-w-md mx-auto leading-relaxed">{cfg.guestbook.intro}</p>
@@ -1448,8 +1463,9 @@ function Closing({ cfg }: { cfg: Cfg }) {
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
         <span className="kicker block mb-4">{L.closingTitle}</span>
-        <h2 data-line-reveal className={`script-display text-primary-light mb-6 fade-up ${cfg.theme.headingSize}`}>
-          <span className="line"><span className="line-inner">{cfg.closing.heading}</span></span>
+        <h2 data-line-reveal className="section-heading text-3xl md:text-4xl mb-6 fade-up">
+          <span className="line"><span className="line-inner"><span className="heading-accent">{cfg.closing.heading}</span></span></span>
+          <span className="section-heading-line" />
         </h2>
         <Ornament className="w-40 mx-auto mb-8" />
         <p className="serif-body text-lg text-muted/80 leading-relaxed max-w-md mx-auto">{cfg.closing.text}</p>
