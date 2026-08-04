@@ -67,7 +67,10 @@
   .sec-overview-item .dot { width: 8px; height: 8px; border-radius: 50%; }
   .sec-overview-item .dot.on { background: #22c55e; }
   .sec-overview-item .dot.off { background: #cbd5e1; }
-  @media (max-width: 1024px) { .ts-layout { flex-direction: column; } .ts-preview { flex: none; width: 100%; position: static; } .ts-preview-frame { height: 60vh; } }
+  @media (max-width: 1024px) { .ts-layout { flex-direction: column; } .ts-preview { flex: none; width: 100%; position: static; } .ts-preview-frame { height: 70vh; } }
+  @media (max-width: 640px) { .ts-preview-frame { height: 60vh; } .video-preview-lg { max-height: 45vh !important; height: 45vh !important; } .vendor-thumb { height: 120px !important; } }
+  .video-preview-lg { max-height: 340px; height: 340px; object-fit: cover; }
+  .vendor-thumb { height: 80px; object-fit: cover; }
 </style>
 </head>
 <body class="min-h-screen">
@@ -387,7 +390,7 @@ function renderMedia() {
       <div id="videoInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
       <div id="videoPreviewWrap" class="mt-3 ${cfg.media.video ? '' : 'hidden'}">
         <p class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Preview Video Cover</p>
-        <video id="videoPreview" src="${esc(cfg.media.video || '')}" controls muted playsinline preload="metadata" class="w-full rounded-xl border border-[#e7d8d3] bg-black max-h-48"></video>
+        <video id="videoPreview" src="${esc(cfg.media.video || '')}" controls muted playsinline preload="metadata" class="w-full rounded-xl border border-[#e7d8d3] bg-black video-preview-lg"></video>
       </div>
     </div>
     <div class="card p-6">
@@ -405,7 +408,7 @@ function renderMedia() {
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-96 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
       ${VENDOR_VIDEOS.map(v => `
         <div class="border border-[#e7d8d3] rounded-lg p-2 bg-[#fffbeb]">
-          <video src="/uploads/vendor/videos/${v}" muted playsinline preload="none" class="w-full h-20 object-cover rounded mb-1 bg-black cursor-pointer" onclick="this.paused ? this.play() : this.pause()" title="Klik untuk preview"></video>
+          <video src="/uploads/vendor/videos/${v}" muted playsinline preload="none" class="vendor-thumb w-full h-20 object-cover rounded mb-1 bg-black cursor-pointer" onclick="this.paused ? this.play() : this.pause()" title="Klik untuk preview"></video>
           <p class="text-[10px] text-slate-600 break-all mb-1">${v}</p>
           <div class="flex gap-1">
             <button onclick="useVendorVideo('${v}')" class="flex-1 text-[10px] bg-terra text-[#fffbeb] py-1 rounded cursor-pointer">Cover</button>
@@ -1733,6 +1736,11 @@ function renderTheme() {
                 <option value="Allura, cursive">Allura</option>
                 <option value="Tangerine, cursive">Tangerine</option>
                 <option value="Brush Script MT, cursive">Brush Script</option>
+                <option value="Alex Brush, cursive">Alex Brush</option>
+                <option value="Calligraffiti, cursive">Calligraffiti</option>
+                <option value="Cinzel Decorative, serif">Cinzel Decorative</option>
+                <option value="Dancing Script, cursive">Dancing Script</option>
+                <option value="Marck Script, cursive">Marck Script</option>
               </select>
             </div>
             <div>
@@ -1745,6 +1753,11 @@ function renderTheme() {
                 <option value="EB Garamond, Georgia, serif">EB Garamond</option>
                 <option value="Prata, Georgia, serif">Prata</option>
                 <option value="Libre Baskerville, Georgia, serif">Libre Baskerville</option>
+                <option value="Newsreader, Georgia, serif">Newsreader</option>
+                <option value="Cormorant Garamond, Georgia, serif">Cormorant Garamond</option>
+                <option value="Domine, Georgia, serif">Domine</option>
+                <option value="Marcellus, Georgia, serif">Marcellus</option>
+                <option value="Alegreya, Georgia, serif">Alegreya</option>
               </select>
             </div>
             <div>
@@ -1757,6 +1770,11 @@ function renderTheme() {
                 <option value="Lato, system-ui, sans-serif">Lato</option>
                 <option value="Nunito, system-ui, sans-serif">Nunito</option>
                 <option value="Quicksand, system-ui, sans-serif">Quicksand</option>
+                <option value="Raleway, system-ui, sans-serif">Raleway</option>
+                <option value="Jost, system-ui, sans-serif">Jost</option>
+                <option value="Sora, system-ui, sans-serif">Sora</option>
+                <option value="Plus Jakarta Sans, system-ui, sans-serif">Plus Jakarta Sans</option>
+                <option value="DM Sans, system-ui, sans-serif">DM Sans</option>
               </select>
             </div>
             ${F("theme.scriptSize", "Ukuran nama cover (cth: text-6xl md:text-7xl)")}
