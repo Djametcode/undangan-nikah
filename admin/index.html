@@ -179,7 +179,7 @@ function UploadField(name, label) {
 /* ---------- Vendor assets (35 video hiasan + 50 musik dari 92 tema) ---------- */
 const VENDOR_VIDEOS = ["ART-KYRA-1.mp4", "ART-SOFT-1.mp4", "BATAK-REV-1.mp4", "CASTLE-2-1.mp4", "DEVOLA-1.mp4", "JAWA-COKLAT-3-1.mp4", "JAWA-MERAH-KOMPRES.mp4", "LOVELY-1.mp4", "Motion-Banjar-Compress.mp4", "Motion-Garden.mp4", "Motion-Jawa-Biru.mp4", "Motion-Melayu-Compress.mp4", "Motion-Palembang-Compress.mp4", "Motion-Pink-Palace.mp4", "REV-MELODY.mp4", "SILVA-REAL-KOMPRES.mp4", "SUNDA-REV-1.mp4", "Video-Final-Minang-NO-WM.mp4", "WEB-JAWA-MAROON-1.mp4", "art-chinese-1.mp4", "asli-pangkas.mp4", "rijjj.mp4", "bali-revisi.mp4", "bugis-maroon-1.mp4", "cina-rev.mp4", "flow-1.mp4", "jawa-biru-revisi-compressed-1.mp4", "jawa-coklat-revi-compressed.mp4", "minang-1.mp4", "minang-3-1.mp4", "palembang-2-1.mp4", "rev-aceh.mp4", "revisi-lampung.mp4", "sunda-2.mp4", "tema-3-motion-bNEu7Z.mp4"];
 const VENDOR_MUSIC = ["Ada-Untukmu-Tyok-Satrio.mp3", "Aladdin-A-Whole-New-World-Saxophone-Cover-Brendan-Mills-mp3cut.net_.mp3", "Ariana-Grande-Justin-Bieber-Stuck-with-U-Lyric-.mp3", "Azzam-Sham-Ai-Wahida-Selamat-Pengantin-Baru-Official-Music-Video-mp3cut.net_.mp3", "Because-You-Loved-Me-Celine-Dion.mp3", "Boyzone-Every-Day-I-Love-You.mp3", "Cinta-terakhir-ari-lasso.mp3", "Crush-크러쉬-Beautiful.mp3", "DBamboo-Musik-Batak-Horbo-Paung-Gondang-Batak-Uning-Uningan-mp3cut.net_.mp3", "Denny-Caknan-Feat-Bella-Bonita-SINARENGAN-reff.mp3", "Denny-Caknan-Sinarengan-Lirik-Feat-mp3cut.net_.mp3", "Everything-I-Do-Boyce-Avenue-ft-mp3cut.net_.mp3", "GENDING-SRIWIJAYA-INSTRUMENTAL-HIGH-QUALITY-AUDIO-LAGU-DAERAH-SUMATERA-SELATAN.mp3", "Goodness-of-God-Bethel-Music-violin-cover.mp3", "I-Think-They-Call-This-Love-Elliot-James-Reay-Saxophone-Cover-by-Dori-Wirawan.mp3", "I-Wanna-Grow-Old-With-You-Westlife-full.mp3", "Iqbal-Mahesa-Echa-Putri-FT-Cabiak-dindin-Badindin-Official-Music-Video-2c93GRM9dKU-mp3cut.net_.mp3", "Its-You-by-HENRY.mp3", "Jacob-Lee-I-Belong-to-You.mp3", "Jake-Miller-Lucky-Me-The-proposal.mp3", "James-Arthur-A-Thousand-Years-Christina-Perri-Cover.mp3", "KAMBANG-GOYANG-Ciptaan-Anang-Ardiansyah-Anna-Husna-Musik-Panting-Manis-Kasay-mp3cut.net_.mp3", "KUSUMA-WIJAYA-PAWESTRI-KATALOG-DEMO.mp3", "Kabagyan-Sadewok-Official-Music-Video-mp3cut.net-1.mp3", "Kumau-Dia-Andmesh-Kamaleng-lirik-lagu.mp3", "LAGU-PERNIKAHAN-KHAS-MINANG-URANG-MINANG-BARALEK-GADANG-LIVE-ORCHESTRA-SYMPHONY-ENTERTAINMENT-mp3cut.net_.mp3", "LESTARI-Orchestra-Version-mp3cut.net_.mp3", "MULA-MACENNING-CAPPA-MAKESSING-Cipt.-Abi-Rafdi-OFFICIAL-MUSIC-VIDEO.mp3", "Matthew-Ifield-I-Think-They-Call-This-Love-Cover.mp3", "Niken-Salindry-KUSUMA-WIJAYA-Kembar-Campursari-Official-Music-Video-mp3cut.net_.mp3", "Nyoman-Paul-Andi-Rianto-The-Way-You-Look-At-Me-Official-Music-Video-mp3cut.net_.mp3", "Nyoman-Paul-Andi-Rianto-The-Way-You-Look-At-Me-detik-24.mp3", "Only-You-Raya-Official-Lyrics-Video.mp3", "PENGANTEN-BAROE-HERMIYANJAS-FEAT-CUT-ZUHRA-Official-Video-Wedding-mp3cut.net_.mp3", "Perfect-Ed-Sheeran-Beyonce-Boyce-Avenue-acoustic-cover-on-Spotify-Apple.mp3", "Raim-Laode-Komang-Konten.mp3", "Ray-Barron-Cover-Sad-Version-Eenie-Meenie.mp3", "Rembulan-Ing-WengiArdia-Diwang-Video-Lirik-gamelan-jawa.mp3", "Stephen-Sanchez-I-Need-You-Most-Of-All-Lyric-Video.mp3", "Stephen-Sanchez-Until-I-Found-You-Cover-by-EdaOnur.mp3", "Teddy-Swims-Youre-Still-The-One-Shania-Twain-Cover.mp3", "The-Way-You-Look-At-Me-Christian-Bautista-PIANO.mp3", "TobaDream-Theme-Song-mp3cut.net_.mp3", "Urang-Minang-Baralek-Gadang-mp3cut.net_.mp3", "Westlife-I-Wanna-Grow-Old-with-You-reff.mp3", "You-Are-The-Reason-Calum-Scott-Cover-Alexandra-PoratLyric-Video.mp3", "Youre-Still-The-One-Shania-Twain-Boyce-Avenue-ft.-Connie-Talbot-acoustic-cover-Spotify-Apple.mp3", "Youre-Still-The-One-Shania-Twain.mp3", "ZAPIN-Tari-Lampung-VOC_-ASIH-ARUMBINANG-Lirik-Dan-Artinya-Lagu-Lampung-CIPT_-SYAIFUL-ANWAR-mp3cut.net_.mp3", "tema-new-Everything-I-Do-I-Do-It-For-You-Boyce-Avenue-ft-mp3cut.net_.mp3"];
-const VENDOR_SECTIONS = ["couple", "savedate", "info", "gallery", "gift", "rsvp", "guestbook", "closing"];
+const VENDOR_SECTIONS = { couple: "Mempelai", savedate: "Hitung Mundur", info: "Info Acara", gallery: "Galeri", gift: "Tanda Kasih", rsvp: "RSVP Hadir", guestbook: "Ucapan & Doa", closing: "Penutup" };
 
 function useVendorVideo(name) {
   cfg.media = cfg.media || {};
@@ -299,7 +299,7 @@ function renderMedia() {
   </div>
   <div class="mt-5 card p-6">
     <h2 class="terra font-semibold mb-2">Video Hiasan — Bundle ${VENDOR_VIDEOS.length} Tema</h2>
-    <p class="text-xs text-slate-500 mb-3">Video background asli dari ${VENDOR_VIDEOS.length} tema (sudah di-download). Hover/klik video untuk preview, <b>Cover</b> untuk pasang sebagai video cover, atau pilih section lalu <b>Set</b>.</p>
+    <p class="text-xs text-slate-500 mb-3">Video background asli dari ${VENDOR_VIDEOS.length} tema (sudah di-download). Klik video untuk preview. <b>Cover</b> = pasang sebagai background halaman pertama (sampul). Pilih bagian lalu <b>Set</b> = pasang sebagai background di section itu.</p>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-96 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
       ${VENDOR_VIDEOS.map(v => `
         <div class="border border-[#e7d8d3] rounded-lg p-2 bg-[#fffbeb]">
@@ -308,7 +308,7 @@ function renderMedia() {
           <div class="flex gap-1">
             <button onclick="useVendorVideo('${v}')" class="flex-1 text-[10px] bg-terra text-[#fffbeb] py-1 rounded cursor-pointer">Cover</button>
             <select id="vs-${v}" class="text-[10px] border border-terra/40 rounded px-1 py-1 w-16">
-              ${VENDOR_SECTIONS.map(s => `<option value="${s}">${s}</option>`).join('')}
+              ${Object.entries(VENDOR_SECTIONS).map(([k, label]) => `<option value="${k}">${label}</option>`).join('')}
             </select>
             <button onclick="useVendorSectionVideo('${v}', document.getElementById('vs-${v}').value)" class="text-[10px] border border-terra/40 text-terra py-1 rounded cursor-pointer">Set</button>
           </div>
@@ -353,7 +353,7 @@ function renderMedia() {
         <div class="mt-2">${F("sectionVideos.gift.video", "URL video")}</div>
       </div>
       <div class="border border-[#e7d8d3] rounded-xl p-4 bg-[#fffbeb]">
-        <p class="text-xs font-medium text-slate-600 mb-3">RSVP</p>
+        <p class="text-xs font-medium text-slate-600 mb-3">RSVP (Konfirmasi Hadir)</p>
         ${T("sectionVideos.rsvp.enabled", "Aktifkan video background")}
         <div class="mt-2">${F("sectionVideos.rsvp.video", "URL video")}</div>
       </div>
