@@ -245,7 +245,7 @@ const DEFAULT_CFG: Cfg = {
     motion: {
       parallaxLevel: "medium",
       sectionReveal: "fade-up",
-      textEffect: "none",
+      textEffect: "fadeInUp",
       videoCoverMode: "cover",
       heroZoom: true,
       floatElements: true,
@@ -480,18 +480,56 @@ function useWeddingAnimations(dep: unknown = true, motion?: Cfg["theme"]["motion
         );
       });
 
-      // Parallax level: low / medium / high
+      // Parallax level: low / medium / high (boosted from Elementor patterns)
       const pLevel = motion?.parallaxLevel || "medium";
-      const pSpeed = pLevel === "low" ? 0.08 : pLevel === "high" ? 0.3 : 0.15;
+      const pSpeed = pLevel === "low" ? 0.12 : pLevel === "high" ? 0.45 : 0.25;
       gsap.utils.toArray<Element>("[data-parallax]").forEach((el) => {
         const speed = parseFloat(el.getAttribute("data-parallax") || String(pSpeed));
         gsap.fromTo(
           el,
-          { yPercent: -speed * 20 },
+          { yPercent: -speed * 25 },
           {
-            yPercent: speed * 20,
+            yPercent: speed * 25,
             ease: "none",
             scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: true },
+          }
+        );
+      });
+
+      // Section-level entrance animations (Elementor-style: fadeInUp / zoomIn / fadeInLeft / fadeInRight / bounceIn)
+      const entrance = motion?.textEffect || "fadeInUp";
+      gsap.utils.toArray<Element>("section[data-section]").forEach((el) => {
+        const targets = el.querySelectorAll("[data-entrance]");
+        if (!targets.length) return;
+        const anims: Record<string, { from: gsap.TweenVars }> = {
+          fadeInUp: { from: { opacity: 0, y: 40 } },
+          fadeInDown: { from: { opacity: 0, y: -40 } },
+          fadeInLeft: { from: { opacity: 0, x: -60 } },
+          fadeInRight: { from: { opacity: 0, x: 60 } },
+          zoomIn: { from: { opacity: 0, scale: 0.6 } },
+          bounceIn: { from: { opacity: 0, scale: 0.4, y: 20 } },
+        };
+        const cfgAnim = anims[entrance] || anims.fadeInUp;
+        gsap.fromTo(
+          targets,
+          cfgAnim.from,
+          {
+            opacity: 1, x: 0, y: 0, scale: 1,
+            duration: 1, stagger: 0.15, ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 82%", once: true },
+          }
+        );
+      });
+
+      // Card pop-in stagger (soft-card inside sections)
+      gsap.utils.toArray<Element>("section[data-section] .soft-card").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 30, scale: 0.96 },
+          {
+            opacity: 1, y: 0, scale: 1,
+            duration: 0.7, ease: "power2.out",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
           }
         );
       });
@@ -671,10 +709,10 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
 function Couple({ cfg }: { cfg: Cfg }) {
   const { couple, photos, quote, labels } = cfg;
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="py-24 px-4 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="couple" />
       <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-16" data-reveal>
+        <div className="text-center mb-16" data-reveal data-entrance>
           <span className="kicker block mb-4">{labels.coupleSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{couple.groom} {couple.ampersand} {couple.bride}</span></span>
@@ -683,7 +721,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
-          <div data-reveal className="text-center group">
+          <div data-reveal data-entrance className="text-center group">
             <div className="gold-frame max-w-xs mx-auto mb-6 rounded-sm overflow-hidden">
               <div className="overflow-hidden rounded-[3px] bg-surface">
                 {photos.groom ? (
@@ -698,7 +736,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
             <p className="mt-2 serif-body text-muted leading-relaxed max-w-xs mx-auto">{couple.groomDesc}</p>
           </div>
 
-          <div data-reveal className="text-center group md:mt-20">
+          <div data-reveal data-entrance className="text-center group md:mt-20">
             <div className="gold-frame max-w-xs mx-auto mb-6 rounded-sm overflow-hidden">
               <div className="overflow-hidden rounded-[3px] bg-surface">
                 {photos.bride ? (
@@ -714,7 +752,7 @@ function Couple({ cfg }: { cfg: Cfg }) {
           </div>
         </div>
 
-        <div className="text-center mt-20" data-reveal>
+        <div className="text-center mt-20" data-reveal data-entrance>
           <p className="script-display text-4xl text-primary mb-6">{couple.ampersand}</p>
           <p className="serif-body text-lg text-muted/80 italic leading-relaxed max-w-2xl mx-auto">{quote.text}</p>
           <p className="text-muted text-xs uppercase tracking-[0.3em] mt-4">{quote.source}</p>
@@ -729,9 +767,9 @@ function SaveTheDate({ cfg }: { cfg: Cfg }) {
   const t = useCountdown(cfg.event.countdownDate);
   const L = cfg.labels;
   return (
-    <section className="py-20 px-4 bg-sand/60 relative overflow-hidden">
+    <section data-section className="py-20 px-4 bg-sand/60 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="savedate" />
-      <div className="max-w-3xl mx-auto text-center relative z-10" data-reveal>
+      <div className="max-w-3xl mx-auto text-center relative z-10" data-reveal data-entrance>
         <span className="kicker block mb-4">{L.saveTheDate}</span>
         <p className="serif-body text-2xl md:text-3xl text-fg mb-2">{cfg.event.day}, {cfg.event.date}</p>
         <Ornament className="w-36 mx-auto my-6" />
@@ -756,7 +794,7 @@ function SaveTheDate({ cfg }: { cfg: Cfg }) {
 /* ---------- Event Info ---------- */
 function EventCard({ title, time, place, mapsUrl, mapLabel }: { title: string; time: string; place: string; mapsUrl: string; mapLabel?: string }) {
   return (
-    <div data-reveal className="soft-card p-10 text-center soft-shadow hover:soft-shadow-lg transition-shadow duration-300 relative overflow-hidden">
+    <div data-reveal data-entrance className="soft-card p-10 text-center soft-shadow hover:soft-shadow-lg transition-shadow duration-300 relative overflow-hidden">
       <CornerOrnament className="absolute top-3 left-3 w-10" />
       <CornerOrnament className="absolute bottom-3 right-3 w-10 flip" />
       <h3 className="serif-body text-3xl text-primary-light mb-3">{title}</h3>
@@ -780,10 +818,10 @@ function EventCard({ title, time, place, mapsUrl, mapLabel }: { title: string; t
 function Info({ cfg }: { cfg: Cfg }) {
   const L = cfg.labels;
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="py-24 px-4 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="info" />
       <div className="max-w-3xl mx-auto relative z-10">
-        <div className="text-center mb-14" data-reveal>
+        <div className="text-center mb-14" data-reveal data-entrance>
           <span className="kicker block mb-4">{L.eventSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{L.eventSection}</span></span>
@@ -816,10 +854,10 @@ function Gallery({ cfg }: { cfg: Cfg }) {
   if (!images.length) return null;
 
   return (
-    <section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
+    <section data-section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="gallery" />
       <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-12" data-reveal>
+        <div className="text-center mb-12" data-reveal data-entrance>
           <span className="kicker block mb-4">Galeri</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{cfg.gallery.heading}</span></span>
@@ -829,7 +867,7 @@ function Gallery({ cfg }: { cfg: Cfg }) {
 
         {layout === "justified" ? (
           /* Justified masonry — rata kiri-kanan seperti ART MELODY */
-          <div data-reveal className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+          <div data-reveal data-entrance className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
             {images.map((src, i) => (
               <a
                 key={i}
@@ -845,7 +883,7 @@ function Gallery({ cfg }: { cfg: Cfg }) {
           </div>
         ) : (
           /* Carousel — auto-play seperti asli */
-          <div data-reveal className="relative gold-frame rounded-sm overflow-hidden soft-shadow-lg">
+          <div data-reveal data-entrance className="relative gold-frame rounded-sm overflow-hidden soft-shadow-lg">
             <div className="overflow-hidden rounded-[3px] aspect-[4/3]">
               <img
                 src={images[idx % images.length]}
@@ -901,7 +939,7 @@ function InitialSection({ cfg }: { cfg: Cfg }) {
   const { initial } = cfg;
   if (!initial.enabled) return null;
   return (
-    <section className="py-20 px-4 text-center" data-reveal>
+    <section data-section className="py-20 px-4 text-center" data-reveal data-entrance>
       <p className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>{initial.text}</p>
       <Ornament className="w-32 mx-auto mt-6" />
     </section>
@@ -913,16 +951,16 @@ function TimelineSection({ cfg }: { cfg: Cfg }) {
   const { timeline } = cfg;
   if (!timeline.enabled || !timeline.items?.length) return null;
   return (
-    <section className="py-24 px-4 bg-sand/60">
+    <section data-section className="py-24 px-4 bg-sand/60">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-14" data-reveal>
+        <div className="text-center mb-14" data-reveal data-entrance>
           <span className="kicker block mb-4">{timeline.heading}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{timeline.heading}</span></span>
           </h2>
           <Ornament className="w-36 mx-auto mt-6" />
         </div>
-        <div className="relative" data-reveal>
+        <div className="relative" data-reveal data-entrance>
           <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-primary/30" />
           {timeline.items.map((item, i) => (
             <div key={i} className={`relative flex items-start gap-6 mb-10 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
@@ -948,8 +986,8 @@ function LiveStreamSection({ cfg }: { cfg: Cfg }) {
   const { liveStream } = cfg;
   if (!liveStream.enabled) return null;
   return (
-    <section className="py-24 px-4 text-center">
-      <div className="max-w-xl mx-auto" data-reveal>
+    <section data-section className="py-24 px-4 text-center">
+      <div className="max-w-xl mx-auto" data-reveal data-entrance>
         <span className="kicker block mb-4">{liveStream.subheading}</span>
         <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
           <span className="line"><span className="line-inner">{liveStream.heading}</span></span>
@@ -975,8 +1013,8 @@ function ExclusiveSection({ cfg }: { cfg: Cfg }) {
   const { exclusive } = cfg;
   if (!exclusive.enabled) return null;
   return (
-    <section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
-      <div className="max-w-xl mx-auto relative z-10" data-reveal>
+    <section data-section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
+      <div className="max-w-xl mx-auto relative z-10" data-reveal data-entrance>
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
         <span className="kicker block mb-4">Invitation</span>
@@ -1031,10 +1069,10 @@ function Gift({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="py-24 px-4 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="gift" />
       <div className="max-w-xl mx-auto text-center relative z-10">
-        <div data-reveal>
+        <div data-reveal data-entrance>
           <span className="kicker block mb-4">{L.giftSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light mb-5 fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{gift.heading}</span></span>
@@ -1043,7 +1081,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
           <p className="serif-body text-muted text-lg leading-relaxed mb-8">{gift.intro}</p>
         </div>
 
-        <div className={`grid gap-3 ${gift.qrisEnabled ? "grid-cols-3" : "grid-cols-2"}`} data-reveal>
+        <div className={`grid gap-3 ${gift.qrisEnabled ? "grid-cols-3" : "grid-cols-2"}`} data-reveal data-entrance>
           <button
             onClick={() => setOpen(open === "bank" ? null : "bank")}
             className={`py-4 text-sm rounded-xl transition-all duration-300 cursor-pointer ${open === "bank" ? "bg-primary text-bg border-primary soft-shadow" : "border border-primary/40 text-primary-light hover:border-primary"}`}
@@ -1067,7 +1105,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
         </div>
 
         {open === "qris" && (
-          <div data-reveal className="mt-6 soft-card p-8 soft-shadow">
+          <div data-reveal data-entrance className="mt-6 soft-card p-8 soft-shadow">
             <div className="w-44 h-44 mx-auto mb-4 bg-white rounded-xl flex items-center justify-center overflow-hidden p-2">
               <QRCodeCanvas value={gift.qrisValue} size={160} fgColor="#0f172a" bgColor="#ffffff" level="M" />
             </div>
@@ -1076,7 +1114,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
         )}
 
         {open === "bank" && (
-          <div data-reveal className="mt-6 soft-card p-8 soft-shadow text-left">
+          <div data-reveal data-entrance className="mt-6 soft-card p-8 soft-shadow text-left">
             <div className="flex justify-between items-center border-b border-border pb-4">
               <div>
                 <p className="text-muted text-sm">{gift.bank.name}</p>
@@ -1094,7 +1132,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
         )}
 
         {open === "kado" && (
-          <div data-reveal className="mt-6 soft-card p-8 soft-shadow text-left">
+          <div data-reveal data-entrance className="mt-6 soft-card p-8 soft-shadow text-left">
             <div className="flex justify-between items-start gap-4 border-b border-border pb-4">
               <div>
                 <p className="text-muted text-sm mb-1">{L.sendGiftLabel}</p>
@@ -1112,7 +1150,7 @@ function Gift({ cfg }: { cfg: Cfg }) {
           </div>
         )}
 
-        <div className="mt-10 text-left" data-reveal>
+        <div className="mt-10 text-left" data-reveal data-entrance>
           <div className="text-center mb-6">
             <span className="kicker block">{L.giftFormTitle}</span>
             <Ornament className="w-28 mx-auto mt-4" />
@@ -1184,10 +1222,10 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
+    <section data-section className="py-24 px-4 bg-sand/60 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="rsvp" />
       <div className="max-w-xl mx-auto relative z-10">
-        <div className="text-center mb-12" data-reveal>
+        <div className="text-center mb-12" data-reveal data-entrance>
           <span className="kicker block mb-4">{L.rsvpSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{cfg.rsvp.heading}</span></span>
@@ -1197,7 +1235,7 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
         </div>
 
         {status === "sent" ? (
-          <div data-reveal className="soft-card p-12 text-center soft-shadow-lg">
+          <div data-reveal data-entrance className="soft-card p-12 text-center soft-shadow-lg">
             <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/15 flex items-center justify-center">
               <svg className="w-7 h-7 text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1210,7 +1248,7 @@ function Rsvp({ cfg }: { cfg: Cfg }) {
             </button>
           </div>
         ) : (
-          <form onSubmit={submit} data-reveal className="space-y-5">
+          <form onSubmit={submit} data-reveal data-entrance className="space-y-5">
             <div>
               <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.nameRequired}</label>
               <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-border bg-surface px-4 py-3.5 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder={L.namePlaceholder} />
@@ -1271,10 +1309,10 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
   };
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section data-section className="py-24 px-4 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="guestbook" />
       <div className="max-w-xl mx-auto relative z-10">
-        <div className="text-center mb-12" data-reveal>
+        <div className="text-center mb-12" data-reveal data-entrance>
           <span className="kicker block mb-4">{L.guestbookSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
             <span className="line"><span className="line-inner">{cfg.guestbook.heading}</span></span>
@@ -1283,7 +1321,7 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
           <p className="serif-body text-muted mt-6 max-w-md mx-auto leading-relaxed">{cfg.guestbook.intro}</p>
         </div>
 
-        <form onSubmit={submit} data-reveal className="soft-card p-6 soft-shadow space-y-4">
+        <form onSubmit={submit} data-reveal data-entrance className="soft-card p-6 soft-shadow space-y-4">
           <div>
             <label className="block text-xs uppercase tracking-widest text-muted mb-2">{L.guestbookName}</label>
             <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full border border-border bg-bg px-4 py-3 text-fg rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder={L.namePlaceholder} />
@@ -1297,7 +1335,7 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
           </button>
         </form>
 
-        <div className="mt-8 space-y-3" data-reveal>
+        <div className="mt-8 space-y-3" data-reveal data-entrance>
           {list.map((g, i) => (
             <div key={i} className="soft-card p-5 soft-shadow flex gap-4 items-start">
               <div className="w-11 h-11 shrink-0 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center text-primary-light font-medium">
@@ -1319,9 +1357,9 @@ function GuestBook({ cfg }: { cfg: Cfg }) {
 function Closing({ cfg }: { cfg: Cfg }) {
   const L = cfg.labels;
   return (
-    <section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
+    <section data-section className="py-24 px-4 bg-sand/60 text-center relative overflow-hidden">
       <SectionVideo cfg={cfg} name="closing" />
-      <div className="max-w-xl mx-auto relative z-10" data-reveal>
+      <div className="max-w-xl mx-auto relative z-10" data-reveal data-entrance>
         <CornerOrnament className="absolute -top-10 -left-10 w-24" />
         <CornerOrnament className="absolute -bottom-10 -right-10 w-24 flip" />
         <span className="kicker block mb-4">{L.closingTitle}</span>
@@ -1349,27 +1387,35 @@ function Footer({ cfg }: { cfg: Cfg }) {
 /* ---------- Layout presets (dari scrape galeriundanganofficial) ---------- */
 const LAYOUT_PRESETS: { key: string; name: string; desc: string; sections: string[] }[] = [
   {
-    key: "klasik", name: "Klasik Lengkap", desc: "Semua section: couple, hitung mundur, timeline, acara, galeri, gift, rsvp, ucapan",
+    key: "galeri", name: "Galeri Bawah", desc: "Gift awal, galeri di paling bawah (pola galeriundangan)",
+    sections: ["couple", "savedate", "info", "gift", "rsvp", "guestbook", "closing", "gallery"],
+  },
+  {
+    key: "klasik", name: "Klasik Lengkap", desc: "Semua section urut standar",
     sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
   },
   {
-    key: "premium", name: "Premium Mewah", desc: "Live streaming + exclusive, tanpa inisial — ala GOLD/MACA/TERA",
-    sections: ["couple", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
+    key: "live", name: "Live Streaming", desc: "Live stream ditambah, tanpa timeline (ala ART JAWA/KYRA)",
+    sections: ["couple", "savedate", "info", "liveStream", "gift", "rsvp", "guestbook", "closing", "gallery"],
   },
   {
-    key: "modern", name: "Modern Ringkas", desc: "Tanpa timeline & guestbook — ala BATAL/FLOW, fokus inti",
-    sections: ["couple", "savedate", "info", "gallery", "gift", "rsvp", "closing"],
+    key: "premium", name: "Premium Lengkap", desc: "Live + timeline + galeri bawah (ala GOLD/MACA)",
+    sections: ["couple", "savedate", "timeline", "info", "liveStream", "gift", "rsvp", "guestbook", "closing", "gallery"],
   },
   {
-    key: "story", name: "Kisah Cinta", desc: "Timeline & inisial menonjol — ala JAWA MERAH/CHINESE",
-    sections: ["couple", "initial", "timeline", "savedate", "info", "gallery", "gift", "rsvp", "guestbook", "closing"],
+    key: "story", name: "Kisah Cinta", desc: "Timeline duluan, inisial menonjol (ala CHINESE/DONA)",
+    sections: ["couple", "initial", "timeline", "savedate", "info", "gift", "rsvp", "guestbook", "closing", "gallery"],
   },
   {
-    key: "compact", name: "Compact Inti", desc: "Cuma inti: couple, acara, galeri, rsvp, closing",
-    sections: ["couple", "savedate", "info", "gallery", "rsvp", "closing"],
+    key: "savedate", name: "Save Date Awal", desc: "Hitung mundur ditegaskan di awal (ala DESMA/TUMB)",
+    sections: ["couple", "savedate", "info", "liveStream", "gift", "rsvp", "gallery"],
   },
   {
-    key: "mewah", name: "Mewah Lengkap", desc: "Semua section + live stream + timeline + exclusive",
+    key: "minimal", name: "Minimal Ringkas", desc: "Tanpa timeline/live/ucapan (ala BALI/FLOW)",
+    sections: ["couple", "savedate", "info", "gift", "gallery"],
+  },
+  {
+    key: "mewah", name: "Mewah Full", desc: "Semua section lengkap + exclusive",
     sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
   },
 ];

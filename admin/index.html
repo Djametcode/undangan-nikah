@@ -1547,12 +1547,14 @@ function onThemeRange(el) {
 
 /* ---------- Layout presets (dari scrape galeriundanganofficial) ---------- */
 const LAYOUTS = [
-  { key: "klasik", name: "Klasik Lengkap", desc: "Semua section lengkap", sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
-  { key: "premium", name: "Premium Mewah", desc: "Live streaming + exclusive", sections: ["couple", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
-  { key: "modern", name: "Modern Ringkas", desc: "Tanpa timeline & guestbook", sections: ["couple", "savedate", "info", "gallery", "gift", "rsvp", "closing"] },
-  { key: "story", name: "Kisah Cinta", desc: "Timeline & inisial menonjol", sections: ["couple", "initial", "timeline", "savedate", "info", "gallery", "gift", "rsvp", "guestbook", "closing"] },
-  { key: "compact", name: "Compact Inti", desc: "Cuma inti penting", sections: ["couple", "savedate", "info", "gallery", "rsvp", "closing"] },
-  { key: "mewah", name: "Mewah Lengkap", desc: "Semua + live + exclusive", sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
+  { key: "galeri", name: "Galeri Bawah", desc: "Gift awal, galeri di paling bawah (pola galeriundangan)", sections: ["couple", "savedate", "info", "gift", "rsvp", "guestbook", "closing", "gallery"] },
+  { key: "klasik", name: "Klasik Lengkap", desc: "Semua section urut standar", sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
+  { key: "live", name: "Live Streaming", desc: "Live stream ditambah, tanpa timeline (ala ART JAWA/KYRA)", sections: ["couple", "savedate", "info", "liveStream", "gift", "rsvp", "guestbook", "closing", "gallery"] },
+  { key: "premium", name: "Premium Lengkap", desc: "Live + timeline + galeri bawah (ala GOLD/MACA)", sections: ["couple", "savedate", "timeline", "info", "liveStream", "gift", "rsvp", "guestbook", "closing", "gallery"] },
+  { key: "story", name: "Kisah Cinta", desc: "Timeline duluan, inisial menonjol (ala CHINESE/DONA)", sections: ["couple", "initial", "timeline", "savedate", "info", "gift", "rsvp", "guestbook", "closing", "gallery"] },
+  { key: "savedate", name: "Save Date Awal", desc: "Hitung mundur ditegaskan di awal (ala DESMA/TUMB)", sections: ["couple", "savedate", "info", "liveStream", "gift", "rsvp", "gallery"] },
+  { key: "minimal", name: "Minimal Ringkas", desc: "Tanpa timeline/live/ucapan (ala BALI/FLOW)", sections: ["couple", "savedate", "info", "gift", "gallery"] },
+  { key: "mewah", name: "Mewah Full", desc: "Semua section lengkap + exclusive", sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
 ];
 
 function applyLayout(key) {
@@ -1721,6 +1723,17 @@ function renderTheme() {
               </select>
             </div>
             <div>
+              <label class="label">Animasi muncul (entrance)</label>
+              <select id="theme.motion.textEffect" class="field" onchange="onThemeEdit('theme.motion.textEffect', this.value)">
+                <option value="fadeInUp">Naik halus (fade up)</option>
+                <option value="fadeInDown">Turun (fade down)</option>
+                <option value="fadeInLeft">Dari kiri</option>
+                <option value="fadeInRight">Dari kanan</option>
+                <option value="zoomIn">Zoom masuk</option>
+                <option value="bounceIn">Bounce</option>
+              </select>
+            </div>
+            <div>
               <label class="label">Layout galeri</label>
               <select id="theme.galleryLayout" class="field" onchange="onThemeEdit('theme.galleryLayout', this.value)">
                 <option value="carousel">Carousel (auto-play)</option>
@@ -1840,6 +1853,8 @@ function renderAll(activeTab) {
   if (pl) pl.value = getPath(cfg, "theme.motion.parallaxLevel") || "medium";
   const vc = $("theme.motion.videoCoverMode");
   if (vc) vc.value = getPath(cfg, "theme.motion.videoCoverMode") || "cover";
+  const te = $("theme.motion.textEffect");
+  if (te) te.value = getPath(cfg, "theme.motion.textEffect") || "fadeInUp";
   const fs = $("theme.fontScript");
   if (fs) fs.value = getPath(cfg, "theme.fontScript") || "Great Vibes, cursive";
   const fse = $("theme.fontSerif");
@@ -1979,6 +1994,8 @@ async function saveAll() {
     if (pl) setPath(cfg, "theme.motion.parallaxLevel", pl.value);
     const vc = $("theme.motion.videoCoverMode");
     if (vc) setPath(cfg, "theme.motion.videoCoverMode", vc.value);
+    const te = $("theme.motion.textEffect");
+    if (te) setPath(cfg, "theme.motion.textEffect", te.value);
     const fs = $("theme.fontScript");
     if (fs) setPath(cfg, "theme.fontScript", fs.value);
     const fse = $("theme.fontSerif");

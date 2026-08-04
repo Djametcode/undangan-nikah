@@ -74,7 +74,7 @@
     "text": "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu."
   },
   "media": {
-    "video": "/uploads/vendor/videos/Motion-Garden.mp4",
+    "video": "/uploads/vendor/videos/art-chinese-1.mp4",
     "videoEnabled": true,
     "music": "/uploads/1785731147295-test-music.mp3",
     "musicEnabled": false
@@ -112,7 +112,7 @@
     "motion": {
       "parallaxLevel": "medium",
       "sectionReveal": "fade-up",
-      "textEffect": "none",
+      "textEffect": "fadeInUp",
       "videoCoverMode": "cover",
       "heroZoom": true,
       "floatElements": true
