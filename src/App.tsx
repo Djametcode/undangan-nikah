@@ -707,11 +707,19 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
 
 /* ---------- Couple ---------- */
 function Couple({ cfg }: { cfg: Cfg }) {
-  const { couple, photos, quote, labels } = cfg;
+  const { couple, photos, quote, salam, labels } = cfg;
   return (
     <section data-section className="py-24 px-4 relative overflow-hidden">
       <SectionVideo cfg={cfg} name="couple" />
       <div className="max-w-4xl mx-auto relative z-10">
+        {/* Salam pembuka */}
+        <div className="text-center mb-14" data-reveal data-entrance>
+          <p className="salam-arabic text-4xl md:text-5xl text-primary mb-6 leading-relaxed" style={{ fontFamily: "Amiri, 'Times New Roman', serif" }}>{salam.arabic}</p>
+          <p className="serif-body text-xl md:text-2xl text-fg font-medium">{salam.text}</p>
+          <p className="mt-3 serif-body text-muted leading-relaxed max-w-2xl mx-auto">{salam.body}</p>
+          <Ornament className="w-32 mx-auto mt-6" />
+        </div>
+
         <div className="text-center mb-16" data-reveal data-entrance>
           <span className="kicker block mb-4">{labels.coupleSection}</span>
           <h2 data-line-reveal className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>
