@@ -19,6 +19,30 @@
   .field { background: #fffbeb; border: 1px solid #e7d8d3; border-radius: 10px; padding: 10px 14px; width: 100%; font-size: 14px; outline: none; transition: border-color .15s; }
   .field:focus { border-color: #9a3412; box-shadow: 0 0 0 3px rgba(154,52,18,.12); }
   .label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #64748b; margin-bottom: 6px; }
+  /* Theme Studio */
+  .ts-layout { display: flex; gap: 20px; align-items: flex-start; }
+  .ts-form { flex: 1 1 0; min-width: 0; }
+  .ts-preview { flex: 0 0 380px; position: sticky; top: 80px; }
+  .ts-preview-frame { width: 100%; height: calc(100vh - 220px); min-height: 480px; border: 1px solid #e7d8d3; border-radius: 16px; background: #fff; box-shadow: 0 8px 30px rgba(154,52,18,.08); }
+  .ts-preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; background: #fff; border: 1px solid #e7d8d3; border-bottom: none; border-radius: 16px 16px 0 0; }
+  .ts-preview-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .ts-preview-dot.ok { background: #22c55e; }
+  .ts-preview-dot.loading { background: #f59e0b; }
+  .swatch-lg { width: 100%; height: 44px; border-radius: 10px; border: 1px solid rgba(0,0,0,.08); cursor: pointer; position: relative; overflow: hidden; }
+  .swatch-lg input[type=color] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  .search-box { width: 100%; background: #fffbeb; border: 1px solid #e7d8d3; border-radius: 10px; padding: 10px 14px; font-size: 13px; outline: none; }
+  .search-box:focus { border-color: #9a3412; box-shadow: 0 0 0 3px rgba(154,52,18,.12); }
+  .preset-card { position: relative; text-align: left; border: 1px solid #e7d8d3; border-radius: 12px; padding: 8px; background: #fff; cursor: pointer; transition: all .15s; }
+  .preset-card:hover { border-color: #9a3412; box-shadow: 0 4px 14px rgba(154,52,18,.12); }
+  .preset-card.active { border: 2px solid #9a3412; }
+  .preset-card.active::after { content: '✓'; position: absolute; top: 6px; right: 8px; background: #9a3412; color: #fffbeb; width: 18px; height: 18px; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+  .ts-section-title { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+  .ts-section-title .chev { transition: transform .2s; }
+  .ts-section-title.collapsed .chev { transform: rotate(-90deg); }
+  .ts-collapsible { overflow: hidden; transition: max-height .25s ease; }
+  .sticky-save { position: sticky; bottom: 16px; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #fff; border: 1px solid #e7d8d3; border-radius: 14px; padding: 10px 16px; box-shadow: 0 8px 30px rgba(0,0,0,.1); }
+  .save-status { font-size: 12px; color: #64748b; display: flex; align-items: center; gap: 6px; }
+  @media (max-width: 1024px) { .ts-layout { flex-direction: column; } .ts-preview { flex: none; width: 100%; position: static; } .ts-preview-frame { height: 60vh; } }
 </style>
 </head>
 <body class="min-h-screen">
@@ -127,17 +151,18 @@ function F(name, label, textarea) {
   if (textarea) {
     return `<label class="label">${label}</label><textarea data-path="${name}" class="field mb-3" rows="2">${esc(val)}</textarea>`;
   }
-  return `<label class="label">${label}</label><input data-path="${name}" value="${esc(val)}" class="field mb-3" />`;
+  const isTheme = name.startsWith("theme.");
+  return `<label class="label">${label}</label><input data-path="${name}" value="${esc(val)}" class="field mb-3" ${isTheme ? `oninput="onThemeField(this)"` : ""} />`;
 }
 
 function C(name, label) {
   const val = getPath(cfg, name) ?? "#000000";
-  return `<div class="mb-3" data-color-group="${name}">
+  return `<div class="mb-2" data-color-group="${name}">
     <label class="label">${label}</label>
-    <div class="flex items-center gap-2">
-      <input type="color" data-path="${name}" value="${esc(val)}" class="w-10 h-10 rounded-lg border border-[#e7d8d3] cursor-pointer color-picker" oninput="syncColor(this)" />
-      <input data-path="${name}" value="${esc(val)}" class="field flex-1 color-text" oninput="syncColor(this)" />
+    <div class="swatch-lg" style="background:${esc(val)}">
+      <input type="color" data-path="${name}" value="${esc(val)}" class="color-picker" oninput="syncColor(this)" title="Klik untuk pilih warna" />
     </div>
+    <input data-path="${name}" value="${esc(val)}" class="field color-text mt-1.5 !py-1.5 !text-xs" oninput="syncColor(this)" />
   </div>`;
 }
 
@@ -159,10 +184,12 @@ function syncColor(el) {
       setPath(cfg, el.dataset.path, v);
     }
   }
+  // live preview refresh (theme tab)
+  if ($("tsPreview")) schedulePreview();
 }
 
 function T(name, label) {
-  return `<label class="flex items-center gap-2 py-2 cursor-pointer">
+  return `<label class="flex items-center gap-2 py-1.5 cursor-pointer" onclick="setTimeout(()=>{ if($('tsPreview')) schedulePreview(); },50)">
     <input type="checkbox" data-path="${name}" class="w-4 h-4 accent-[#9a3412]" /> ${label}
   </label>`;
 }
@@ -1459,162 +1486,259 @@ function applyPreset(name) {
   }
   renderAll("tab-theme");
   toast("Preset '" + p.name + "' diterapkan. Klik Simpan & Deploy untuk menyimpan.");
+  // renderAll() rebuild iframe (src reset ke base) → refresh preview sekali biar keliatan tema baru
+  refreshPreview();
+}
+
+/* ---------- Theme Studio helpers ---------- */
+let tsPreviewTimer = null;
+function schedulePreview() {
+  const dot = $("tsLiveDot");
+  if (dot) { dot.className = "ts-preview-dot loading"; }
+  const st = $("saveStatus");
+  if (st) st.innerHTML = '<span class="ts-preview-dot loading"></span> Memuat preview...';
+  clearTimeout(tsPreviewTimer);
+  tsPreviewTimer = setTimeout(() => {
+    refreshPreview();
+    const st2 = $("saveStatus");
+    if (st2) st2.innerHTML = '<span class="ts-preview-dot ok"></span> Perubahan otomatis tersimpan';
+  }, 800);
+}
+function refreshPreview() {
+  const f = $("tsPreview");
+  if (!f) return;
+  f.src = "/?to=Tamu+Preview&t=" + Date.now();
+  const dot = $("tsLiveDot");
+  if (dot) dot.className = "ts-preview-dot ok";
+}
+function filterPresets(q) {
+  const s = (q || "").toLowerCase().trim();
+  document.querySelectorAll("#presetGrid .preset-card").forEach((card) => {
+    const name = (card.getAttribute("data-name") || card.innerText).toLowerCase();
+    card.style.display = !s || name.includes(s) ? "" : "none";
+  });
+}
+function toggleTs(id) {
+  const el = $(id);
+  if (!el) return;
+  const title = el.parentElement.querySelector(".ts-section-title");
+  if (el.style.maxHeight && el.style.maxHeight !== "0px") {
+    el.style.maxHeight = "0px";
+    if (title) title.classList.add("collapsed");
+  } else {
+    el.style.maxHeight = "2000px";
+    if (title) title.classList.remove("collapsed");
+  }
+}
+function onThemeEdit(path, val) {
+  setPath(cfg, path, val);
+  schedulePreview();
+}
+function onThemeField(el) {
+  setPath(cfg, el.dataset.path, el.value);
+  schedulePreview();
+}
+function onThemeRange(el) {
+  setPath(cfg, el.dataset.path, el.value);
+  const v = $((el.dataset.path === "theme.videoOpacity") ? "videoOpacityVal" : "bgOpacityVal");
+  if (v) v.textContent = "Nilai: " + el.value + "%";
+  schedulePreview();
 }
 
 function renderTheme() {
-  return `<div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-1">Tema Preset</h2>
-    <p class="text-xs text-slate-500 mb-4">Klik satu preset → semua warna, font, radius &amp; animasi ke-isi otomatis. Bisa diedit manual dulu, lalu <b>Simpan &amp; Deploy</b>.</p>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-      ${Object.entries(PRESETS).map(([key, p]) => `
-        <button onclick="applyPreset('${key}')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer" title="${p.desc || ''}">
-          <div class="w-full h-10 rounded-lg mb-2" style="background:${p.swatch || 'linear-gradient(135deg,' + p.primary + ',' + p.bg + ')'}"></div>
-          <p class="text-xs font-semibold text-slate-700">${p.name}</p>
-          <p class="text-[10px] text-slate-400">${p.desc || ''}</p>
-        </button>`).join('')}
+  // active preset detection: compare theme colors
+  const activeKey = (() => {
+    for (const [k, p] of Object.entries(PRESETS)) {
+      if (p.primary === cfg.theme.primary && p.bg === cfg.theme.bg) return k;
+    }
+    return null;
+  })();
+  return `<div class="ts-layout">
+    <div class="ts-form">
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-1">🎨 Pilih Tema</h2>
+        <p class="text-xs text-slate-500 mb-4">Klik satu tema → warna, font &amp; animasi ke-isi otomatis. Preview di kanan update langsung.</p>
+        <input id="presetSearch" class="search-box mb-3" placeholder="Cari tema... (contoh: jawa, gold, minang)" oninput="filterPresets(this.value)" />
+        <div id="presetGrid" class="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-[340px] overflow-y-auto pr-1">
+          ${Object.entries(PRESETS).map(([key, p]) => `
+            <button onclick="applyPreset('${key}')" class="preset-card ${key === activeKey ? 'active' : ''}" data-name="${p.name}" title="${p.desc || ''}">
+              <div class="w-full h-8 rounded-lg mb-1.5" style="background:${p.swatch || 'linear-gradient(135deg,' + p.primary + ',' + p.bg + ')'}"></div>
+              <p class="text-[11px] font-semibold text-slate-700 truncate">${p.name}</p>
+            </button>`).join('')}
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <div class="ts-section-title mb-3" onclick="toggleTs('sec-colors')">
+          <svg class="chev w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          <h2 class="terra font-semibold">Warna</h2>
+        </div>
+        <div id="sec-colors" class="ts-collapsible">
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            ${C("theme.primary", "Aksen utama (tombol)")}
+            ${C("theme.primaryDark", "Aksen gelap (hover)")}
+            ${C("theme.primaryLight", "Aksen terang (heading)")}
+            ${C("theme.accent", "Aksen kedua")}
+            ${C("theme.bg", "Background halaman")}
+            ${C("theme.surface", "Warna kartu")}
+            ${C("theme.fg", "Warna teks utama")}
+            ${C("theme.muted", "Warna teks redup")}
+            ${C("theme.border", "Warna garis/border")}
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <div class="ts-section-title mb-3" onclick="toggleTs('sec-font')">
+          <svg class="chev w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          <h2 class="terra font-semibold">Font &amp; Ukuran</h2>
+        </div>
+        <div id="sec-font" class="ts-collapsible">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="label">Font judul (script)</label>
+              <select id="theme.fontScript" class="field" onchange="onThemeEdit('theme.fontScript', this.value)">
+                <option value="Great Vibes, cursive">Great Vibes</option>
+                <option value="Pinyon Script, cursive">Pinyon Script</option>
+                <option value="Dancing Script, cursive">Dancing Script</option>
+                <option value="Parisienne, cursive">Parisienne</option>
+                <option value="Sacramento, cursive">Sacramento</option>
+                <option value="Allura, cursive">Allura</option>
+                <option value="Tangerine, cursive">Tangerine</option>
+                <option value="Brush Script MT, cursive">Brush Script</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Font body (serif)</label>
+              <select id="theme.fontSerif" class="field" onchange="onThemeEdit('theme.fontSerif', this.value)">
+                <option value="Cormorant Infant, Georgia, serif">Cormorant Infant</option>
+                <option value="Cormorant, Georgia, serif">Cormorant</option>
+                <option value="Playfair Display, Georgia, serif">Playfair Display</option>
+                <option value="Lora, Georgia, serif">Lora</option>
+                <option value="EB Garamond, Georgia, serif">EB Garamond</option>
+                <option value="Prata, Georgia, serif">Prata</option>
+                <option value="Libre Baskerville, Georgia, serif">Libre Baskerville</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Font sans (umum)</label>
+              <select id="theme.fontSans" class="field" onchange="onThemeEdit('theme.fontSans', this.value)">
+                <option value="Outfit, system-ui, sans-serif">Outfit</option>
+                <option value="Poppins, system-ui, sans-serif">Poppins</option>
+                <option value="Inter, system-ui, sans-serif">Inter</option>
+                <option value="Montserrat, system-ui, sans-serif">Montserrat</option>
+                <option value="Lato, system-ui, sans-serif">Lato</option>
+                <option value="Nunito, system-ui, sans-serif">Nunito</option>
+                <option value="Quicksand, system-ui, sans-serif">Quicksand</option>
+              </select>
+            </div>
+            ${F("theme.scriptSize", "Ukuran nama cover (cth: text-6xl md:text-7xl)")}
+            ${F("theme.serifSize", "Ukuran teks tamu (cth: text-2xl md:text-3xl)")}
+            ${F("theme.headingSize", "Ukuran heading section (cth: text-5xl)")}
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <div class="ts-section-title mb-3" onclick="toggleTs('sec-shape')">
+          <svg class="chev w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          <h2 class="terra font-semibold">Bentuk &amp; Animasi</h2>
+        </div>
+        <div id="sec-shape" class="ts-collapsible">
+          <div class="grid md:grid-cols-2 gap-4">
+            ${F("theme.radiusCard", "Radius kartu (px, cth: 16px)")}
+            ${F("theme.radiusBtn", "Radius tombol (px, cth: 999px)")}
+            <div>
+              <label class="label">Arah gerakan teks</label>
+              <select id="theme.revealAnim" class="field" onchange="onThemeEdit('theme.revealAnim', this.value)">
+                <option value="fadeUp">Naik (fade up)</option>
+                <option value="fadeLeft">Dari kiri (fade left)</option>
+                <option value="fadeRight">Dari kanan (fade right)</option>
+                <option value="zoomIn">Zoom in</option>
+              </select>
+            </div>
+            ${F("theme.revealBaseDelay", "Delay awal (ms, cth: 3000)")}
+            ${F("theme.revealStagger", "Jarak antar elemen (ms, cth: 120)")}
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <div class="ts-section-title mb-3" onclick="toggleTs('sec-motion')">
+          <svg class="chev w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          <h2 class="terra font-semibold">Motion &amp; Efek</h2>
+        </div>
+        <div id="sec-motion" class="ts-collapsible">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="label">Level parallax</label>
+              <select id="theme.motion.parallaxLevel" class="field" onchange="onThemeEdit('theme.motion.parallaxLevel', this.value)">
+                <option value="low">Rendah (halus)</option>
+                <option value="medium">Sedang</option>
+                <option value="high">Kuat (dramatis)</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Mode video cover</label>
+              <select id="theme.motion.videoCoverMode" class="field" onchange="onThemeEdit('theme.motion.videoCoverMode', this.value)">
+                <option value="cover">Cover (isi layar)</option>
+                <option value="contain">Contain (utuh)</option>
+                <option value="parallax">Parallax (gerak saat scroll)</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Layout galeri</label>
+              <select id="theme.galleryLayout" class="field" onchange="onThemeEdit('theme.galleryLayout', this.value)">
+                <option value="carousel">Carousel (auto-play)</option>
+                <option value="justified">Justified grid (seperti Melody)</option>
+              </select>
+            </div>
+            ${T("theme.motion.heroZoom", "Zoom pelan pada foto/video cover")}
+            ${T("theme.motion.floatElements", "Ornamen mengambang (float)")}
+            ${T("theme.petalsEnabled", "Kelopak jatuh (petals)")}
+            ${T("theme.blobsEnabled", "Glow blur background (blobs)")}
+            ${T("theme.sheenEnabled", "Efek kilau tombol (sheen)")}
+            ${T("theme.videoCover", "Video sebagai cover background")}
+            ${T("theme.glassEnabled", "Mode Liquid Glass (kartu transparan blur)")}
+          </div>
+        </div>
+      </div>
+
+      <div class="card p-6 mb-5">
+        <div class="ts-section-title mb-3" onclick="toggleTs('sec-opacity')">
+          <svg class="chev w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          <h2 class="terra font-semibold">Opacity Background</h2>
+        </div>
+        <div id="sec-opacity" class="ts-collapsible">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="label">Opacity video background (%)</label>
+              <input type="range" data-path="theme.videoOpacity" min="10" max="100" step="5" class="w-full accent-[#9a3412]" oninput="onThemeRange(this)" />
+              <span id="videoOpacityVal" class="text-xs text-slate-500"></span>
+            </div>
+            <div>
+              <label class="label">Opacity overlay background (%)</label>
+              <input type="range" data-path="theme.bgOpacity" min="0" max="100" step="5" class="w-full accent-[#9a3412]" oninput="onThemeRange(this)" />
+              <span id="bgOpacityVal" class="text-xs text-slate-500"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sticky-save">
+        <span id="saveStatus" class="save-status"><span class="ts-preview-dot ok"></span> Perubahan otomatis tersimpan</span>
+        <button onclick="saveAll()" class="bg-terra text-[#fffbeb] font-semibold px-5 py-2.5 rounded-xl hover:opacity-90 transition cursor-pointer active:scale-[0.98]">Simpan &amp; Deploy</button>
+      </div>
     </div>
-  </div>
-  <div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-1">Warna</h2>
-    <p class="text-xs text-slate-500 mb-4">Pilih warna tema. Semua section ikut otomatis.</p>
-    <div class="grid md:grid-cols-3 gap-4">
-      ${C("theme.primary", "Primary (aksen utama)")}
-      ${C("theme.primaryDark", "Primary dark (hover)")}
-      ${C("theme.primaryLight", "Primary light (heading)")}
-      ${C("theme.accent", "Accent (secondary)")}
-      ${C("theme.bg", "Background")}
-      ${C("theme.surface", "Surface (card)")}
-      ${C("theme.fg", "Text utama")}
-      ${C("theme.muted", "Text redup")}
-      ${C("theme.border", "Border")}
-    </div>
-  </div>
-  <div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-4">Shape</h2>
-    <div class="grid md:grid-cols-2 gap-4">
-      ${F("theme.radiusCard", "Radius kartu (px, cth: 16px)")}
-      ${F("theme.radiusBtn", "Radius tombol (px, cth: 999px)")}
-    </div>
-  </div>
-  <div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-4">Font &amp; Ukuran Teks</h2>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div>
-        <label class="label">Font judul (script)</label>
-        <select id="theme.fontScript" class="field">
-          <option value="Great Vibes, cursive">Great Vibes</option>
-          <option value="Pinyon Script, cursive">Pinyon Script</option>
-          <option value="Dancing Script, cursive">Dancing Script</option>
-          <option value="Parisienne, cursive">Parisienne</option>
-          <option value="Sacramento, cursive">Sacramento</option>
-          <option value="Allura, cursive">Allura</option>
-          <option value="Tangerine, cursive">Tangerine</option>
-          <option value="Brush Script MT, cursive">Brush Script</option>
-        </select>
+
+    <div class="ts-preview">
+      <div class="ts-preview-bar">
+        <span class="flex items-center gap-2 text-xs text-slate-600 font-medium">
+          <span id="tsLiveDot" class="ts-preview-dot ok"></span> Live Preview
+        </span>
+        <button onclick="refreshPreview()" class="text-[11px] border border-terra/40 text-terra px-2.5 py-1 rounded-lg hover:bg-terra/10 transition cursor-pointer">↻ Muat Ulang</button>
       </div>
-      <div>
-        <label class="label">Font body (serif)</label>
-        <select id="theme.fontSerif" class="field">
-          <option value="Cormorant Infant, Georgia, serif">Cormorant Infant</option>
-          <option value="Cormorant, Georgia, serif">Cormorant</option>
-          <option value="Playfair Display, Georgia, serif">Playfair Display</option>
-          <option value="Lora, Georgia, serif">Lora</option>
-          <option value="EB Garamond, Georgia, serif">EB Garamond</option>
-          <option value="Prata, Georgia, serif">Prata</option>
-          <option value="Libre Baskerville, Georgia, serif">Libre Baskerville</option>
-        </select>
-      </div>
-      <div>
-        <label class="label">Font sans (umum)</label>
-        <select id="theme.fontSans" class="field">
-          <option value="Outfit, system-ui, sans-serif">Outfit</option>
-          <option value="Poppins, system-ui, sans-serif">Poppins</option>
-          <option value="Inter, system-ui, sans-serif">Inter</option>
-          <option value="Montserrat, system-ui, sans-serif">Montserrat</option>
-          <option value="Lato, system-ui, sans-serif">Lato</option>
-          <option value="Nunito, system-ui, sans-serif">Nunito</option>
-          <option value="Quicksand, system-ui, sans-serif">Quicksand</option>
-        </select>
-      </div>
-      ${F("theme.scriptSize", "Ukuran nama cover (cth: text-6xl md:text-7xl)")}
-      ${F("theme.serifSize", "Ukuran teks tamu (cth: text-2xl md:text-3xl)")}
-      ${F("theme.headingSize", "Ukuran heading section (cth: text-5xl)")}
-    </div>
-  </div>
-  <div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-4">Animasi Teks</h2>
-    <div class="grid md:grid-cols-3 gap-4">
-      <div>
-        <label class="label">Arah gerakan teks</label>
-        <select id="theme.revealAnim" class="field">
-          <option value="fadeUp">Naik (fade up)</option>
-          <option value="fadeLeft">Dari kiri (fade left)</option>
-          <option value="fadeRight">Dari kanan (fade right)</option>
-          <option value="zoomIn">Zoom in</option>
-        </select>
-      </div>
-      ${F("theme.revealBaseDelay", "Delay awal (ms, cth: 3000)")}
-      ${F("theme.revealStagger", "Jarak antar elemen (ms, cth: 120)")}
-    </div>
-  </div>
-  <div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-4">Motion (Parallax &amp; Transisi)</h2>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div>
-        <label class="label">Level parallax</label>
-        <select id="theme.motion.parallaxLevel" class="field">
-          <option value="low">Rendah (halus)</option>
-          <option value="medium">Sedang</option>
-          <option value="high">Kuat (dramatis)</option>
-        </select>
-      </div>
-      <div>
-        <label class="label">Mode video cover</label>
-        <select id="theme.motion.videoCoverMode" class="field">
-          <option value="cover">Cover (isi layar)</option>
-          <option value="contain">Contain (utuh)</option>
-          <option value="parallax">Parallax (gerak saat scroll)</option>
-        </select>
-      </div>
-      ${T("theme.motion.heroZoom", "Zoom pelan pada foto/video cover")}
-      ${T("theme.motion.floatElements", "Ornamen mengambang (float)")}
-    </div>
-  </div>
-  <div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-4">Opacity Background</h2>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div>
-        <label class="label">Opacity video background (%)</label>
-        <input type="range" data-path="theme.videoOpacity" min="10" max="100" step="5" class="w-full accent-[#9a3412]" />
-        <span id="videoOpacityVal" class="text-xs text-slate-500"></span>
-      </div>
-      <div>
-        <label class="label">Opacity overlay background (%)</label>
-        <input type="range" data-path="theme.bgOpacity" min="0" max="100" step="5" class="w-full accent-[#9a3412]" />
-        <span id="bgOpacityVal" class="text-xs text-slate-500"></span>
-      </div>
-    </div>
-  </div>
-  <div class="card p-6 mb-5">
-    <h2 class="terra font-semibold mb-4">Galeri</h2>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div>
-        <label class="label">Layout galeri</label>
-        <select id="theme.galleryLayout" class="field">
-          <option value="carousel">Carousel (auto-play)</option>
-          <option value="justified">Justified grid (seperti Melody)</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="card p-6">
-    <h2 class="terra font-semibold mb-4">Efek Visual</h2>
-    <div class="grid md:grid-cols-2 gap-3">
-      ${T("theme.petalsEnabled", "Kelopak jatuh (petals)")}
-      ${T("theme.blobsEnabled", "Glow blur background (blobs)")}
-      ${T("theme.sheenEnabled", "Efek kilau tombol (sheen)")}
-      ${T("theme.videoCover", "Video sebagai cover background")}
-      ${T("theme.glassEnabled", "Mode Liquid Glass (kartu transparan blur)")}
+      <iframe id="tsPreview" class="ts-preview-frame" src="/?to=Tamu+Preview" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
   </div>`;
 }
@@ -1708,6 +1832,13 @@ function renderAll(activeTab) {
   renderFileList();
   $("videoInfo").textContent = getPath(cfg, "media.video") || "Belum ada video";
   $("musicInfo").textContent = getPath(cfg, "media.music") || "Belum ada musik";
+  // Theme Studio: init collapsible sections (default expanded, Warna collapsed)
+  if ($("sec-colors")) {
+    ["sec-colors", "sec-font", "sec-shape", "sec-motion", "sec-opacity"].forEach((id) => {
+      const el = $(id);
+      if (el) { el.style.maxHeight = el.scrollHeight + "px"; }
+    });
+  }
 }
 
 /* ---------- Gallery ---------- */
