@@ -1040,15 +1040,15 @@ function TimelineSection({ cfg }: { cfg: Cfg }) {
           {/* garis tengah desktop / kiri mobile */}
           <div className="absolute md:left-1/2 left-5 md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/10 via-primary/40 to-primary/10" />
           {timeline.items.map((item, i) => (
-            <div key={i} className={`relative flex md:items-start mb-14 md:mb-16 pl-14 md:pl-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+            <div key={i} className={`relative flex flex-col md:flex-row md:items-start mb-14 md:mb-16 pl-14 md:pl-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
               {/* dot */}
               <div className="absolute left-5 -translate-x-1/2 top-2 md:top-6 w-5 h-5 rounded-full bg-primary border-4 border-bg shadow-lg shadow-primary/40 z-10" />
               {/* nomor urut */}
               <div className="hidden md:block md:w-1/2" />
-              <div className={`md:w-1/2 md:px-10 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
-                <div className={`group relative overflow-hidden rounded-card border border-primary/20 bg-surface/90 backdrop-blur-sm soft-shadow-lg hover:soft-shadow-xl transition-all duration-300 hover:-translate-y-1 p-7 md:p-8 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+              <div className={`md:w-1/2 w-full md:px-10 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+                <div className={`group relative overflow-hidden rounded-card border border-primary/20 bg-surface/90 backdrop-blur-sm soft-shadow-lg hover:soft-shadow-xl transition-all duration-300 hover:-translate-y-1 p-7 md:p-8 w-full min-h-[240px] md:min-h-[240px] flex flex-col justify-center ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
                   {/* nomor besar di pojok */}
-                  <span className={`absolute ${i % 2 === 0 ? "left-4" : "right-4"} top-3 script-display text-5xl text-primary/10 leading-none select-none`}>
+                  <span className="absolute left-4 top-3 script-display text-5xl text-primary/10 leading-none select-none">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   {/* date badge */}
