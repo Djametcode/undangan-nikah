@@ -156,6 +156,34 @@ function UploadField(name, label) {
   </div>`;
 }
 
+/* ---------- Vendor assets (34 video hiasan + 50 musik dari 92 tema) ---------- */
+const VENDOR_VIDEOS = ["ART-KYRA-1.mp4", "ART-SOFT-1.mp4", "BATAK-REV-1.mp4", "CASTLE-2-1.mp4", "DEVOLA-1.mp4", "JAWA-COKLAT-3-1.mp4", "JAWA-MERAH-KOMPRES.mp4", "LOVELY-1.mp4", "Motion-Banjar-Compress.mp4", "Motion-Garden.mp4", "Motion-Jawa-Biru.mp4", "Motion-Melayu-Compress.mp4", "Motion-Palembang-Compress.mp4", "Motion-Pink-Palace.mp4", "REV-MELODY.mp4", "SILVA-REAL-KOMPRES.mp4", "SUNDA-REV-1.mp4", "Video-Final-Minang-NO-WM.mp4", "WEB-JAWA-MAROON-1.mp4", "art-chinese-1.mp4", "asli-pangkas.mp4", "bali-revisi.mp4", "bugis-maroon-1.mp4", "cina-rev.mp4", "flow-1.mp4", "jawa-biru-revisi-compressed-1.mp4", "jawa-coklat-revi-compressed.mp4", "minang-1.mp4", "minang-3-1.mp4", "palembang-2-1.mp4", "rev-aceh.mp4", "revisi-lampung.mp4", "sunda-2.mp4", "tema-3-motion-bNEu7Z.mp4"];
+const VENDOR_MUSIC = ["Ada-Untukmu-Tyok-Satrio.mp3", "Aladdin-A-Whole-New-World-Saxophone-Cover-Brendan-Mills-mp3cut.net_.mp3", "Ariana-Grande-Justin-Bieber-Stuck-with-U-Lyric-.mp3", "Azzam-Sham-Ai-Wahida-Selamat-Pengantin-Baru-Official-Music-Video-mp3cut.net_.mp3", "Because-You-Loved-Me-Celine-Dion.mp3", "Boyzone-Every-Day-I-Love-You.mp3", "Cinta-terakhir-ari-lasso.mp3", "Crush-크러쉬-Beautiful.mp3", "DBamboo-Musik-Batak-Horbo-Paung-Gondang-Batak-Uning-Uningan-mp3cut.net_.mp3", "Denny-Caknan-Feat-Bella-Bonita-SINARENGAN-reff.mp3", "Denny-Caknan-Sinarengan-Lirik-Feat-mp3cut.net_.mp3", "Everything-I-Do-Boyce-Avenue-ft-mp3cut.net_.mp3", "GENDING-SRIWIJAYA-INSTRUMENTAL-HIGH-QUALITY-AUDIO-LAGU-DAERAH-SUMATERA-SELATAN.mp3", "Goodness-of-God-Bethel-Music-violin-cover.mp3", "I-Think-They-Call-This-Love-Elliot-James-Reay-Saxophone-Cover-by-Dori-Wirawan.mp3", "I-Wanna-Grow-Old-With-You-Westlife-full.mp3", "Iqbal-Mahesa-Echa-Putri-FT-Cabiak-dindin-Badindin-Official-Music-Video-2c93GRM9dKU-mp3cut.net_.mp3", "Its-You-by-HENRY.mp3", "Jacob-Lee-I-Belong-to-You.mp3", "Jake-Miller-Lucky-Me-The-proposal.mp3", "James-Arthur-A-Thousand-Years-Christina-Perri-Cover.mp3", "KAMBANG-GOYANG-Ciptaan-Anang-Ardiansyah-Anna-Husna-Musik-Panting-Manis-Kasay-mp3cut.net_.mp3", "KUSUMA-WIJAYA-PAWESTRI-KATALOG-DEMO.mp3", "Kabagyan-Sadewok-Official-Music-Video-mp3cut.net-1.mp3", "Kumau-Dia-Andmesh-Kamaleng-lirik-lagu.mp3", "LAGU-PERNIKAHAN-KHAS-MINANG-URANG-MINANG-BARALEK-GADANG-LIVE-ORCHESTRA-SYMPHONY-ENTERTAINMENT-mp3cut.net_.mp3", "LESTARI-Orchestra-Version-mp3cut.net_.mp3", "MULA-MACENNING-CAPPA-MAKESSING-Cipt.-Abi-Rafdi-OFFICIAL-MUSIC-VIDEO.mp3", "Matthew-Ifield-I-Think-They-Call-This-Love-Cover.mp3", "Niken-Salindry-KUSUMA-WIJAYA-Kembar-Campursari-Official-Music-Video-mp3cut.net_.mp3", "Nyoman-Paul-Andi-Rianto-The-Way-You-Look-At-Me-Official-Music-Video-mp3cut.net_.mp3", "Nyoman-Paul-Andi-Rianto-The-Way-You-Look-At-Me-detik-24.mp3", "Only-You-Raya-Official-Lyrics-Video.mp3", "PENGANTEN-BAROE-HERMIYANJAS-FEAT-CUT-ZUHRA-Official-Video-Wedding-mp3cut.net_.mp3", "Perfect-Ed-Sheeran-Beyonce-Boyce-Avenue-acoustic-cover-on-Spotify-Apple.mp3", "Raim-Laode-Komang-Konten.mp3", "Ray-Barron-Cover-Sad-Version-Eenie-Meenie.mp3", "Rembulan-Ing-WengiArdia-Diwang-Video-Lirik-gamelan-jawa.mp3", "Stephen-Sanchez-I-Need-You-Most-Of-All-Lyric-Video.mp3", "Stephen-Sanchez-Until-I-Found-You-Cover-by-EdaOnur.mp3", "Teddy-Swims-Youre-Still-The-One-Shania-Twain-Cover.mp3", "The-Way-You-Look-At-Me-Christian-Bautista-PIANO.mp3", "TobaDream-Theme-Song-mp3cut.net_.mp3", "Urang-Minang-Baralek-Gadang-mp3cut.net_.mp3", "Westlife-I-Wanna-Grow-Old-with-You-reff.mp3", "You-Are-The-Reason-Calum-Scott-Cover-Alexandra-PoratLyric-Video.mp3", "Youre-Still-The-One-Shania-Twain-Boyce-Avenue-ft.-Connie-Talbot-acoustic-cover-Spotify-Apple.mp3", "Youre-Still-The-One-Shania-Twain.mp3", "ZAPIN-Tari-Lampung-VOC_-ASIH-ARUMBINANG-Lirik-Dan-Artinya-Lagu-Lampung-CIPT_-SYAIFUL-ANWAR-mp3cut.net_.mp3", "tema-new-Everything-I-Do-I-Do-It-For-You-Boyce-Avenue-ft-mp3cut.net_.mp3"];
+const VENDOR_SECTIONS = ["couple", "savedate", "info", "gallery", "gift", "rsvp", "guestbook", "closing"];
+
+function useVendorVideo(name) {
+  cfg.media = cfg.media || {};
+  cfg.media.video = "/uploads/vendor/videos/" + name;
+  cfg.media.videoEnabled = true;
+  renderAll("tab-media");
+  toast("Video cover: " + name + ". Klik Simpan & Deploy.");
+}
+function useVendorSectionVideo(name, section) {
+  cfg.sectionVideos = cfg.sectionVideos || {};
+  cfg.sectionVideos[section] = cfg.sectionVideos[section] || {};
+  cfg.sectionVideos[section].video = "/uploads/vendor/videos/" + name;
+  cfg.sectionVideos[section].enabled = true;
+  renderAll("tab-media");
+  toast("Video section " + section + ": " + name + ". Klik Simpan & Deploy.");
+}
+function useVendorMusic(name) {
+  cfg.media = cfg.media || {};
+  cfg.media.music = "/uploads/vendor/music/" + name;
+  cfg.media.musicEnabled = true;
+  renderAll("tab-media");
+  toast("Musik: " + name + ". Klik Simpan & Deploy.");
+}
+
 /* ---------- Panel renderers (pure JS, call F/C/T/UploadField) ---------- */
 function renderCouple() {
   return `<div class="grid md:grid-cols-2 gap-5">
@@ -243,6 +271,31 @@ function renderMedia() {
       <input type="file" id="upload-music" accept="audio/mp3,audio/ogg,audio/wav" class="hidden" />
       <button onclick="document.getElementById('upload-music').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Musik</button>
       <div id="musicInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
+    </div>
+  </div>
+  <div class="mt-5 card p-6">
+    <h2 class="terra font-semibold mb-2">Video Hiasan — Bundle 34 Tema</h2>
+    <p class="text-xs text-slate-500 mb-3">Video background asli dari 34 tema (sudah di-download). Klik <b>Cover</b> untuk pasang sebagai video cover, atau pilih section lalu <b>Set</b> untuk pasang di background section.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-80 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
+      ${VENDOR_VIDEOS.map(v => `
+        <div class="border border-[#e7d8d3] rounded-lg p-2 bg-[#fffbeb]">
+          <p class="text-[10px] text-slate-600 break-all mb-1">${v}</p>
+          <div class="flex gap-1">
+            <button onclick="useVendorVideo('${v}')" class="flex-1 text-[10px] bg-terra text-[#fffbeb] py-1 rounded cursor-pointer">Cover</button>
+            <select id="vs-${v}" class="text-[10px] border border-terra/40 rounded px-1 py-1 w-16">
+              ${VENDOR_SECTIONS.map(s => `<option value="${s}">${s}</option>`).join('')}
+            </select>
+            <button onclick="useVendorSectionVideo('${v}', document.getElementById('vs-${v}').value)" class="text-[10px] border border-terra/40 text-terra py-1 rounded cursor-pointer">Set</button>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>
+  <div class="mt-5 card p-6">
+    <h2 class="terra font-semibold mb-2">Musik Hiasan — Bundle 50 Lagu</h2>
+    <p class="text-xs text-slate-500 mb-3">Musik latar dari tema kompetitor. Klik untuk pasang sebagai musik undangan.</p>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
+      ${VENDOR_MUSIC.map(m => `
+        <button onclick="useVendorMusic('${m}')" class="text-left text-[10px] border border-[#e7d8d3] rounded-lg p-2 bg-[#fffbeb] hover:border-terra hover:bg-terra/5 transition cursor-pointer break-all">${m}</button>`).join('')}
     </div>
   </div>
   <div class="mt-5 card p-6">
@@ -431,65 +484,413 @@ function renderRsvp() {
 /* ---------- Theme Presets ---------- */
 const PRESETS = {
   soft: {
-    name: "Soft UI Evolution",
+    name: "Soft UI Evolution", swatch: "linear-gradient(135deg,#db2777,#a16207)", desc: "Pink + gold, terang", video: "",
     primary: "#db2777", primaryDark: "#be185d", primaryLight: "#f472b6", accent: "#a16207",
     bg: "#fdf2f8", surface: "#ffffff", fg: "#1e1b4b", muted: "#6b7280", border: "#f3d9e4", sand: "#fbeaf1",
     radiusCard: "20px", radiusBtn: "999px",
     fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
-    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true,
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
     scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
     revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
     motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
     videoOpacity: "55", bgOpacity: "25"
   },
   java: {
-    name: "ART JAWA COKLAT",
+    name: "ART JAWA COKLAT", swatch: "linear-gradient(135deg,#17100a,#c9a227)", desc: "Coklat gelap + emas", video: "jawa-coklat-revi-compressed.mp4",
     primary: "#9a3412", primaryDark: "#7c2d12", primaryLight: "#c2410c", accent: "#059669",
     bg: "#fffbeb", surface: "#ffffff", fg: "#0f172a", muted: "#6b7280", border: "#e7d8d3", sand: "#f7f0e3",
     radiusCard: "16px", radiusBtn: "999px",
     fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
-    revealAnim: "zoomIn", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true,
+    revealAnim: "zoomIn", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
     scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
     revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
     motion: { parallaxLevel: "high", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
     videoOpacity: "55", bgOpacity: "25"
   },
   terra: {
-    name: "Terracotta + Slate",
+    name: "Terracotta + Slate", swatch: "linear-gradient(135deg,#9a3412,#0f172a)", desc: "Earthy bohemian", video: "",
     primary: "#9a3412", primaryDark: "#7c2d12", primaryLight: "#c2410c", accent: "#0f172a",
     bg: "#fffbeb", surface: "#ffffff", fg: "#1e293b", muted: "#6b7280", border: "#e7d8d3", sand: "#f2e6e2",
     radiusCard: "16px", radiusBtn: "999px",
     fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
-    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: false, videoCover: false, sheenEnabled: true,
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: false, videoCover: false, sheenEnabled: true, glassEnabled: false,
     scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
     revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
     motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
     videoOpacity: "55", bgOpacity: "25"
   },
   sage: {
-    name: "Sage Serenity",
+    name: "Sage Serenity", swatch: "linear-gradient(135deg,#3d6b4f,#f6f4ee)", desc: "Botanical minimalis", video: "",
     primary: "#3d6b4f", primaryDark: "#2e5440", primaryLight: "#7ba384", accent: "#b08d57",
     bg: "#f6f4ee", surface: "#ffffff", fg: "#2a352c", muted: "#7c857a", border: "#dfe6da", sand: "#ecefe4",
     radiusCard: "20px", radiusBtn: "999px",
     fontScript: "Parisienne, cursive", fontSerif: "Cormorant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
-    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: false, videoCover: false, sheenEnabled: true,
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: false, videoCover: false, sheenEnabled: true, glassEnabled: false,
     scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
     revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
     motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
     videoOpacity: "55", bgOpacity: "25"
   },
   midnight: {
-    name: "Royal Midnight",
+    name: "Royal Midnight", swatch: "linear-gradient(135deg,#0d1626,#c9a227)", desc: "Navy + emas, mewah", video: "",
     primary: "#c9a227", primaryDark: "#a8871d", primaryLight: "#e0bd5e", accent: "#a8b8cf",
     bg: "#0d1626", surface: "#16233a", fg: "#f2ead8", muted: "#94a3b8", border: "#2c3e5c", sand: "#1b2a44",
     radiusCard: "24px", radiusBtn: "999px",
     fontScript: "Sacramento, cursive", fontSerif: "Prata, Georgia, serif", fontSans: "Inter, system-ui, sans-serif",
-    revealAnim: "fadeUp", petalsEnabled: false, blobsEnabled: true, videoCover: false, sheenEnabled: true,
+    revealAnim: "fadeUp", petalsEnabled: false, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
     scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
     revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
     motion: { parallaxLevel: "high", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
     videoOpacity: "70", bgOpacity: "25"
-  }
+  },
+  glass: {
+    name: "Liquid Glass", swatch: "linear-gradient(135deg,#ec4899,#a855f7,#0ea5e9)", desc: "Kartu blur transparan", video: "",
+    primary: "#ec4899", primaryDark: "#db2777", primaryLight: "#f9a8d4", accent: "#a855f7",
+    bg: "#fdf2f8", surface: "#ffffff", fg: "#4a1d3f", muted: "#8b6a85", border: "#f3d9e4", sand: "#f7ecf3",
+    radiusCard: "24px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: true,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  jawa2: {
+    name: "ART JAWA COKLAT 2", swatch: "linear-gradient(135deg,#5b2d16,#c9a227)", desc: "Coklat tua + emas, adat Jawa", video: "jawa-coklat-revi-compressed.mp4",
+    primary: "#8a4a1f", primaryDark: "#5b2d16", primaryLight: "#c9823c", accent: "#c9a227",
+    bg: "#1a0f08", surface: "#241610", fg: "#f3e6d2", muted: "#b8a288", border: "#4a2f1c", sand: "#2a1a10",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  "jawa-merah": {
+    name: "JAWA MERAH", swatch: "linear-gradient(135deg,#6b0f0f,#c9a227)", desc: "Merah maroon + emas, adat Jawa", video: "JAWA-MERAH-KOMPRES.mp4",
+    primary: "#a41e1e", primaryDark: "#6b0f0f", primaryLight: "#d63c3c", accent: "#c9a227",
+    bg: "#140707", surface: "#1f0a0a", fg: "#f5e8e0", muted: "#b08a82", border: "#4a1818", sand: "#260c0c",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  "jawa-biru": {
+    name: "JAWA BIRU", swatch: "linear-gradient(135deg,#0f1d5c,#c9a227)", desc: "Navy + biru royal + emas", video: "jawa-biru-revisi-compressed-1.mp4",
+    primary: "#1e40af", primaryDark: "#0f1d5c", primaryLight: "#3b6fd4", accent: "#c9a227",
+    bg: "#0a0f1e", surface: "#111a33", fg: "#e8ecf5", muted: "#8a94b0", border: "#22305c", sand: "#141d36",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  minang: {
+    name: "ART MINANG", swatch: "linear-gradient(135deg,#8a6a2f,#c9b37e)", desc: "Gold sand + coklat, Sumatera Barat", video: "Video-Final-Minang-NO-WM.mp4",
+    primary: "#8a6a2f", primaryDark: "#6b501f", primaryLight: "#b08a42", accent: "#5b3a1a",
+    bg: "#f5f0e4", surface: "#fffdf7", fg: "#2a2118", muted: "#8a7c66", border: "#d8cdb4", sand: "#efe8d6",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  sunda: {
+    name: "ART SUNDA", swatch: "linear-gradient(135deg,#3d6b4f,#c0c8c0)", desc: "Silver sage + hijau, Jawa Barat", video: "SUNDA-REV-1.mp4",
+    primary: "#3d6b4f", primaryDark: "#2e5440", primaryLight: "#7ba384", accent: "#b08d57",
+    bg: "#f0f2f0", surface: "#ffffff", fg: "#2a352c", muted: "#7c857a", border: "#d4ded6", sand: "#e4eae4",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Parisienne, cursive", fontSerif: "Cormorant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  chinese: {
+    name: "ART CHINESE", swatch: "linear-gradient(135deg,#b91c1c,#c9a227)", desc: "Merah + emas, nuansa Tionghoa", video: "art-chinese-1.mp4",
+    primary: "#b91c1c", primaryDark: "#8f1212", primaryLight: "#e04a4a", accent: "#c9a227",
+    bg: "#fdf6f0", surface: "#ffffff", fg: "#2a1a1a", muted: "#8a6a6a", border: "#e8d4c8", sand: "#f7ece4",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Poppins, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  batak: {
+    name: "ART BATAK", swatch: "linear-gradient(135deg,#5c0f0f,#c9a227)", desc: "Hitam + merah + emas, Sumatera Utara", video: "BATAK-REV-1.mp4",
+    primary: "#8f1d1d", primaryDark: "#5c0f0f", primaryLight: "#c23a3a", accent: "#c9a227",
+    bg: "#120a0a", surface: "#1d1111", fg: "#f2e6e0", muted: "#a08880", border: "#3d1a1a", sand: "#241212",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  bugis: {
+    name: "ART BUGIS", swatch: "linear-gradient(135deg,#8f1f3a,#c9a227)", desc: "Maroon + emas, Sulawesi Selatan", video: "bugis-maroon-1.mp4",
+    primary: "#8f1f3a", primaryDark: "#5c1226", primaryLight: "#c23a5e", accent: "#c9a227",
+    bg: "#f8f0f0", surface: "#ffffff", fg: "#2a1a22", muted: "#8a6a74", border: "#e4cdd4", sand: "#f2e6ea",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Poppins, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  aceh: {
+    name: "ART ACEH", swatch: "linear-gradient(135deg,#124a30,#c9a227)", desc: "Hijau emas, Aceh", video: "rev-aceh.mp4",
+    primary: "#1f6e4a", primaryDark: "#124a30", primaryLight: "#3b9a68", accent: "#c9a227",
+    bg: "#0e1f16", surface: "#16291f", fg: "#e8f2ec", muted: "#86a090", border: "#24402f", sand: "#1a2f24",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  melayu: {
+    name: "ART MELAYU", swatch: "linear-gradient(135deg,#4a2a0f,#c9a227)", desc: "Coklat kayu + emas, Melayu", video: "Motion-Melayu-Compress.mp4",
+    primary: "#7a4a1f", primaryDark: "#4a2a0f", primaryLight: "#b06e35", accent: "#c9a227",
+    bg: "#140b05", surface: "#1f140c", fg: "#f0e6d8", muted: "#a89880", border: "#3d2a18", sand: "#271a10",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  palembang: {
+    name: "ART PALEMBANG", swatch: "linear-gradient(135deg,#4a1515,#c9a227)", desc: "Maroon gelap + emas, Sumatera Selatan", video: "Motion-Palembang-Compress.mp4",
+    primary: "#7a2a2a", primaryDark: "#4a1515", primaryLight: "#b04a4a", accent: "#c9a227",
+    bg: "#120808", surface: "#1c0e0e", fg: "#f0e4dc", muted: "#a08880", border: "#381818", sand: "#221111",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  bali: {
+    name: "ART BALI", swatch: "linear-gradient(135deg,#2f5426,#b08d57)", desc: "Hijau tropis + gold muted", video: "bali-revisi.mp4",
+    primary: "#4a7a3f", primaryDark: "#2f5426", primaryLight: "#74a868", accent: "#b08d57",
+    bg: "#f4f6ee", surface: "#ffffff", fg: "#22301f", muted: "#76826f", border: "#d4e0cc", sand: "#e8efe2",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  melody: {
+    name: "ART MELODY", swatch: "linear-gradient(135deg,#a8486e,#c8c8d0)", desc: "Silver rose, elegan modern", video: "REV-MELODY.mp4",
+    primary: "#c96a8f", primaryDark: "#a8486e", primaryLight: "#e09ab4", accent: "#a8558a",
+    bg: "#f5f0f2", surface: "#ffffff", fg: "#33222b", muted: "#8a7480", border: "#e2d2da", sand: "#efe6ea",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  soft2: {
+    name: "ART SOFT", swatch: "linear-gradient(135deg,#c24b6a,#f0a8c0)", desc: "Rose pink lembut", video: "ART-SOFT-1.mp4",
+    primary: "#c24b6a", primaryDark: "#8f2f47", primaryLight: "#e07890", accent: "#a16207",
+    bg: "#fdf2f6", surface: "#ffffff", fg: "#33141f", muted: "#8a6472", border: "#f0d6e0", sand: "#fbeaf0",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  silva: {
+    name: "ART SILVA", swatch: "linear-gradient(135deg,#a8743f,#d8c0a0)", desc: "Tan emas, earthy", video: "SILVA-REAL-KOMPRES.mp4",
+    primary: "#a8743f", primaryDark: "#7d5229", primaryLight: "#c99a68", accent: "#5b3a1a",
+    bg: "#f8f2ea", surface: "#fffdf8", fg: "#2e2318", muted: "#8f7c66", border: "#e2d2be", sand: "#f2e8da",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Poppins, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  lovely: {
+    name: "ART LOVELY", swatch: "linear-gradient(135deg,#b85f74,#f0d8e0)", desc: "Pastel pink + cream", video: "LOVELY-1.mp4",
+    primary: "#e0879a", primaryDark: "#b85f74", primaryLight: "#f0aebb", accent: "#b08d57",
+    bg: "#fdf6f8", surface: "#ffffff", fg: "#3a222a", muted: "#947280", border: "#f0dce2", sand: "#f9edf1",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  castle: {
+    name: "ART CASTLE", swatch: "linear-gradient(135deg,#16233a,#c9a227)", desc: "Royal navy + emas, istana", video: "CASTLE-2-1.mp4",
+    primary: "#8a7a3a", primaryDark: "#5c5226", primaryLight: "#b8a858", accent: "#c9a227",
+    bg: "#0d1420", surface: "#16233a", fg: "#f0ead8", muted: "#94a3b8", border: "#2c3e5c", sand: "#1b2a44",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Sacramento, cursive", fontSerif: "Prata, Georgia, serif", fontSans: "Inter, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  flow: {
+    name: "ART FLOW", swatch: "linear-gradient(135deg,#3a4726,#c9a227)", desc: "Earthy green + gold", video: "flow-1.mp4",
+    primary: "#5a6b3a", primaryDark: "#3a4726", primaryLight: "#7e945c", accent: "#c9a227",
+    bg: "#131710", surface: "#1c2116", fg: "#ece8da", muted: "#98a088", border: "#333d28", sand: "#23291b",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  pinkcastle: {
+    name: "PINK CASTLE", swatch: "linear-gradient(135deg,#b85a90,#f0a8cc)", desc: "Pink pastel, princess", video: "Motion-Pink-Palace.mp4",
+    primary: "#e07ab0", primaryDark: "#b85a90", primaryLight: "#f0a8cc", accent: "#a8558a",
+    bg: "#fdf2f8", surface: "#ffffff", fg: "#3a1f33", muted: "#94708a", border: "#f0d4e4", sand: "#f9e8f2",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  garden: {
+    name: "ART GARDEN", swatch: "linear-gradient(135deg,#1e4a31,#b08d57)", desc: "Forest green, botanical", video: "Motion-Garden.mp4",
+    primary: "#2f6b4a", primaryDark: "#1e4a31", primaryLight: "#5e9a76", accent: "#b08d57",
+    bg: "#f0f5f0", surface: "#ffffff", fg: "#1f2f24", muted: "#6f8575", border: "#cfe0d2", sand: "#e6efe8",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Parisienne, cursive", fontSerif: "Cormorant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  kyra: {
+    name: "ART KYRA", swatch: "linear-gradient(135deg,#5c4f8f,#c8c0e0)", desc: "Lavender silver, dreamy", video: "ART-KYRA-1.mp4",
+    primary: "#8a7ab8", primaryDark: "#5c4f8f", primaryLight: "#b0a4d4", accent: "#a8558a",
+    bg: "#f4f2f8", surface: "#ffffff", fg: "#282238", muted: "#7a748f", border: "#dcd4e8", sand: "#ebe6f2",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  devola: {
+    name: "ART DEVOLA", swatch: "linear-gradient(135deg,#7d3f4c,#8aa0b0)", desc: "Dusty rose + slate", video: "DEVOLA-1.mp4",
+    primary: "#a85a6a", primaryDark: "#7d3f4c", primaryLight: "#cc8496", accent: "#4a5c6a",
+    bg: "#f7f2f4", surface: "#ffffff", fg: "#2e2026", muted: "#8f7480", border: "#e4d2d8", sand: "#f2e8ec",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Poppins, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  gold: {
+    name: "GOLD ROYAL", swatch: "linear-gradient(135deg,#0d0d10,#c9a227)", desc: "Hitam + emas, mewah", video: "asli-pangkas.mp4",
+    primary: "#c9a227", primaryDark: "#a8871d", primaryLight: "#e0bd5e", accent: "#a8b8cf",
+    bg: "#0d0d10", surface: "#16161c", fg: "#f2ead8", muted: "#94a3b8", border: "#2c2c3e", sand: "#1b1b24",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Sacramento, cursive", fontSerif: "Prata, Georgia, serif", fontSans: "Inter, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  monoch: {
+    name: "MONOCHROME", swatch: "linear-gradient(135deg,#0a0a0a,#e0e0e0)", desc: "Hitam putih + gold accent", video: "asli-pangkas.mp4",
+    primary: "#1f1f1f", primaryDark: "#000000", primaryLight: "#4a4a4a", accent: "#c9a227",
+    bg: "#0a0a0a", surface: "#141414", fg: "#f5f5f5", muted: "#8a8a8a", border: "#2e2e2e", sand: "#181818",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Cormorant Infant, Georgia, serif", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  maroon: {
+    name: "MAROON ROYAL", swatch: "linear-gradient(135deg,#4a0f0f,#c9a227)", desc: "Maroon gelap mewah", video: "WEB-JAWA-MAROON-1.mp4",
+    primary: "#7a1f1f", primaryDark: "#4a0f0f", primaryLight: "#b04a4a", accent: "#c9a227",
+    bg: "#1a0a0a", surface: "#241010", fg: "#f0e2dc", muted: "#a08880", border: "#401a1a", sand: "#261212",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Pinyon Script, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  saci: {
+    name: "SACI GREEN", swatch: "linear-gradient(135deg,#1e4a31,#c9a227)", desc: "Hijau zamrud + emas", video: "asli-pangkas.mp4",
+    primary: "#2f6b4a", primaryDark: "#1e4a31", primaryLight: "#5e9a76", accent: "#c9a227",
+    bg: "#0e1f16", surface: "#16291f", fg: "#e8f2ec", muted: "#86a090", border: "#24402f", sand: "#1a2f24",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Parisienne, cursive", fontSerif: "Cormorant, Georgia, serif", fontSans: "Nunito, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  moran: {
+    name: "MORAN RED", swatch: "linear-gradient(135deg,#0d0d0d,#b03030)", desc: "Hitam + merah menyala", video: "asli-pangkas.mp4",
+    primary: "#b03030", primaryDark: "#7a1a1a", primaryLight: "#e05a5a", accent: "#d0d0d0",
+    bg: "#0d0d0d", surface: "#161616", fg: "#f0f0f0", muted: "#909090", border: "#2c2c2c", sand: "#1b1b1b",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Playfair Display, Georgia, serif", fontSans: "Montserrat, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "justified",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
+  loly: {
+    name: "EXCLUSIVE LOLY", swatch: "linear-gradient(135deg,#8a6474,#e8dce2)", desc: "Soft gray pink, elegan", video: "asli-pangkas.mp4",
+    primary: "#b08a9a", primaryDark: "#8a6474", primaryLight: "#d0aec0", accent: "#a16207",
+    bg: "#f6f2f4", surface: "#ffffff", fg: "#2e2228", muted: "#8f7480", border: "#e4d6dc", sand: "#f0e8ec",
+    radiusCard: "20px", radiusBtn: "999px",
+    fontScript: "Great Vibes, cursive", fontSerif: "Cormorant Infant, Georgia, serif", fontSans: "Outfit, system-ui, sans-serif",
+    revealAnim: "fadeUp", petalsEnabled: true, blobsEnabled: true, videoCover: false, sheenEnabled: true, glassEnabled: false,
+    scriptSize: "text-6xl md:text-7xl", serifSize: "text-2xl md:text-3xl", headingSize: "text-5xl",
+    revealBaseDelay: "3000", revealStagger: "120", galleryLayout: "carousel",
+    motion: { parallaxLevel: "medium", sectionReveal: "fade-up", textEffect: "none", videoCoverMode: "cover", heroZoom: true, floatElements: true },
+    videoOpacity: "55", bgOpacity: "25"
+  },
 };
 
 function applyPreset(name) {
@@ -497,6 +898,12 @@ function applyPreset(name) {
   if (!p) return;
   // set cfg.theme langsung (deep merge 2 level: theme + theme.motion) — sand ikut ter-set
   cfg.theme = { ...cfg.theme, ...p, motion: { ...(cfg.theme.motion || {}), ...p.motion } };
+  // preset dengan video hiasan → otomatis pasang video cover
+  if (p.video) {
+    cfg.media = cfg.media || {};
+    cfg.media.video = "/uploads/vendor/videos/" + p.video;
+    cfg.media.videoEnabled = true;
+  }
   renderAll("tab-theme");
   toast("Preset '" + p.name + "' diterapkan. Klik Simpan & Deploy untuk menyimpan.");
 }
@@ -505,32 +912,13 @@ function renderTheme() {
   return `<div class="card p-6 mb-5">
     <h2 class="terra font-semibold mb-1">Tema Preset</h2>
     <p class="text-xs text-slate-500 mb-4">Klik satu preset → semua warna, font, radius &amp; animasi ke-isi otomatis. Bisa diedit manual dulu, lalu <b>Simpan &amp; Deploy</b>.</p>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-      <button onclick="applyPreset('soft')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer">
-        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#db2777,#a16207)"></div>
-        <p class="text-xs font-semibold text-slate-700">Soft UI Evolution</p>
-        <p class="text-[10px] text-slate-400">Pink + gold, terang</p>
-      </button>
-      <button onclick="applyPreset('java')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer">
-        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#17100a,#c9a227)"></div>
-        <p class="text-xs font-semibold text-slate-700">ART JAWA COKLAT</p>
-        <p class="text-[10px] text-slate-400">Coklat gelap + emas</p>
-      </button>
-      <button onclick="applyPreset('terra')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer">
-        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#9a3412,#0f172a)"></div>
-        <p class="text-xs font-semibold text-slate-700">Terracotta + Slate</p>
-        <p class="text-[10px] text-slate-400">Earthy bohemian</p>
-      </button>
-      <button onclick="applyPreset('sage')" class="text-left border border-[#3d6b4f]/40 rounded-xl p-3 hover:border-[#3d6b4f] hover:bg-[#3d6b4f]/5 transition cursor-pointer ring-1 ring-[#3d6b4f]/20">
-        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#3d6b4f,#f6f4ee)"></div>
-        <p class="text-xs font-semibold text-slate-700">Sage Serenity <span class="text-[9px] bg-[#3d6b4f] text-white px-1.5 py-0.5 rounded-full">BARU</span></p>
-        <p class="text-[10px] text-slate-400">Botanical minimalis</p>
-      </button>
-      <button onclick="applyPreset('midnight')" class="text-left border border-[#c9a227]/40 rounded-xl p-3 hover:border-[#c9a227] hover:bg-[#c9a227]/5 transition cursor-pointer ring-1 ring-[#c9a227]/20">
-        <div class="w-full h-10 rounded-lg mb-2" style="background:linear-gradient(135deg,#0d1626,#c9a227)"></div>
-        <p class="text-xs font-semibold text-slate-700">Royal Midnight <span class="text-[9px] bg-[#c9a227] text-white px-1.5 py-0.5 rounded-full">BARU</span></p>
-        <p class="text-[10px] text-slate-400">Navy + emas, mewah</p>
-      </button>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      ${Object.entries(PRESETS).map(([key, p]) => `
+        <button onclick="applyPreset('${key}')" class="text-left border border-terra/30 rounded-xl p-3 hover:border-terra hover:bg-terra/5 transition cursor-pointer" title="${p.desc || ''}">
+          <div class="w-full h-10 rounded-lg mb-2" style="background:${p.swatch || 'linear-gradient(135deg,' + p.primary + ',' + p.bg + ')'}"></div>
+          <p class="text-xs font-semibold text-slate-700">${p.name}</p>
+          <p class="text-[10px] text-slate-400">${p.desc || ''}</p>
+        </button>`).join('')}
     </div>
   </div>
   <div class="card p-6 mb-5">
@@ -673,6 +1061,7 @@ function renderTheme() {
       ${T("theme.blobsEnabled", "Glow blur background (blobs)")}
       ${T("theme.sheenEnabled", "Efek kilau tombol (sheen)")}
       ${T("theme.videoCover", "Video sebagai cover background")}
+      ${T("theme.glassEnabled", "Mode Liquid Glass (kartu transparan blur)")}
     </div>
   </div>`;
 }
