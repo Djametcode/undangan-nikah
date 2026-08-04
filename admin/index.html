@@ -283,6 +283,10 @@ function renderMedia() {
       <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden" />
       <button onclick="document.getElementById('upload-video').click()" class="w-full border border-terra/40 text-terra py-3 rounded-xl text-sm hover:bg-terra/10 transition cursor-pointer">Upload Video</button>
       <div id="videoInfo" class="mt-3 text-xs text-slate-400 break-all"></div>
+      <div id="videoPreviewWrap" class="mt-3 ${cfg.media.video ? '' : 'hidden'}">
+        <p class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Preview Video Cover</p>
+        <video id="videoPreview" src="${esc(cfg.media.video || '')}" controls muted playsinline preload="metadata" class="w-full rounded-xl border border-[#e7d8d3] bg-black max-h-48"></video>
+      </div>
     </div>
     <div class="card p-6">
       <h2 class="terra font-semibold mb-2">Musik</h2>
@@ -294,11 +298,12 @@ function renderMedia() {
     </div>
   </div>
   <div class="mt-5 card p-6">
-    <h2 class="terra font-semibold mb-2">Video Hiasan — Bundle 34 Tema</h2>
-    <p class="text-xs text-slate-500 mb-3">Video background asli dari 34 tema (sudah di-download). Klik <b>Cover</b> untuk pasang sebagai video cover, atau pilih section lalu <b>Set</b> untuk pasang di background section.</p>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-80 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
+    <h2 class="terra font-semibold mb-2">Video Hiasan — Bundle ${VENDOR_VIDEOS.length} Tema</h2>
+    <p class="text-xs text-slate-500 mb-3">Video background asli dari ${VENDOR_VIDEOS.length} tema (sudah di-download). Hover/klik video untuk preview, <b>Cover</b> untuk pasang sebagai video cover, atau pilih section lalu <b>Set</b>.</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-96 overflow-y-auto border border-[#e7d8d3] rounded-xl p-3">
       ${VENDOR_VIDEOS.map(v => `
         <div class="border border-[#e7d8d3] rounded-lg p-2 bg-[#fffbeb]">
+          <video src="/uploads/vendor/videos/${v}" muted playsinline preload="none" class="w-full h-20 object-cover rounded mb-1 bg-black cursor-pointer" onclick="this.paused ? this.play() : this.pause()" title="Klik untuk preview"></video>
           <p class="text-[10px] text-slate-600 break-all mb-1">${v}</p>
           <div class="flex gap-1">
             <button onclick="useVendorVideo('${v}')" class="flex-1 text-[10px] bg-terra text-[#fffbeb] py-1 rounded cursor-pointer">Cover</button>
@@ -1652,7 +1657,12 @@ function renderAll(activeTab) {
   // media upload listeners
   const uv = $("upload-video");
   if (uv) uv.addEventListener("change", (e) => {
-    uploadFile(e.target.files[0], (url) => { setPath(cfg, "media.video", url); $("videoInfo").textContent = url; });
+    uploadFile(e.target.files[0], (url) => {
+      setPath(cfg, "media.video", url);
+      $("videoInfo").textContent = url;
+      const pw = $("videoPreviewWrap"), pv = $("videoPreview");
+      if (pw && pv) { pw.classList.remove("hidden"); pv.src = url; pv.load(); }
+    });
   });
   const um = $("upload-music");
   if (um) um.addEventListener("change", (e) => {
