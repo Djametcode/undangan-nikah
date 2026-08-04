@@ -42,6 +42,7 @@ interface Cfg {
   sectionVideos: {
     couple: { video: string; enabled: boolean };
     savedate: { video: string; enabled: boolean };
+    initial: { video: string; enabled: boolean };
     timeline: { video: string; enabled: boolean };
     info: { video: string; enabled: boolean };
     gallery: { video: string; enabled: boolean };
@@ -206,6 +207,7 @@ const DEFAULT_CFG: Cfg = {
   sectionVideos: {
     couple: { video: "", enabled: false },
     savedate: { video: "", enabled: false },
+    initial: { video: "", enabled: false },
     timeline: { video: "", enabled: false },
     info: { video: "", enabled: false },
     gallery: { video: "", enabled: false },
@@ -1013,9 +1015,18 @@ function InitialSection({ cfg }: { cfg: Cfg }) {
   const { initial } = cfg;
   if (!initial.enabled) return null;
   return (
-    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 text-center" data-reveal data-entrance>
-      <p className={`script-display text-primary-light fade-up ${cfg.theme.headingSize}`}>{initial.text}</p>
-      <Ornament className="w-32 mx-auto mt-6" />
+    <section data-section className="py-16 px-4 text-center relative overflow-hidden" data-reveal data-entrance>
+      <SectionVideo cfg={cfg} name="initial" />
+      <div className="max-w-xl mx-auto relative z-10">
+        <span className="kicker block mb-5">Dengan mengharap ridho Allah SWT</span>
+        <p className={`script-display text-primary-light leading-tight ${cfg.theme.headingSize}`}>{initial.text}</p>
+        <div className="flex items-center justify-center gap-4 my-6">
+          <div className="h-px w-16 bg-primary/30" />
+          <Ornament className="w-24" />
+          <div className="h-px w-16 bg-primary/30" />
+        </div>
+        <p className="serif-body text-muted italic">Merupakan suatu kehormatan bagi kami mengundang Bapak/Ibu/Saudara/i</p>
+      </div>
     </section>
   );
 }
