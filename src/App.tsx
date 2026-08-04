@@ -1062,10 +1062,6 @@ function TimelineSection({ cfg }: { cfg: Cfg }) {
                   <div className={`absolute top-0 ${i % 2 === 0 ? "left-0 right-1/2" : "right-0 left-1/2"} h-1 bg-gradient-to-r ${i % 2 === 0 ? "from-primary to-transparent" : "from-transparent to-primary"}`} />
                   {/* glow pojok */}
                   <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-primary/10 blur-2xl group-hover:bg-primary/20 transition-colors duration-500" />
-                  {/* nomor besar di pojok */}
-                  <span className="absolute left-4 top-3 script-display text-5xl text-primary/15 leading-none select-none">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
                   {/* date badge */}
                   <div className={`inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-primary/10 border border-primary/20 text-primary-light text-sm font-semibold tracking-widest`}>
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
