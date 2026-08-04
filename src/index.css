@@ -97,6 +97,9 @@ html { scroll-behavior: smooth; }
 .soft-shadow-lg {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 16px 40px rgba(0, 0, 0, 0.1);
 }
+.soft-shadow-xl {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06), 0 24px 56px rgba(0, 0, 0, 0.14);
+}
 
 .kicker {
   @apply text-[11px] uppercase tracking-[0.25em] font-medium text-primary;

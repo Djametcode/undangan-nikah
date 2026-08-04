@@ -42,6 +42,7 @@ interface Cfg {
   sectionVideos: {
     couple: { video: string; enabled: boolean };
     savedate: { video: string; enabled: boolean };
+    timeline: { video: string; enabled: boolean };
     info: { video: string; enabled: boolean };
     gallery: { video: string; enabled: boolean };
     gift: { video: string; enabled: boolean };
@@ -205,6 +206,7 @@ const DEFAULT_CFG: Cfg = {
   sectionVideos: {
     couple: { video: "", enabled: false },
     savedate: { video: "", enabled: false },
+    timeline: { video: "", enabled: false },
     info: { video: "", enabled: false },
     gallery: { video: "", enabled: false },
     gift: { video: "", enabled: false },
@@ -1023,34 +1025,42 @@ function TimelineSection({ cfg }: { cfg: Cfg }) {
   const { timeline } = cfg;
   if (!timeline.enabled || !timeline.items?.length) return null;
   return (
-    <section data-section className="min-h-screen flex items-center justify-center px-4 py-12 bg-sand/60">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-14" data-reveal data-entrance>
+    <section data-section className="min-h-screen flex items-center justify-center px-4 py-16 bg-sand/60 relative overflow-hidden">
+      <SectionVideo cfg={cfg} name="timeline" />
+      <div className="max-w-4xl mx-auto w-full relative z-10">
+        <div className="text-center mb-16" data-reveal data-entrance>
           <span className="kicker block mb-4">{timeline.heading}</span>
-          <h2 data-line-reveal className="section-heading text-3xl md:text-4xl fade-up">
+          <h2 data-line-reveal className="section-heading text-4xl md:text-5xl fade-up">
             <span className="line"><span className="line-inner"><span className="heading-accent">{timeline.heading}</span></span></span>
             <span className="section-heading-line" />
           </h2>
-          <Ornament className="w-36 mx-auto mt-6" />
+          <Ornament className="w-40 mx-auto mt-6" />
         </div>
         <div className="relative" data-reveal data-entrance>
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-primary/25" />
+          {/* garis tengah desktop / kiri mobile */}
+          <div className="absolute md:left-1/2 left-5 md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/10 via-primary/40 to-primary/10" />
           {timeline.items.map((item, i) => (
-            <div key={i} className={`relative flex items-start gap-6 mb-12 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+            <div key={i} className={`relative flex md:items-start mb-14 md:mb-16 pl-14 md:pl-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+              {/* dot */}
+              <div className="absolute left-5 -translate-x-1/2 top-2 md:top-6 w-5 h-5 rounded-full bg-primary border-4 border-bg shadow-lg shadow-primary/40 z-10" />
+              {/* nomor urut */}
               <div className="hidden md:block md:w-1/2" />
-              <div className="absolute left-1/2 -translate-x-1/2 top-3 w-4 h-4 rounded-full bg-primary border-[3px] border-bg shadow-md shadow-primary/30" />
-              <div className={`md:w-1/2 ml-10 md:ml-0 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
-                <div className="group relative overflow-hidden rounded-card border border-primary/15 bg-surface/80 backdrop-blur-sm soft-shadow hover:soft-shadow-lg transition-all duration-300 hover:-translate-y-1 inline-block text-left">
+              <div className={`md:w-1/2 md:px-10 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+                <div className={`group relative overflow-hidden rounded-card border border-primary/20 bg-surface/90 backdrop-blur-sm soft-shadow-lg hover:soft-shadow-xl transition-all duration-300 hover:-translate-y-1 p-7 md:p-8 ${i % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
+                  {/* nomor besar di pojok */}
+                  <span className={`absolute ${i % 2 === 0 ? "left-4" : "right-4"} top-3 script-display text-5xl text-primary/10 leading-none select-none`}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   {/* date badge */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-3 rounded-full bg-primary/10 text-primary-light text-xs font-semibold tracking-widest">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <div className={`inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-primary/10 border border-primary/20 text-primary-light text-sm font-semibold tracking-widest`}>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     {item.date}
                   </div>
-                  <h3 className="section-heading text-xl mb-2">{item.title}</h3>
-                  <div className="hairline w-10 mb-3" />
-                  <p className="serif-body text-muted text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="section-heading text-2xl md:text-3xl mb-3">{item.title}</h3>
+                  <div className={`hairline w-14 mb-4 ${i % 2 === 0 ? "md:ml-auto" : ""}`} />
+                  <p className="serif-body text-muted text-base leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             </div>
