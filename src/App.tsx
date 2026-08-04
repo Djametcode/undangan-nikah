@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { QRCodeCanvas } from "qrcode.react";
@@ -74,6 +74,7 @@ interface Cfg {
     blobsEnabled: boolean;
     videoCover: boolean;
     sheenEnabled: boolean;
+    glassEnabled: boolean;
     galleryLayout: string;
     scriptSize: string;
     serifSize: string;
@@ -86,6 +87,12 @@ interface Cfg {
       heroZoom: boolean;
       floatElements: boolean;
     };
+    videoOpacity: string;
+    bgOpacity: string;
+  };
+  layout: {
+    name: string;
+    sections: string[];
   };
   labels: {
     guestPrefix: string;
@@ -230,6 +237,7 @@ const DEFAULT_CFG: Cfg = {
     blobsEnabled: true,
     videoCover: false,
     sheenEnabled: true,
+    glassEnabled: false,
     galleryLayout: "carousel",
     scriptSize: "text-6xl md:text-7xl",
     serifSize: "text-2xl md:text-3xl",
@@ -242,6 +250,12 @@ const DEFAULT_CFG: Cfg = {
       heroZoom: true,
       floatElements: true,
     },
+    videoOpacity: "70",
+    bgOpacity: "100",
+  },
+  layout: {
+    name: "klasik",
+    sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
   },
   labels: {
     guestPrefix: "Kepada Bapak/Ibu/Saudara/i",
@@ -348,6 +362,20 @@ function useApplyTheme(cfg: Cfg | null) {
     r.setProperty("--font-script", t.fontScript);
     r.setProperty("--font-serif", t.fontSerif);
     r.setProperty("--font-sans", t.fontSans);
+    // dynamic Google Fonts loader
+    const families = [t.fontScript, t.fontSerif, t.fontSans]
+      .map((f) => f.split(",")[0].trim().replace(/\s+/g, "+"))
+      .filter((f) => f && f !== "Brush+Script+MT");
+    if (families.length) {
+      let link = document.querySelector('link[data-font-loader]') as HTMLLinkElement | null;
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.dataset.fontLoader = "1";
+        document.head.appendChild(link);
+      }
+      link.href = `https://fonts.googleapis.com/css2?family=${families.join("&family=")}&display=swap`;
+    }
     r.setProperty("--reveal-anim", t.revealAnim);
     r.setProperty("--reveal-base-delay", (parseInt(t.revealBaseDelay) || 0) + "ms");
     r.setProperty("--reveal-stagger", (parseInt(t.revealStagger) || 0) + "ms");
@@ -355,6 +383,7 @@ function useApplyTheme(cfg: Cfg | null) {
     document.body.classList.toggle("no-petals", t.petalsEnabled === false);
     document.body.classList.toggle("no-blobs", t.blobsEnabled === false);
     document.body.classList.toggle("no-sheen", t.sheenEnabled === false);
+    document.body.classList.toggle("glass-mode", t.glassEnabled === true);
     document.body.classList.toggle("gallery-justified", t.galleryLayout === "justified");
   }, [cfg]);
 }
@@ -588,6 +617,7 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
   const { couple, brand, photos, media, theme, labels } = cfg;
   const hasVideo = (media.videoEnabled || theme.videoCover) && media.video;
   const vidMode = theme.motion?.videoCoverMode || "cover";
+  const vidOp = (parseInt(theme.videoOpacity) || 70) / 100;
   return (
     <section className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden bg-bg">
@@ -596,7 +626,8 @@ function Cover({ onOpen, guest, cfg }: { onOpen: () => void; guest: string; cfg:
             src={media.video}
             autoPlay muted playsInline loop
             data-hero-zoom
-            className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} opacity-70 brightness-[0.85]`}
+            className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} brightness-[0.85]`}
+            style={{ opacity: vidOp }}
           />
         ) : photos.cover ? (
           <img src={photos.cover} alt="" data-hero-zoom className="w-full h-full object-cover opacity-80" />
@@ -850,14 +881,17 @@ function SectionVideo({ cfg, name }: { cfg: Cfg; name: keyof Cfg["sectionVideos"
   const sv = cfg.sectionVideos?.[name];
   if (!sv?.enabled || !sv.video) return null;
   const vidMode = cfg.theme.motion?.videoCoverMode || "cover";
+  const vidOp = (parseInt(cfg.theme.videoOpacity) || 70) / 100;
+  const bgOp = (parseInt(cfg.theme.bgOpacity) || 100) / 100;
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
       <video
         src={sv.video}
         autoPlay muted playsInline loop
-        className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"} opacity-25`}
+        className={`w-full h-full ${vidMode === "contain" ? "object-contain" : "object-cover"}`}
+        style={{ opacity: vidOp }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/50 to-bg/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/50 to-bg/80" style={{ opacity: bgOp }} />
     </div>
   );
 }
@@ -1312,6 +1346,59 @@ function Footer({ cfg }: { cfg: Cfg }) {
   );
 }
 
+/* ---------- Layout presets (dari scrape galeriundanganofficial) ---------- */
+const LAYOUT_PRESETS: { key: string; name: string; desc: string; sections: string[] }[] = [
+  {
+    key: "klasik", name: "Klasik Lengkap", desc: "Semua section: couple, hitung mundur, timeline, acara, galeri, gift, rsvp, ucapan",
+    sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
+  },
+  {
+    key: "premium", name: "Premium Mewah", desc: "Live streaming + exclusive, tanpa inisial — ala GOLD/MACA/TERA",
+    sections: ["couple", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
+  },
+  {
+    key: "modern", name: "Modern Ringkas", desc: "Tanpa timeline & guestbook — ala BATAL/FLOW, fokus inti",
+    sections: ["couple", "savedate", "info", "gallery", "gift", "rsvp", "closing"],
+  },
+  {
+    key: "story", name: "Kisah Cinta", desc: "Timeline & inisial menonjol — ala JAWA MERAH/CHINESE",
+    sections: ["couple", "initial", "timeline", "savedate", "info", "gallery", "gift", "rsvp", "guestbook", "closing"],
+  },
+  {
+    key: "compact", name: "Compact Inti", desc: "Cuma inti: couple, acara, galeri, rsvp, closing",
+    sections: ["couple", "savedate", "info", "gallery", "rsvp", "closing"],
+  },
+  {
+    key: "mewah", name: "Mewah Lengkap", desc: "Semua section + live stream + timeline + exclusive",
+    sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"],
+  },
+];
+
+/* ---------- Layout renderer: susun section sesuai cfg.layout ---------- */
+function LayoutRenderer({ cfg }: { cfg: Cfg }) {
+  const sections = cfg.layout?.sections?.length ? cfg.layout.sections : LAYOUT_PRESETS[0].sections;
+  const map: Record<string, ReactNode> = {
+    couple: <Couple cfg={cfg} />,
+    initial: <InitialSection cfg={cfg} />,
+    savedate: <SaveTheDate cfg={cfg} />,
+    timeline: <TimelineSection cfg={cfg} />,
+    info: <Info cfg={cfg} />,
+    liveStream: <LiveStreamSection cfg={cfg} />,
+    gallery: <Gallery cfg={cfg} />,
+    gift: <Gift cfg={cfg} />,
+    rsvp: <Rsvp cfg={cfg} />,
+    guestbook: <GuestBook cfg={cfg} />,
+    exclusive: <ExclusiveSection cfg={cfg} />,
+    closing: <Closing cfg={cfg} />,
+  };
+  return (
+    <>
+      {sections.map((s) => map[s] ?? null)}
+      <Footer cfg={cfg} />
+    </>
+  );
+}
+
 /* ---------- App ---------- */
 export default function App() {
   const cfg = useConfig();
@@ -1346,19 +1433,7 @@ export default function App() {
       ) : (
         <div className="relative z-10">
           <main>
-            <Couple cfg={cfg} />
-            <InitialSection cfg={cfg} />
-            <SaveTheDate cfg={cfg} />
-            <TimelineSection cfg={cfg} />
-            <Info cfg={cfg} />
-            <LiveStreamSection cfg={cfg} />
-            <Gallery cfg={cfg} />
-            <Gift cfg={cfg} />
-            <Rsvp cfg={cfg} />
-            <GuestBook cfg={cfg} />
-            <ExclusiveSection cfg={cfg} />
-            <Closing cfg={cfg} />
-            <Footer cfg={cfg} />
+            <LayoutRenderer cfg={cfg} />
           </main>
         </div>
       )}

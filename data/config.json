@@ -5,8 +5,8 @@
     "logoText": "A&I"
   },
   "couple": {
-    "groom": "Rizky",
-    "groomFull": "Rizky Pratama",
+    "groom": "Hakim",
+    "groomFull": "Hakim Kurniawan",
     "groomDesc": "Putra pertama dari Bapak Bambang & Ibu Sri",
     "bride": "Sarah",
     "brideFull": "Sarah Amelia",
@@ -74,8 +74,8 @@
     "text": "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu."
   },
   "media": {
-    "video": "/uploads/1785731121899-test-video.mp4",
-    "videoEnabled": false,
+    "video": "/uploads/vendor/videos/Motion-Garden.mp4",
+    "videoEnabled": true,
     "music": "/uploads/1785731147295-test-music.mp3",
     "musicEnabled": false
   },
@@ -229,12 +229,12 @@
   },
   "sectionVideos": {
     "couple": {
-      "video": "",
-      "enabled": false
+      "video": "/uploads/vendor/videos/ART-SOFT-1.mp4",
+      "enabled": true
     },
     "savedate": {
-      "video": "",
-      "enabled": false
+      "video": "/uploads/vendor/videos/ART-SOFT-1.mp4",
+      "enabled": true
     },
     "info": {
       "video": "",
@@ -260,5 +260,22 @@
       "video": "",
       "enabled": false
     }
+  },
+  "layout": {
+    "name": "klasik",
+    "sections": [
+      "couple",
+      "initial",
+      "savedate",
+      "timeline",
+      "info",
+      "liveStream",
+      "gallery",
+      "gift",
+      "rsvp",
+      "guestbook",
+      "exclusive",
+      "closing"
+    ]
   }
 }

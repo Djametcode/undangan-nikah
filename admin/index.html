@@ -1545,6 +1545,25 @@ function onThemeRange(el) {
   schedulePreview();
 }
 
+/* ---------- Layout presets (dari scrape galeriundanganofficial) ---------- */
+const LAYOUTS = [
+  { key: "klasik", name: "Klasik Lengkap", desc: "Semua section lengkap", sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
+  { key: "premium", name: "Premium Mewah", desc: "Live streaming + exclusive", sections: ["couple", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
+  { key: "modern", name: "Modern Ringkas", desc: "Tanpa timeline & guestbook", sections: ["couple", "savedate", "info", "gallery", "gift", "rsvp", "closing"] },
+  { key: "story", name: "Kisah Cinta", desc: "Timeline & inisial menonjol", sections: ["couple", "initial", "timeline", "savedate", "info", "gallery", "gift", "rsvp", "guestbook", "closing"] },
+  { key: "compact", name: "Compact Inti", desc: "Cuma inti penting", sections: ["couple", "savedate", "info", "gallery", "rsvp", "closing"] },
+  { key: "mewah", name: "Mewah Lengkap", desc: "Semua + live + exclusive", sections: ["couple", "initial", "savedate", "timeline", "info", "liveStream", "gallery", "gift", "rsvp", "guestbook", "exclusive", "closing"] },
+];
+
+function applyLayout(key) {
+  const l = LAYOUTS.find((x) => x.key === key);
+  if (!l) return;
+  cfg.layout = { name: key, sections: l.sections };
+  renderAll("tab-theme");
+  toast("Layout '" + l.name + "' diterapkan. Klik Simpan & Deploy untuk menyimpan.");
+  refreshPreview();
+}
+
 function renderTheme() {
   // active preset detection: compare theme colors
   const activeKey = (() => {
@@ -1555,6 +1574,21 @@ function renderTheme() {
   })();
   return `<div class="ts-layout">
     <div class="ts-form">
+      <div class="card p-6 mb-5">
+        <h2 class="terra font-semibold mb-1">🧩 Layout Website</h2>
+        <p class="text-xs text-slate-500 mb-4">Atur urutan &amp; susunan section undangan. Preview di kanan update langsung.</p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+          ${LAYOUTS.map((l) => `
+            <button onclick="applyLayout('${l.key}')" class="preset-card ${(cfg.layout?.name || 'klasik') === l.key ? 'active' : ''}" data-layout="${l.key}">
+              <div class="w-full h-14 rounded-lg mb-1.5 border border-[#e7d8d3] bg-[#fffbeb] p-1.5 flex flex-wrap gap-0.5">
+                ${l.sections.slice(0, 6).map(() => `<div class="w-4 h-3 rounded-sm" style="background:${cfg.theme.primary}"></div>`).join('')}
+              </div>
+              <p class="text-[11px] font-semibold text-slate-700">${l.name}</p>
+              <p class="text-[9px] text-slate-400 leading-tight">${l.desc}</p>
+            </button>`).join('')}
+        </div>
+      </div>
+
       <div class="card p-6 mb-5">
         <h2 class="terra font-semibold mb-1">🎨 Pilih Tema</h2>
         <p class="text-xs text-slate-500 mb-4">Klik satu tema → warna, font &amp; animasi ke-isi otomatis. Preview di kanan update langsung.</p>
