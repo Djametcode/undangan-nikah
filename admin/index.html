@@ -627,7 +627,7 @@ function renderRsvp() {
 /* ---------- Theme Presets ---------- */
 const PRESETS = {
   soft: {
-    name: "Soft UI Evolution", swatch: "linear-gradient(135deg,#db2777,#a16207)", desc: "Pink + gold, terang", video: "",
+    name: "Soft UI Evolution", swatch: "linear-gradient(135deg,#db2777,#a16207)", desc: "Pink + gold, terang", video: "", layout: "klasik",
     primary: "#db2777", primaryDark: "#be185d", primaryLight: "#f472b6", accent: "#a16207",
     bg: "#fdf2f8", surface: "#ffffff", fg: "#1e1b4b", muted: "#6b7280", border: "#f3d9e4", sand: "#fbeaf1",
     radiusCard: "20px", radiusBtn: "999px",
@@ -639,7 +639,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   java: {
-    name: "ART JAWA COKLAT", swatch: "linear-gradient(135deg,#17100a,#c9a227)", desc: "Coklat gelap + emas", video: "jawa-coklat-revi-compressed.mp4",
+    name: "ART JAWA COKLAT", swatch: "linear-gradient(135deg,#17100a,#c9a227)", desc: "Coklat gelap + emas", video: "jawa-coklat-revi-compressed.mp4", layout: "mewah",
     primary: "#9a3412", primaryDark: "#7c2d12", primaryLight: "#c2410c", accent: "#059669",
     bg: "#fffbeb", surface: "#ffffff", fg: "#0f172a", muted: "#6b7280", border: "#e7d8d3", sand: "#f7f0e3",
     radiusCard: "16px", radiusBtn: "999px",
@@ -651,7 +651,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   terra: {
-    name: "Terracotta + Slate", swatch: "linear-gradient(135deg,#9a3412,#0f172a)", desc: "Earthy bohemian", video: "",
+    name: "Terracotta + Slate", swatch: "linear-gradient(135deg,#9a3412,#0f172a)", desc: "Earthy bohemian", video: "", layout: "live",
     primary: "#9a3412", primaryDark: "#7c2d12", primaryLight: "#c2410c", accent: "#0f172a",
     bg: "#fffbeb", surface: "#ffffff", fg: "#1e293b", muted: "#6b7280", border: "#e7d8d3", sand: "#f2e6e2",
     radiusCard: "16px", radiusBtn: "999px",
@@ -663,7 +663,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   sage: {
-    name: "Sage Serenity", swatch: "linear-gradient(135deg,#3d6b4f,#f6f4ee)", desc: "Botanical minimalis", video: "",
+    name: "Sage Serenity", swatch: "linear-gradient(135deg,#3d6b4f,#f6f4ee)", desc: "Botanical minimalis", video: "", layout: "minimal",
     primary: "#3d6b4f", primaryDark: "#2e5440", primaryLight: "#7ba384", accent: "#b08d57",
     bg: "#f6f4ee", surface: "#ffffff", fg: "#2a352c", muted: "#7c857a", border: "#dfe6da", sand: "#ecefe4",
     radiusCard: "20px", radiusBtn: "999px",
@@ -675,7 +675,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   midnight: {
-    name: "Royal Midnight", swatch: "linear-gradient(135deg,#0d1626,#c9a227)", desc: "Navy + emas, mewah", video: "",
+    name: "Royal Midnight", swatch: "linear-gradient(135deg,#0d1626,#c9a227)", desc: "Navy + emas, mewah", video: "", layout: "mewah",
     primary: "#c9a227", primaryDark: "#a8871d", primaryLight: "#e0bd5e", accent: "#a8b8cf",
     bg: "#0d1626", surface: "#16233a", fg: "#f2ead8", muted: "#94a3b8", border: "#2c3e5c", sand: "#1b2a44",
     radiusCard: "24px", radiusBtn: "999px",
@@ -687,7 +687,7 @@ const PRESETS = {
     videoOpacity: "70", bgOpacity: "25"
   },
   glass: {
-    name: "Liquid Glass", swatch: "linear-gradient(135deg,#ec4899,#a855f7,#0ea5e9)", desc: "Kartu blur transparan", video: "",
+    name: "Liquid Glass", swatch: "linear-gradient(135deg,#ec4899,#a855f7,#0ea5e9)", desc: "Kartu blur transparan", video: "", layout: "premium",
     primary: "#ec4899", primaryDark: "#db2777", primaryLight: "#f9a8d4", accent: "#a855f7",
     bg: "#fdf2f8", surface: "#ffffff", fg: "#4a1d3f", muted: "#8b6a85", border: "#f3d9e4", sand: "#f7ecf3",
     radiusCard: "24px", radiusBtn: "999px",
@@ -699,7 +699,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   jawa2: {
-    name: "ART JAWA COKLAT 2", swatch: "linear-gradient(135deg,#5b2d16,#c9a227)", desc: "Coklat tua + emas, adat Jawa", video: "jawa-coklat-revi-compressed.mp4",
+    name: "ART JAWA COKLAT 2", swatch: "linear-gradient(135deg,#5b2d16,#c9a227)", desc: "Coklat tua + emas, adat Jawa", video: "jawa-coklat-revi-compressed.mp4", layout: "mewah",
     primary: "#8a4a1f", primaryDark: "#5b2d16", primaryLight: "#c9823c", accent: "#c9a227",
     bg: "#1a0f08", surface: "#241610", fg: "#f3e6d2", muted: "#b8a288", border: "#4a2f1c", sand: "#2a1a10",
     radiusCard: "20px", radiusBtn: "999px",
@@ -735,7 +735,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   minang: {
-    name: "ART MINANG", swatch: "linear-gradient(135deg,#8a6a2f,#c9b37e)", desc: "Gold sand + coklat, Sumatera Barat", video: "Video-Final-Minang-NO-WM.mp4",
+    name: "ART MINANG", swatch: "linear-gradient(135deg,#8a6a2f,#c9b37e)", desc: "Gold sand + coklat, Sumatera Barat", video: "Video-Final-Minang-NO-WM.mp4", layout: "klasik",
     primary: "#8a6a2f", primaryDark: "#6b501f", primaryLight: "#b08a42", accent: "#5b3a1a",
     bg: "#f5f0e4", surface: "#fffdf7", fg: "#2a2118", muted: "#8a7c66", border: "#d8cdb4", sand: "#efe8d6",
     radiusCard: "20px", radiusBtn: "999px",
@@ -747,7 +747,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   sunda: {
-    name: "ART SUNDA", swatch: "linear-gradient(135deg,#3d6b4f,#c0c8c0)", desc: "Silver sage + hijau, Jawa Barat", video: "SUNDA-REV-1.mp4",
+    name: "ART SUNDA", swatch: "linear-gradient(135deg,#3d6b4f,#c0c8c0)", desc: "Silver sage + hijau, Jawa Barat", video: "SUNDA-REV-1.mp4", layout: "live",
     primary: "#3d6b4f", primaryDark: "#2e5440", primaryLight: "#7ba384", accent: "#b08d57",
     bg: "#f0f2f0", surface: "#ffffff", fg: "#2a352c", muted: "#7c857a", border: "#d4ded6", sand: "#e4eae4",
     radiusCard: "20px", radiusBtn: "999px",
@@ -759,7 +759,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   chinese: {
-    name: "ART CHINESE", swatch: "linear-gradient(135deg,#b91c1c,#c9a227)", desc: "Merah + emas, nuansa Tionghoa", video: "art-chinese-1.mp4",
+    name: "ART CHINESE", swatch: "linear-gradient(135deg,#b91c1c,#c9a227)", desc: "Merah + emas, nuansa Tionghoa", video: "art-chinese-1.mp4", layout: "story",
     primary: "#b91c1c", primaryDark: "#8f1212", primaryLight: "#e04a4a", accent: "#c9a227",
     bg: "#fdf6f0", surface: "#ffffff", fg: "#2a1a1a", muted: "#8a6a6a", border: "#e8d4c8", sand: "#f7ece4",
     radiusCard: "20px", radiusBtn: "999px",
@@ -771,7 +771,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   batak: {
-    name: "ART BATAK", swatch: "linear-gradient(135deg,#5c0f0f,#c9a227)", desc: "Hitam + merah + emas, Sumatera Utara", video: "BATAK-REV-1.mp4",
+    name: "ART BATAK", swatch: "linear-gradient(135deg,#5c0f0f,#c9a227)", desc: "Hitam + merah + emas, Sumatera Utara", video: "BATAK-REV-1.mp4", layout: "live",
     primary: "#8f1d1d", primaryDark: "#5c0f0f", primaryLight: "#c23a3a", accent: "#c9a227",
     bg: "#120a0a", surface: "#1d1111", fg: "#f2e6e0", muted: "#a08880", border: "#3d1a1a", sand: "#241212",
     radiusCard: "20px", radiusBtn: "999px",
@@ -783,7 +783,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   bugis: {
-    name: "ART BUGIS", swatch: "linear-gradient(135deg,#8f1f3a,#c9a227)", desc: "Maroon + emas, Sulawesi Selatan", video: "bugis-maroon-1.mp4",
+    name: "ART BUGIS", swatch: "linear-gradient(135deg,#8f1f3a,#c9a227)", desc: "Maroon + emas, Sulawesi Selatan", video: "bugis-maroon-1.mp4", layout: "live",
     primary: "#8f1f3a", primaryDark: "#5c1226", primaryLight: "#c23a5e", accent: "#c9a227",
     bg: "#f8f0f0", surface: "#ffffff", fg: "#2a1a22", muted: "#8a6a74", border: "#e4cdd4", sand: "#f2e6ea",
     radiusCard: "20px", radiusBtn: "999px",
@@ -795,7 +795,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   aceh: {
-    name: "ART ACEH", swatch: "linear-gradient(135deg,#124a30,#c9a227)", desc: "Hijau emas, Aceh", video: "rev-aceh.mp4",
+    name: "ART ACEH", swatch: "linear-gradient(135deg,#124a30,#c9a227)", desc: "Hijau emas, Aceh", video: "rev-aceh.mp4", layout: "klasik",
     primary: "#1f6e4a", primaryDark: "#124a30", primaryLight: "#3b9a68", accent: "#c9a227",
     bg: "#0e1f16", surface: "#16291f", fg: "#e8f2ec", muted: "#86a090", border: "#24402f", sand: "#1a2f24",
     radiusCard: "20px", radiusBtn: "999px",
@@ -807,7 +807,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   melayu: {
-    name: "ART MELAYU", swatch: "linear-gradient(135deg,#4a2a0f,#c9a227)", desc: "Coklat kayu + emas, Melayu", video: "Motion-Melayu-Compress.mp4",
+    name: "ART MELAYU", swatch: "linear-gradient(135deg,#4a2a0f,#c9a227)", desc: "Coklat kayu + emas, Melayu", video: "Motion-Melayu-Compress.mp4", layout: "klasik",
     primary: "#7a4a1f", primaryDark: "#4a2a0f", primaryLight: "#b06e35", accent: "#c9a227",
     bg: "#140b05", surface: "#1f140c", fg: "#f0e6d8", muted: "#a89880", border: "#3d2a18", sand: "#271a10",
     radiusCard: "20px", radiusBtn: "999px",
@@ -819,7 +819,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   palembang: {
-    name: "ART PALEMBANG", swatch: "linear-gradient(135deg,#4a1515,#c9a227)", desc: "Maroon gelap + emas, Sumatera Selatan", video: "Motion-Palembang-Compress.mp4",
+    name: "ART PALEMBANG", swatch: "linear-gradient(135deg,#4a1515,#c9a227)", desc: "Maroon gelap + emas, Sumatera Selatan", video: "Motion-Palembang-Compress.mp4", layout: "klasik",
     primary: "#7a2a2a", primaryDark: "#4a1515", primaryLight: "#b04a4a", accent: "#c9a227",
     bg: "#120808", surface: "#1c0e0e", fg: "#f0e4dc", muted: "#a08880", border: "#381818", sand: "#221111",
     radiusCard: "20px", radiusBtn: "999px",
@@ -831,7 +831,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   bali: {
-    name: "ART BALI", swatch: "linear-gradient(135deg,#2f5426,#b08d57)", desc: "Hijau tropis + gold muted", video: "bali-revisi.mp4",
+    name: "ART BALI", swatch: "linear-gradient(135deg,#2f5426,#b08d57)", desc: "Hijau tropis + gold muted", video: "bali-revisi.mp4", layout: "minimal",
     primary: "#4a7a3f", primaryDark: "#2f5426", primaryLight: "#74a868", accent: "#b08d57",
     bg: "#f4f6ee", surface: "#ffffff", fg: "#22301f", muted: "#76826f", border: "#d4e0cc", sand: "#e8efe2",
     radiusCard: "20px", radiusBtn: "999px",
@@ -843,7 +843,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   melody: {
-    name: "ART MELODY", swatch: "linear-gradient(135deg,#a8486e,#c8c8d0)", desc: "Silver rose, elegan modern", video: "REV-MELODY.mp4",
+    name: "ART MELODY", swatch: "linear-gradient(135deg,#a8486e,#c8c8d0)", desc: "Silver rose, elegan modern", video: "REV-MELODY.mp4", layout: "klasik",
     primary: "#c96a8f", primaryDark: "#a8486e", primaryLight: "#e09ab4", accent: "#a8558a",
     bg: "#f5f0f2", surface: "#ffffff", fg: "#33222b", muted: "#8a7480", border: "#e2d2da", sand: "#efe6ea",
     radiusCard: "20px", radiusBtn: "999px",
@@ -855,7 +855,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   soft2: {
-    name: "ART SOFT", swatch: "linear-gradient(135deg,#c24b6a,#f0a8c0)", desc: "Rose pink lembut", video: "ART-SOFT-1.mp4",
+    name: "ART SOFT", swatch: "linear-gradient(135deg,#c24b6a,#f0a8c0)", desc: "Rose pink lembut", video: "ART-SOFT-1.mp4", layout: "minimal",
     primary: "#c24b6a", primaryDark: "#8f2f47", primaryLight: "#e07890", accent: "#a16207",
     bg: "#fdf2f6", surface: "#ffffff", fg: "#33141f", muted: "#8a6472", border: "#f0d6e0", sand: "#fbeaf0",
     radiusCard: "20px", radiusBtn: "999px",
@@ -867,7 +867,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   silva: {
-    name: "ART SILVA", swatch: "linear-gradient(135deg,#a8743f,#d8c0a0)", desc: "Tan emas, earthy", video: "SILVA-REAL-KOMPRES.mp4",
+    name: "ART SILVA", swatch: "linear-gradient(135deg,#a8743f,#d8c0a0)", desc: "Tan emas, earthy", video: "SILVA-REAL-KOMPRES.mp4", layout: "live",
     primary: "#a8743f", primaryDark: "#7d5229", primaryLight: "#c99a68", accent: "#5b3a1a",
     bg: "#f8f2ea", surface: "#fffdf8", fg: "#2e2318", muted: "#8f7c66", border: "#e2d2be", sand: "#f2e8da",
     radiusCard: "20px", radiusBtn: "999px",
@@ -879,7 +879,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   lovely: {
-    name: "ART LOVELY", swatch: "linear-gradient(135deg,#b85f74,#f0d8e0)", desc: "Pastel pink + cream", video: "LOVELY-1.mp4",
+    name: "ART LOVELY", swatch: "linear-gradient(135deg,#b85f74,#f0d8e0)", desc: "Pastel pink + cream", video: "LOVELY-1.mp4", layout: "premium",
     primary: "#e0879a", primaryDark: "#b85f74", primaryLight: "#f0aebb", accent: "#b08d57",
     bg: "#fdf6f8", surface: "#ffffff", fg: "#3a222a", muted: "#947280", border: "#f0dce2", sand: "#f9edf1",
     radiusCard: "20px", radiusBtn: "999px",
@@ -891,7 +891,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   castle: {
-    name: "ART CASTLE", swatch: "linear-gradient(135deg,#16233a,#c9a227)", desc: "Royal navy + emas, istana", video: "CASTLE-2-1.mp4",
+    name: "ART CASTLE", swatch: "linear-gradient(135deg,#16233a,#c9a227)", desc: "Royal navy + emas, istana", video: "CASTLE-2-1.mp4", layout: "premium",
     primary: "#8a7a3a", primaryDark: "#5c5226", primaryLight: "#b8a858", accent: "#c9a227",
     bg: "#0d1420", surface: "#16233a", fg: "#f0ead8", muted: "#94a3b8", border: "#2c3e5c", sand: "#1b2a44",
     radiusCard: "20px", radiusBtn: "999px",
@@ -903,7 +903,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   flow: {
-    name: "ART FLOW", swatch: "linear-gradient(135deg,#3a4726,#c9a227)", desc: "Earthy green + gold", video: "flow-1.mp4",
+    name: "ART FLOW", swatch: "linear-gradient(135deg,#3a4726,#c9a227)", desc: "Earthy green + gold", video: "flow-1.mp4", layout: "minimal",
     primary: "#5a6b3a", primaryDark: "#3a4726", primaryLight: "#7e945c", accent: "#c9a227",
     bg: "#131710", surface: "#1c2116", fg: "#ece8da", muted: "#98a088", border: "#333d28", sand: "#23291b",
     radiusCard: "20px", radiusBtn: "999px",
@@ -915,7 +915,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   pinkcastle: {
-    name: "PINK CASTLE", swatch: "linear-gradient(135deg,#b85a90,#f0a8cc)", desc: "Pink pastel, princess", video: "Motion-Pink-Palace.mp4",
+    name: "PINK CASTLE", swatch: "linear-gradient(135deg,#b85a90,#f0a8cc)", desc: "Pink pastel, princess", video: "Motion-Pink-Palace.mp4", layout: "premium",
     primary: "#e07ab0", primaryDark: "#b85a90", primaryLight: "#f0a8cc", accent: "#a8558a",
     bg: "#fdf2f8", surface: "#ffffff", fg: "#3a1f33", muted: "#94708a", border: "#f0d4e4", sand: "#f9e8f2",
     radiusCard: "20px", radiusBtn: "999px",
@@ -927,7 +927,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   garden: {
-    name: "ART GARDEN", swatch: "linear-gradient(135deg,#1e4a31,#b08d57)", desc: "Forest green, botanical", video: "Motion-Garden.mp4",
+    name: "ART GARDEN", swatch: "linear-gradient(135deg,#1e4a31,#b08d57)", desc: "Forest green, botanical", video: "Motion-Garden.mp4", layout: "minimal",
     primary: "#2f6b4a", primaryDark: "#1e4a31", primaryLight: "#5e9a76", accent: "#b08d57",
     bg: "#f0f5f0", surface: "#ffffff", fg: "#1f2f24", muted: "#6f8575", border: "#cfe0d2", sand: "#e6efe8",
     radiusCard: "20px", radiusBtn: "999px",
@@ -939,7 +939,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   kyra: {
-    name: "ART KYRA", swatch: "linear-gradient(135deg,#5c4f8f,#c8c0e0)", desc: "Lavender silver, dreamy", video: "ART-KYRA-1.mp4",
+    name: "ART KYRA", swatch: "linear-gradient(135deg,#5c4f8f,#c8c0e0)", desc: "Lavender silver, dreamy", video: "ART-KYRA-1.mp4", layout: "live",
     primary: "#8a7ab8", primaryDark: "#5c4f8f", primaryLight: "#b0a4d4", accent: "#a8558a",
     bg: "#f4f2f8", surface: "#ffffff", fg: "#282238", muted: "#7a748f", border: "#dcd4e8", sand: "#ebe6f2",
     radiusCard: "20px", radiusBtn: "999px",
@@ -951,7 +951,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   devola: {
-    name: "ART DEVOLA", swatch: "linear-gradient(135deg,#7d3f4c,#8aa0b0)", desc: "Dusty rose + slate", video: "DEVOLA-1.mp4",
+    name: "ART DEVOLA", swatch: "linear-gradient(135deg,#7d3f4c,#8aa0b0)", desc: "Dusty rose + slate", video: "DEVOLA-1.mp4", layout: "live",
     primary: "#a85a6a", primaryDark: "#7d3f4c", primaryLight: "#cc8496", accent: "#4a5c6a",
     bg: "#f7f2f4", surface: "#ffffff", fg: "#2e2026", muted: "#8f7480", border: "#e4d2d8", sand: "#f2e8ec",
     radiusCard: "20px", radiusBtn: "999px",
@@ -963,7 +963,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   gold: {
-    name: "GOLD ROYAL", swatch: "linear-gradient(135deg,#0d0d10,#c9a227)", desc: "Hitam + emas, mewah", video: "asli-pangkas.mp4",
+    name: "GOLD ROYAL", swatch: "linear-gradient(135deg,#0d0d10,#c9a227)", desc: "Hitam + emas, mewah", video: "asli-pangkas.mp4", layout: "premium",
     primary: "#c9a227", primaryDark: "#a8871d", primaryLight: "#e0bd5e", accent: "#a8b8cf",
     bg: "#0d0d10", surface: "#16161c", fg: "#f2ead8", muted: "#94a3b8", border: "#2c2c3e", sand: "#1b1b24",
     radiusCard: "20px", radiusBtn: "999px",
@@ -975,7 +975,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   monoch: {
-    name: "MONOCHROME", swatch: "linear-gradient(135deg,#0a0a0a,#e0e0e0)", desc: "Hitam putih + gold accent", video: "asli-pangkas.mp4",
+    name: "MONOCHROME", swatch: "linear-gradient(135deg,#0a0a0a,#e0e0e0)", desc: "Hitam putih + gold accent", video: "asli-pangkas.mp4", layout: "mewah",
     primary: "#1f1f1f", primaryDark: "#000000", primaryLight: "#4a4a4a", accent: "#c9a227",
     bg: "#0a0a0a", surface: "#141414", fg: "#f5f5f5", muted: "#8a8a8a", border: "#2e2e2e", sand: "#181818",
     radiusCard: "20px", radiusBtn: "999px",
@@ -987,7 +987,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   maroon: {
-    name: "MAROON ROYAL", swatch: "linear-gradient(135deg,#4a0f0f,#c9a227)", desc: "Maroon gelap mewah", video: "WEB-JAWA-MAROON-1.mp4",
+    name: "MAROON ROYAL", swatch: "linear-gradient(135deg,#4a0f0f,#c9a227)", desc: "Maroon gelap mewah", video: "WEB-JAWA-MAROON-1.mp4", layout: "live",
     primary: "#7a1f1f", primaryDark: "#4a0f0f", primaryLight: "#b04a4a", accent: "#c9a227",
     bg: "#1a0a0a", surface: "#241010", fg: "#f0e2dc", muted: "#a08880", border: "#401a1a", sand: "#261212",
     radiusCard: "20px", radiusBtn: "999px",
@@ -999,7 +999,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   saci: {
-    name: "SACI GREEN", swatch: "linear-gradient(135deg,#1e4a31,#c9a227)", desc: "Hijau zamrud + emas", video: "asli-pangkas.mp4",
+    name: "SACI GREEN", swatch: "linear-gradient(135deg,#1e4a31,#c9a227)", desc: "Hijau zamrud + emas", video: "asli-pangkas.mp4", layout: "minimal",
     primary: "#2f6b4a", primaryDark: "#1e4a31", primaryLight: "#5e9a76", accent: "#c9a227",
     bg: "#0e1f16", surface: "#16291f", fg: "#e8f2ec", muted: "#86a090", border: "#24402f", sand: "#1a2f24",
     radiusCard: "20px", radiusBtn: "999px",
@@ -1011,7 +1011,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   moran: {
-    name: "MORAN RED", swatch: "linear-gradient(135deg,#0d0d0d,#b03030)", desc: "Hitam + merah menyala", video: "asli-pangkas.mp4",
+    name: "MORAN RED", swatch: "linear-gradient(135deg,#0d0d0d,#b03030)", desc: "Hitam + merah menyala", video: "asli-pangkas.mp4", layout: "live",
     primary: "#b03030", primaryDark: "#7a1a1a", primaryLight: "#e05a5a", accent: "#d0d0d0",
     bg: "#0d0d0d", surface: "#161616", fg: "#f0f0f0", muted: "#909090", border: "#2c2c2c", sand: "#1b1b1b",
     radiusCard: "20px", radiusBtn: "999px",
@@ -1023,7 +1023,7 @@ const PRESETS = {
     videoOpacity: "55", bgOpacity: "25"
   },
   loly: {
-    name: "EXCLUSIVE LOLY", swatch: "linear-gradient(135deg,#8a6474,#e8dce2)", desc: "Soft gray pink, elegan", video: "asli-pangkas.mp4",
+    name: "EXCLUSIVE LOLY", swatch: "linear-gradient(135deg,#8a6474,#e8dce2)", desc: "Soft gray pink, elegan", video: "asli-pangkas.mp4", layout: "mewah",
     primary: "#b08a9a", primaryDark: "#8a6474", primaryLight: "#d0aec0", accent: "#a16207",
     bg: "#f6f2f4", surface: "#ffffff", fg: "#2e2228", muted: "#8f7480", border: "#e4d6dc", sand: "#f0e8ec",
     radiusCard: "20px", radiusBtn: "999px",
@@ -1575,8 +1575,13 @@ function applyPreset(name) {
     cfg.media.video = "/uploads/vendor/videos/" + p.video;
     cfg.media.videoEnabled = true;
   }
+  // preset punya layout sendiri → terapkan juga (setiap tema beda susunan)
+  if (p.layout) {
+    const l = LAYOUTS.find((x) => x.key === p.layout);
+    if (l) cfg.layout = { name: l.key, sections: l.sections };
+  }
   renderAll("tab-theme");
-  toast("Preset '" + p.name + "' diterapkan. Klik Simpan & Deploy untuk menyimpan.");
+  toast("Tema '" + p.name + "' diterapkan (termasuk layout). Klik Simpan & Deploy.");
   // renderAll() rebuild iframe (src reset ke base) → refresh preview sekali biar keliatan tema baru
   refreshPreview();
 }
@@ -1686,31 +1691,15 @@ function renderTheme() {
   return `<div class="ts-layout">
     <div class="ts-form">
       <div class="card p-6 mb-5">
-        <h2 class="terra font-semibold mb-1">🧩 Layout Website</h2>
-        <p class="text-xs text-slate-500 mb-3">Pilih susunan section undangan. Urutan chip = urutan tampil di website.</p>
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span class="layout-chip on">Ada</span>
-          <span class="layout-chip off">Tidak ditampilkan</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          ${LAYOUTS.map((l) => `
-            <button onclick="applyLayout('${l.key}')" class="layout-card ${(cfg.layout?.name || 'klasik') === l.key ? 'active' : ''}" data-layout="${l.key}">
-              <div class="layout-name mb-1">${l.name}</div>
-              ${layoutFlow(l)}
-              <div class="layout-desc mt-2">${l.desc}</div>
-            </button>`).join('')}
-        </div>
-      </div>
-
-      <div class="card p-6 mb-5">
         <h2 class="terra font-semibold mb-1">🎨 Pilih Tema</h2>
-        <p class="text-xs text-slate-500 mb-4">Klik satu tema → warna, font &amp; animasi ke-isi otomatis. Preview di kanan update langsung.</p>
+        <p class="text-xs text-slate-500 mb-4">Klik satu tema → warna, font, layout &amp; animasi ke-isi otomatis. Preview di kanan update langsung.</p>
         <input id="presetSearch" class="search-box mb-3" placeholder="Cari tema... (contoh: jawa, gold, minang)" oninput="filterPresets(this.value)" />
         <div id="presetGrid" class="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-[340px] overflow-y-auto pr-1">
           ${Object.entries(PRESETS).map(([key, p]) => `
             <button onclick="applyPreset('${key}')" class="preset-card ${key === activeKey ? 'active' : ''}" data-name="${p.name}" title="${p.desc || ''}">
               <div class="w-full h-8 rounded-lg mb-1.5" style="background:${p.swatch || 'linear-gradient(135deg,' + p.primary + ',' + p.bg + ')'}"></div>
               <p class="text-[11px] font-semibold text-slate-700 truncate">${p.name}</p>
+              <p class="text-[9px] text-slate-400 truncate">Layout: ${LAYOUTS.find(l => l.key === p.layout)?.name || 'Standar'}</p>
             </button>`).join('')}
         </div>
       </div>
